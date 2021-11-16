@@ -9,7 +9,7 @@ import uk.ac.cardiff.team5.graphium.web.controllers.userRegistration.forms.UserR
 @Controller
 public class UserRegistration {
     @GetMapping("/register")
-    public String userRegistration(Model model) {
+    public String register(Model model) {
         UserRegistrationForm userRegistrationForm = new UserRegistrationForm();
 
         model.addAttribute("userRegistrationForm", userRegistrationForm);
@@ -18,7 +18,7 @@ public class UserRegistration {
     }
 
     @PostMapping("/register")
-    public String userRegistrationSubmit(UserRegistrationForm userRegistrationForm, Model model) {
+    public String userRegistration(UserRegistrationForm userRegistrationForm, Model model) {
         System.out.println(userRegistrationForm.getFirstName());
         return "redirect:register";
     }
