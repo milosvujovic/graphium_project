@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Graphium | Register</title>
+</head>
+<body>
+<p>Registration</p>
+<form th:action="@{/register}" th:method="post" th:object="${userRegistrationForm}">
+    <div>
+        <label for="firstName">First Name:</label>
+        <input type="text" th:field="*{firstName}">
+        <span th:errors="*{firstName}" th:if="${#fields.hasErrors('firstName')}">First Name Error</span>
+    </div>
+    <div>
+        <label for="lastName">Last Name:</label>
+        <input type="text" th:field="*{lastName}">
+        <span th:errors="*{lastName}" th:if="${#fields.hasErrors('lastName')}">Last Name Error</span>
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="text" th:field="*{email}">
+        <span th:errors="*{email}" th:if="${#fields.hasErrors('email')}">Email Error</span>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="text" th:field="*{password}">
+        <span th:errors="*{password}" th:if="${#fields.hasErrors('password')}">Password Error</span>
+    </div>
+    <div>
+        <label for="passwordConf">Confirm Password:</label>
+        <input type="text" th:field="*{passwordConf}">
+        <span th:errors="*{passwordConf}" th:if="${#fields.hasErrors('passwordConf')}">Password Error</span>
+    </div>
+    <input type="submit">
+</form>
+</body>
+</html>
