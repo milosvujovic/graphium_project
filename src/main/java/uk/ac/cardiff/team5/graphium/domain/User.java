@@ -11,9 +11,9 @@ public class User {
     private Integer id;
     private String firstName;
     private String lastName;
+    private String username;
     private String email;
-    private String passwordHash;
-    private String passwordSalt;
+    private String password;
     private Boolean isAdmin;
     private Boolean authenticated;
 }

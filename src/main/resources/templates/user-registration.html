@@ -18,6 +18,11 @@
         <span th:errors="*{lastName}" th:if="${#fields.hasErrors('lastName')}">Last Name Error</span>
     </div>
     <div>
+        <label for="email">Username:</label>
+        <input type="text" th:field="*{username}">
+        <span th:errors="*{username}" th:if="${#fields.hasErrors('username')}">Username Error</span>
+    </div>
+    <div>
         <label for="email">Email:</label>
         <input type="text" th:field="*{email}">
         <span th:errors="*{email}" th:if="${#fields.hasErrors('email')}">Email Error</span>
