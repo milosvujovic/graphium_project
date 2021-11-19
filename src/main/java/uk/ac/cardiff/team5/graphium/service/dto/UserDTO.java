@@ -9,15 +9,17 @@ import lombok.Value;
 public class UserDTO {
     String firstName;
     String lastName;
+    Long organisationId;
     String username;
     String email;
     String password;
     Boolean isAdmin;
     Boolean authenticated;
 
-    public UserDTO(String firstName, String lastName, String username, String email, String password) {
+    public UserDTO(String firstName, String lastName, Long organisationId, String username, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.organisationId = organisationId;
         this.username = username;
         this.email = email;
         this.password = password;

@@ -7,14 +7,14 @@ import javax.persistence.*;
 public class RoleEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    private int roleId;
+    private Long roleId;
     private String roleName;
 
-    public int getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(int roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
 

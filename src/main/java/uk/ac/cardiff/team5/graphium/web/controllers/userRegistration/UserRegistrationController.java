@@ -6,9 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import uk.ac.cardiff.team5.graphium.data.jpa.entity.UserEntity;
-import uk.ac.cardiff.team5.graphium.data.jpa.repository.UserRepository;
-import uk.ac.cardiff.team5.graphium.domain.User;
+import uk.ac.cardiff.team5.graphium.data.jpa.entity.OrganisationEntity;
+import uk.ac.cardiff.team5.graphium.data.jpa.repository.OrganisationRepository;
 import uk.ac.cardiff.team5.graphium.exception.EmailInUseException;
 import uk.ac.cardiff.team5.graphium.exception.UsernameInUseException;
 import uk.ac.cardiff.team5.graphium.service.UserService;
@@ -16,15 +15,21 @@ import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 import uk.ac.cardiff.team5.graphium.web.controllers.userRegistration.forms.UserRegistrationForm;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class UserRegistrationController {
+    @Autowired
+    private OrganisationRepository organisationRepository;
     @Autowired
     private UserService userService;
 
     @GetMapping("/register")
     public String register(Model model) {
         UserRegistrationForm userRegistrationForm = new UserRegistrationForm();
+
+        List<OrganisationEntity> organisationEntities = organisationRepository.findAll();
+        model.addAttribute("organisationEntities", organisationEntities);
 
         model.addAttribute("userRegistrationForm", userRegistrationForm);
 
@@ -34,6 +39,8 @@ public class UserRegistrationController {
     @PostMapping("/register")
     public String userRegistration(final @Valid UserRegistrationForm userRegistrationForm, final BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()){
+            List<OrganisationEntity> organisationEntities = organisationRepository.findAll();
+            model.addAttribute("organisationEntities", organisationEntities);
             model.addAttribute("userRegistrationForm", userRegistrationForm);
             return "user-registration";
         }
@@ -41,6 +48,7 @@ public class UserRegistrationController {
         UserDTO userDTO = new UserDTO(
             userRegistrationForm.getFirstName(),
             userRegistrationForm.getLastName(),
+            Long.parseLong(userRegistrationForm.getOrganisationId()),
             userRegistrationForm.getUsername(),
             userRegistrationForm.getEmail(),
             userRegistrationForm.getPassword()
@@ -50,10 +58,14 @@ public class UserRegistrationController {
             userService.register(userDTO);
         } catch (EmailInUseException e) {
             bindingResult.rejectValue("email", "userRegistrationForm.email","An account already exists for this email.");
+            List<OrganisationEntity> organisationEntities = organisationRepository.findAll();
+            model.addAttribute("organisationEntities", organisationEntities);
             model.addAttribute("userRegistrationForm", userRegistrationForm);
             return "user-registration";
         } catch (UsernameInUseException e) {
             bindingResult.rejectValue("username", "userRegistrationForm.username","An account already exists with this username.");
+            List<OrganisationEntity> organisationEntities = organisationRepository.findAll();
+            model.addAttribute("organisationEntities", organisationEntities);
             model.addAttribute("userRegistrationForm", userRegistrationForm);
             return "user-registration";
         }

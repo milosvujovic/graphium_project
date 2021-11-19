@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uk.ac.cardiff.team5.graphium.GraphiumApplication;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.UserEntity;
+import uk.ac.cardiff.team5.graphium.data.jpa.repository.OrganisationRepository;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.UserRepository;
 import uk.ac.cardiff.team5.graphium.exception.EmailInUseException;
 import uk.ac.cardiff.team5.graphium.exception.UsernameInUseException;
@@ -16,6 +17,8 @@ import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private OrganisationRepository organisationRepository;
     @Autowired
     PasswordEncoder passwordEncoder = GraphiumApplication.encoder();
 
@@ -32,6 +35,7 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = new UserEntity(
                 userDTO.getFirstName(),
                 userDTO.getLastName(),
+                organisationRepository.findById(userDTO.getOrganisationId()).get(),// need to add verification that organisation id exists
                 userDTO.getUsername(),
                 userDTO.getEmail(),
                 passwordEncoder.encode(userDTO.getPassword())
