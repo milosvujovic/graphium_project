@@ -45,6 +45,14 @@ public class UserRegistrationController {
             return "user-registration";
         }
 
+        if (!userService.checkPasswordsMatch(userRegistrationForm.getPassword(), userRegistrationForm.getPasswordConf())) {
+            bindingResult.rejectValue("password", "userRegistrationForm.password","Passwords do not match.");
+            List<OrganisationEntity> organisationEntities = organisationRepository.findAll();
+            model.addAttribute("organisationEntities", organisationEntities);
+            model.addAttribute("userRegistrationForm", userRegistrationForm);
+            return "user-registration";
+        }
+
         UserDTO userDTO = new UserDTO(
             userRegistrationForm.getFirstName(),
             userRegistrationForm.getLastName(),

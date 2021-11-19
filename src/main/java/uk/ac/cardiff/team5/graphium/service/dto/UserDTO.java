@@ -13,8 +13,8 @@ public class UserDTO {
     String username;
     String email;
     String password;
-    Boolean isAdmin;
-    Boolean authenticated;
+    Boolean organisationApproved;
+    Boolean emailVerified;
 
     public UserDTO(String firstName, String lastName, Long organisationId, String username, String email, String password) {
         this.firstName = firstName;
@@ -23,7 +23,7 @@ public class UserDTO {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.isAdmin = false;
-        this.authenticated = false;
+        this.organisationApproved = false;
+        this.emailVerified = false;
     }
 }

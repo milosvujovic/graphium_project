@@ -30,6 +30,8 @@ public class UserRegistrationForm {
     @NotEmpty
     private String username;
 
+
+    // move validation in UserRegistrationController to custom validator to compare values of password and passwordConf
     @NotEmpty
     private String password;
     @NotEmpty

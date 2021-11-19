@@ -24,6 +24,9 @@ public class UserEntity {
     @Column(unique = true)
     private String username;
     private String password;
+    private Boolean active = true;
+    private Boolean organisation_approved = false;
+    private Boolean email_verified = false;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

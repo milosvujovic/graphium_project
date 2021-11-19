@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-    private Integer id;
-    private String firstName;
-    private String lastName;
-    private String username;
-    private String email;
-    private String password;
-    private Boolean isAdmin;
-    private Boolean authenticated;
+    String firstName;
+    String lastName;
+    Long organisationId;
+    String username;
+    String email;
+    String password;
+    Boolean organisationApproved;
+    Boolean emailVerified;
 }

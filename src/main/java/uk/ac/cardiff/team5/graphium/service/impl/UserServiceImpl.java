@@ -54,4 +54,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username) != null ? true : false;
     }
 
+    @Override
+    public boolean checkPasswordsMatch(String password1, String password2) {
+        return password1.equals(password2);
+    }
+
 }
