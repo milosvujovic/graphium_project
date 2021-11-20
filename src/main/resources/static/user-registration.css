@@ -1,0 +1,117 @@
+.content {
+    height: 100vh;
+    width: 100vw;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-image: url("/img/register-bg2.png");
+    background-size: cover;
+}
+
+.container {
+    display: flex;
+}
+
+.container.register-form {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+
+    border-radius: 5px;
+    padding: 30px 35px;
+
+    box-shadow: 0 0 80px 2px rgba(0,0,0,0.3);
+}
+
+.container.register-form h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.container.register-form form {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.form-input {
+    position: relative;
+    width: 225px;
+    height: 34px;
+    margin-top: 15px;
+}
+
+.form-input:first-child {
+    margin-top: 0
+}
+
+.form-input input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 24px);
+    height: 100%;
+    z-index: 1;
+    border-radius: 5px;
+    border: 1px solid #777;
+    padding: 0 12px;
+}
+
+.form-input label {
+    z-index: 2;
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    font-size: 12px;
+    color: #777;
+    transition: ease all 0.15s;
+    background-color: white;
+    border-radius: 6px;
+}
+
+.form-input.active label {
+    font-size: 10px;
+    top: -7px;
+    padding: 1px 4px;
+}
+
+.form-select {
+    width: 200px;
+    height: 25px;
+    font-size: 12px;
+    z-index: 1;
+    border-radius: 5px;
+    border: 1px solid #777;
+    padding: 0 4px;
+    margin-top: 15px;
+}
+
+.form-submit {
+    font-size: 12px;
+    padding: 6px 8px;
+    background-color: #149845;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: ease all 0.15s;
+    margin-top: 15px;
+}
+
+.form-submit:hover {
+    background-color: #23b557;
+}
+
+.error-msg {
+    color: #a00;
+    font-size: 10px;
+    padding: 0;
+    margin-top: 5px;
+    text-align: center;
+}
