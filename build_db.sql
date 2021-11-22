@@ -6,6 +6,11 @@ drop table if exists users;
 drop table if exists role;
 drop table if exists organisation;
 
+create table organisation (
+                              organisation_id integer auto_increment primary key,
+                              organisation_name varchar(127)
+);
+
 create table users (
                        user_id bigint auto_increment primary key,
                        organisation_id integer references organisation(organisation_id),
@@ -25,14 +30,9 @@ create table role (
 );
 
 create table user_role (
-                           user_role_id integer auto_increment primary key,
-                           user_id integer references users(user_id),
+                           user_role_id bigint auto_increment primary key,
+                           user_id bigint references users(user_id),
                            role_id integer references role(role_id)
-);
-
-create table organisation (
-                              organisation_id integer auto_increment primary key,
-                              organisation_name varchar(127)
 );
 
 insert into organisation (organisation_name) values ('ExampleOrg1');
