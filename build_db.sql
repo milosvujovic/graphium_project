@@ -24,6 +24,17 @@ create table users (
                        email_verified boolean default false
 );
 
+create table files (
+                       `file_id` varchar(100) NOT NULL ,
+                       `file_name` varchar(100) NOT NULL,
+                       `file_type` varchar(100) NOT NULL,
+                       `tag` varchar(100) NOT NULL,
+                       `access_level` varchar(100) NOT NULL,
+                       `comment` varchar(100) NOT NULL,
+                       `data` blob not null,
+                       PRIMARY KEY (`file_id`)
+);
+
 create table role (
                       role_id integer auto_increment primary key,
                       role_name varchar(50)

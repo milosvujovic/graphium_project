@@ -1,0 +1,24 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Charity List</title>
+
+</head>
+<body>
+<div class="container" th:if="${!fileList.isEmpty}">
+    <h1>Our files</h1>
+    <hr>
+    <ul class="list-group" th:each="file : ${fileList}">
+        <li class="list-group-item"><a th:href="@{/files/{furl}(furl=${file.fileId})}" th:text="${file.fileName}"></a>
+        </li>
+    </ul>
+</div>
+
+<div class="container" th:if="${fileList.isEmpty}">
+    No matching files.
+</div>
+
+<hr>
+</body>
+</html>
