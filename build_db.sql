@@ -1,3 +1,4 @@
+drop database graphium;
 create database if not exists graphium;
 use graphium;
 
@@ -33,7 +34,7 @@ create table files (
                        `tag` varchar(100) NOT NULL,
                        `access_level` varchar(100) NOT NULL,
                        `comment` varchar(100) NOT NULL,
-                       `data` blob not null
+                       `data` LONGBLOB not null
 );
 
 create table role (
