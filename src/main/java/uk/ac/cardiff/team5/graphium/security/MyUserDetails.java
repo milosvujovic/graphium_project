@@ -7,11 +7,11 @@ import uk.ac.cardiff.team5.graphium.data.jpa.entity.UserEntity;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
+public class MyUserDetails implements org.springframework.security.core.userdetails.UserDetails {
 
     private UserEntity user;
 
-    public void MyUserDetails(UserEntity user){
+    public MyUserDetails(UserEntity user) {
         this.user = user;
     }
 
