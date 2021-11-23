@@ -19,8 +19,7 @@
                     <div class="mb-3">
                         <label class="text-secondary" for="logoFile">File: </label><br>
                         <input th:field="*{logoFile}" type="file" required/>
-                        <div class="alert alert-warning" th:if="${errorMessage != null}" th:text="${errorMessage}">File Error
-                        </div>
+
                     </div>
                 </div>
                 <div class = "col-md">
@@ -28,7 +27,10 @@
                         <label class="text-secondary" for="logoFileName">Upload Name: </label><br>
                         <input th:field="*{logoFileName}" type="text" required/>
                     </div>
-                </div>
+                </div>>
+            </div>
+            <div class = "row">
+                <div class="alert alert-danger" th:if="${errorMessage != null}" th:text="${errorMessage}">File Error</div>
             </div>
             <div class="row">
                 <div class = "col-lg-6">
