@@ -7,6 +7,7 @@ import uk.ac.cardiff.team5.graphium.data.jpa.repository.OrganisationRepository;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -40,6 +41,11 @@ public class UserEntity {
     @JoinColumn(name = "organisation_id")
     OrganisationEntity organisation;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name="user_id", nullable = false)
+    private List<DBFile> files;
+
+
     public List<RoleEntity> getRoles() {
         return roles;
     }
@@ -63,5 +69,8 @@ public class UserEntity {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+    public void addFile(DBFile aFile){
+        this.files.add(aFile);
     }
 }
