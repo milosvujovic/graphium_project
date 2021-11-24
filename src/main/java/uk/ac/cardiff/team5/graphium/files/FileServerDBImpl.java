@@ -28,7 +28,7 @@ public class FileServerDBImpl implements FileServer{
 
         String fileId = null;
         try {
-            DBFile dbFile = new DBFile(null,aFile.getFileName(),aFile.getData().getContentType() ,aFile.getTag(),aFile.getAccessLevel() ,aFile.getComment(),aFile.getData().getBytes());
+            DBFile dbFile = new DBFile(null,aFile.getFileName(),aFile.getData().getContentType() ,aFile.getTag(),aFile.getAccessLevel() ,aFile.getComment(),aFile.getData().getBytes(), aFile.getDate());
             //           Gather the user here
 //            Basic one at the moment
             UserEntity user =  userRepository.findByUsername("user");

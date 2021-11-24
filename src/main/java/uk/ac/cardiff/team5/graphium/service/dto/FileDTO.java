@@ -17,14 +17,16 @@ public class FileDTO {
     private String comment;
     @Lob
     private MultipartFile data;
+    private String date;
 
-    public FileDTO(String id, String logoFileName, String tag, String accessLevel, String comment, MultipartFile logoFile) {
+    public FileDTO(String id, String logoFileName, String tag, String accessLevel, String comment, MultipartFile logoFile, String date) {
         this.fileID = id;
         this.fileName = logoFileName;
         this.tag = tag;
         this.accessLevel = accessLevel;
         this.comment = comment;
         this.data = logoFile;
+        this.date = date;
     }
 
 }

@@ -34,7 +34,8 @@ create table files (
                        `tag` varchar(100) NOT NULL,
                        `access_level` varchar(100) NOT NULL,
                        `comment` varchar(100) NOT NULL,
-                       `data` LONGBLOB not null
+                       `data` LONGBLOB not null,
+                       `date` DATE not null
 );
 
 create table role (

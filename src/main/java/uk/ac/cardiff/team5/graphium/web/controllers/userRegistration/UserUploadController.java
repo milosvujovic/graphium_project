@@ -11,6 +11,7 @@ import uk.ac.cardiff.team5.graphium.service.dto.FileDTO;
 import uk.ac.cardiff.team5.graphium.web.controllers.userRegistration.forms.FileForm;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 @Controller
 public class UserUploadController {
@@ -28,14 +29,18 @@ public class UserUploadController {
     }
     @PostMapping("file")
     public String getFile(@Valid FileForm form, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("errorMessage","Only PDF and Word Documents allowed.");
-            return "file-upload.html";
-        }else{
-            FileDTO newFile = new FileDTO(form.getFileId(), form.getLogoFileName(),form.getTag(),form.getAccessLevel(),form.getComment(),form.getLogoFile());
-            String fileId = fileServer.saveFiles(newFile);
-        }
-        return "redirect:/display";
+            System.out.println("Hello");
+            if (bindingResult.hasErrors()) {
+                model.addAttribute("errorMessage","Only PDF and Word Documents allowed.");
+                return "file-upload.html";
+            }else{
+                LocalDate today = LocalDate.now();
+                FileDTO newFile = new FileDTO(form.getFileId(), form.getLogoFileName(),form.getTag(),form.getAccessLevel(),form.getComment(),form.getLogoFile(), today.toString());
+                String fileId = fileServer.saveFiles(newFile);
+            }
+            return "redirect:/display";
+
+
     }
     @GetMapping("display")
     public String displayListOfFiles(Model model) {
