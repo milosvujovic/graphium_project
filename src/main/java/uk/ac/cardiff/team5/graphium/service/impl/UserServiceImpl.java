@@ -5,8 +5,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uk.ac.cardiff.team5.graphium.GraphiumApplication;
+import uk.ac.cardiff.team5.graphium.data.jpa.entity.RoleEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.UserEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.OrganisationRepository;
+import uk.ac.cardiff.team5.graphium.data.jpa.repository.RoleRepository;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.UserRepository;
 import uk.ac.cardiff.team5.graphium.domain.User;
 import uk.ac.cardiff.team5.graphium.exception.EmailInUseException;
@@ -25,6 +27,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private OrganisationRepository organisationRepository;
     @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
     PasswordEncoder passwordEncoder = GraphiumApplication.encoder();
 
     @Override
@@ -36,14 +40,15 @@ public class UserServiceImpl implements UserService {
         if (checkUsernameInUse(userDTO.getUsername())) {
             throw new UsernameInUseException("Username " + userDTO.getUsername() + " is already in use.");
         }
-
+        RoleEntity role = roleRepository.findByRoleId("1");
         UserEntity userEntity = new UserEntity(
                 userDTO.getFirstName(),
                 userDTO.getLastName(),
                 organisationRepository.findById(userDTO.getOrganisationId()).get(),// need to add verification that organisation id exists
                 userDTO.getUsername(),
                 userDTO.getEmail(),
-                passwordEncoder.encode(userDTO.getPassword())
+                passwordEncoder.encode(userDTO.getPassword()),
+                role
         );
 
         userRepository.save(userEntity);
