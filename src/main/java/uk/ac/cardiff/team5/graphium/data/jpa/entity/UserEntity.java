@@ -28,7 +28,6 @@ public class UserEntity {
     private Boolean active = true;
     private Boolean organisation_approved = false;
     private Boolean email_verified = false;
-    private String role;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -50,8 +49,6 @@ public class UserEntity {
     public List<RoleEntity> getRoles() {
         return roles;
     }
-
-    public String getRole() {return role;}
 
     public void setRoles(List<RoleEntity> roles) {
         this.roles = roles;
