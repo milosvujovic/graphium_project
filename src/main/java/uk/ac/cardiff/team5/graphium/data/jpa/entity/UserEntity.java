@@ -1,13 +1,10 @@
 package uk.ac.cardiff.team5.graphium.data.jpa.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import uk.ac.cardiff.team5.graphium.data.jpa.repository.OrganisationRepository;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -42,7 +39,9 @@ public class UserEntity {
     private List<DBFile> files;
 
 
-    public RoleEntity getRole() {return role;}
+    public String getRole() {
+        return role.getRoleId();
+    }
 
     public void setRole(RoleEntity newRole) {this.role = newRole;}
 
