@@ -48,9 +48,9 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().permitAll()
                 .and()
-                .logout().permitAll()
-                .and()
-                .antMatcher("/resources/**");
+                .logout().permitAll();
+                //.and()
+                //.antMatcher("/resources/**");
     }
 
     // ignore register URL for non-authenticated users
