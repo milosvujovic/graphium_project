@@ -7,4 +7,5 @@ import java.util.List;
 public interface AdminService {
     List<UserDTO> verify(Long organisationId);
 
+    void verifyUser(String userName);
 }

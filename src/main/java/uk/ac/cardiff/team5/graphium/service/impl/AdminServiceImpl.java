@@ -29,4 +29,9 @@ public class AdminServiceImpl implements AdminService {
                 .map(c -> new UserDTO(c))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void verifyUser(String userName) {
+        userRepository.verifyUser(userName);
+    }
 }
