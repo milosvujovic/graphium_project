@@ -29,13 +29,9 @@ public class UserEntity {
     private Boolean organisation_approved = false;
     private Boolean email_verified = false;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    List<RoleEntity> roles;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
+    RoleEntity role;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisation_id")
@@ -46,13 +42,9 @@ public class UserEntity {
     private List<DBFile> files;
 
 
-    public List<RoleEntity> getRoles() {
-        return roles;
-    }
+    public RoleEntity getRole() {return role;}
 
-    public void setRoles(List<RoleEntity> roles) {
-        this.roles = roles;
-    }
+    public void setRole(RoleEntity newRole) {this.role = newRole;}
 
     public OrganisationEntity getOrganisation() {
         return organisation;
@@ -62,13 +54,14 @@ public class UserEntity {
         this.organisation = organisation;
     }
 
-    public UserEntity(String firstName, String lastName, OrganisationEntity organisation, String username, String email, String password) {
+    public UserEntity(String firstName, String lastName, OrganisationEntity organisation, String username, String email, String password, RoleEntity userRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.organisation = organisation;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.role = userRole;
     }
     public void addFile(DBFile aFile){
         this.files.add(aFile);
