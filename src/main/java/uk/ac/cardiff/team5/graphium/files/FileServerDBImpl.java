@@ -24,27 +24,19 @@ public class FileServerDBImpl implements FileServer{
 
     @Override
     public String saveFiles(FileDTO aFile) {
-        System.out.println("Saving the file");
-
         String fileId = null;
-        try {
-            DBFile dbFile = new DBFile(null,aFile.getFileName(),aFile.getData().getContentType() ,aFile.getTag(),aFile.getAccessLevel() ,aFile.getComment(),aFile.getData().getBytes(), aFile.getDate());
-            //           Gather the user here
+//        Converts FileDTO to a DBFile
+        DBFile dbFile = new DBFile(null,aFile.getFileName(),aFile.getType() ,aFile.getTag(),aFile.getAccessLevel() ,aFile.getComment(),aFile.getData(), aFile.getDate());
+        //           Gather the user here
 //            Basic one at the moment
-            UserEntity user =  userRepository.findByUsername("user");
-            user.addFile(dbFile);
-            userRepository.save(user);
-            fileId = dbFile.getFileId();
-            System.out.println(fileId);
+        UserEntity user =  userRepository.findByUsername("user");
 
-        } catch (IOException e) {
-            e.printStackTrace();//TODO replace with own exception
-        }
+//        Adds file to the user
+        user.addFile(dbFile);
+//        Updates user in the database
+        userRepository.save(user);
+//      Returns filesId
+        fileId = dbFile.getFileId();
         return fileId;
-    }
-
-    @Override
-    public List<DBFile> getFiles() {
-        return dbFileStore.findAll();
     }
 }

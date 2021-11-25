@@ -8,10 +8,15 @@ import uk.ac.cardiff.team5.graphium.GraphiumApplication;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.UserEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.OrganisationRepository;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.UserRepository;
+import uk.ac.cardiff.team5.graphium.domain.User;
 import uk.ac.cardiff.team5.graphium.exception.EmailInUseException;
 import uk.ac.cardiff.team5.graphium.exception.UsernameInUseException;
 import uk.ac.cardiff.team5.graphium.service.UserService;
+import uk.ac.cardiff.team5.graphium.service.dto.FileDTO;
 import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -59,4 +64,13 @@ public class UserServiceImpl implements UserService {
         return password1.equals(password2);
     }
 
+    @Override
+//    Reads user from the database and then converts it to a UserDTO
+    public UserDTO getUser(String username) {
+        UserEntity user = userRepository.findByUsername(username);
+        UserDTO userDTO = new UserDTO(user);
+        return userDTO;
+
+
+    }
 }
