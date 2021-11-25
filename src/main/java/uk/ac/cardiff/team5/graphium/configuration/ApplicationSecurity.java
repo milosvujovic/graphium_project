@@ -44,7 +44,9 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .anyRequest().authenticated()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/register").permitAll()
+                .antMatchers("/").authenticated()
                 .and()
                 .formLogin().permitAll()
                 .and()
@@ -56,8 +58,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
     // ignore register URL for non-authenticated users
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/register/**");
-        web.ignoring().antMatchers("/resources/**");
+        //web.ignoring().antMatchers("/register/**");
     }
 
 }
