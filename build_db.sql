@@ -1,3 +1,4 @@
+drop database graphium;
 create database if not exists graphium;
 use graphium;
 
@@ -5,6 +6,7 @@ drop table if exists user_role;
 drop table if exists users;
 drop table if exists role;
 drop table if exists organisation;
+drop table if exists files;
 
 create table organisation (
                               organisation_id integer auto_increment primary key,
@@ -22,6 +24,18 @@ create table users (
                        active boolean default true,
                        organisation_approved boolean default false,
                        email_verified boolean default false
+);
+
+create table files (
+                       `file_id` varchar(100) primary key,
+                       `user_id` bigint references users(user_id),
+                       `file_name` varchar(100) NOT NULL,
+                       `file_type` varchar(100) NOT NULL,
+                       `tag` varchar(100) NOT NULL,
+                       `access_level` varchar(100) NOT NULL,
+                       `comment` varchar(100) NOT NULL,
+                       `data` LONGBLOB not null,
+                       `date` DATE not null
 );
 
 create table role (
