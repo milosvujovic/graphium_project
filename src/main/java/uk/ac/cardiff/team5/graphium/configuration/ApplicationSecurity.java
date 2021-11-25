@@ -51,4 +51,10 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .logout().permitAll();
     }
 
+    // ignore register URL for non-authenticated users
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/register/**");
+    }
+
 }
