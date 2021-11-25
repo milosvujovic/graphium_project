@@ -48,13 +48,16 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().permitAll()
                 .and()
-                .logout().permitAll();
+                .logout().permitAll()
+                .and()
+                .antMatcher("/resources/**");
     }
 
     // ignore register URL for non-authenticated users
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/register/**");
+        web.ignoring().antMatchers("/resources/**");
     }
 
 }
