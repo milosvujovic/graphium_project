@@ -38,9 +38,16 @@ public class FileController {
 
             DBFile theFile = dbFile.get();
 //                    Returns the file which can be downloaded or viewed.
+            System.out.println(theFile.getFileType());
+            String fileName;
+            if (theFile.getFileType().equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")){
+                fileName = theFile.getFileName() + ".docx";
+            }else{
+                fileName = theFile.getFileName() + ".pdf";
+            }
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(theFile.getFileType()))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "filename=" + theFile.getFileName() + ".pdf")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "filename=" + fileName)
                     .body(new ByteArrayResource(theFile.getData()));
 
 

@@ -32,7 +32,7 @@
             <td th:text="${file.tag}">Tag</td>
             <td th:text="${file.accessLevel}">Access Level</td>
             <td><a th:attr="href=@{'/file/download/'+${file.fileID}}" download><button type="button" class="btn btn-primary">Download</button></a></td>
-            <td><a th:href="@{/file/view/{furl}(furl=${file.fileID})}"><button type="button" class="btn btn-primary">View</button></a></td>
+            <td><span th:if="${file.type == 'application/pdf'}"><a th:href="@{/file/view/{furl}(furl=${file.fileID})}"><button type="button" class="btn btn-primary">View</button></a></span><span th:unless="${file.type == 'application/pdf'}"><button type="button" class="btn btn-primary" disabled>View</button></span></td>
         </tr>
         </tbody>
     </table>
