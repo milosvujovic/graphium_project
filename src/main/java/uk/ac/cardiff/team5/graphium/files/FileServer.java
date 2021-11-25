@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface FileServer {
     String saveFiles(FileDTO aFile);
-    List<DBFile> getFiles();
 }

@@ -8,5 +8,4 @@ import java.util.Optional;
 public interface DBFileStore {
     DBFile save(DBFile file);
     Optional<DBFile> findById(String id);
-    List<DBFile> findAll();
 }
