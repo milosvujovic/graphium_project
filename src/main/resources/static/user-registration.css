@@ -6,33 +6,39 @@
     justify-content: center;
     align-items: center;
 
-    background-image: url("/img/bg.png");
-    background-size: cover;
 }
 
 .container {
     display: flex;
 }
 
+.container.register {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.container.register h1 {
+    font-size: 24px;
+    margin: 0;
+    color: white;
+    font-weight: lighter;
+}
+
 .container.register-form {
+    margin-top: 30px;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     background-color: white;
 
     border-radius: 5px;
-    padding: 30px 35px;
+    padding: 26px 26px;
 
     box-shadow: 0 0 80px 2px rgba(0,0,0,0.3);
 }
 
-.container.register-form h1 {
-    font-size: 24px;
-    margin: 0;
-}
-
 .container.register-form form {
-    margin-top: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -42,13 +48,9 @@
 
 .form-input {
     position: relative;
-    width: 225px;
+    width: 250px;
     height: 34px;
     margin-top: 15px;
-}
-
-.form-input:first-child {
-    margin-top: 0
 }
 
 .form-input input {
@@ -56,17 +58,21 @@
     top: 0;
     left: 0;
     width: calc(100% - 24px);
-    height: 100%;
+    height: calc(100% - 2px);
     z-index: 1;
     border-radius: 5px;
     border: 1px solid #777;
     padding: 0 12px;
 }
 
+.form-input input:focus {
+    outline: none;
+}
+
 .form-input label {
     z-index: 2;
     position: absolute;
-    top: 10px;
+    top: 9px;
     left: 12px;
     font-size: 12px;
     color: #777;
@@ -89,7 +95,6 @@
     border-radius: 5px;
     border: 1px solid #777;
     padding: 0 4px;
-    margin-top: 15px;
 }
 
 .form-submit {
@@ -101,7 +106,7 @@
     border: none;
     cursor: pointer;
     transition: ease all 0.15s;
-    margin-top: 15px;
+    margin-top: 25px;
 }
 
 .form-submit:hover {
@@ -114,4 +119,12 @@
     padding: 0;
     margin-top: 5px;
     text-align: center;
+}
+
+.seperator {
+    width: calc(100% - 40px);
+    height: 1px;
+    margin: 12px 20px;
+    background-color: rgba(0,0,0,0.15);
+
 }
