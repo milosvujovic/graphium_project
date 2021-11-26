@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<div class="container" th:if="${!user.files.isEmpty}">
-    <h1>Our files</h1>
+<div class="container" th:if="${!files.isEmpty}">
+    <h1 th:text="${title}">Title</h1>
     <hr>
     <table class="table">
         <thead>
@@ -24,21 +24,21 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="file : ${user.files}">
+        <tr th:each="file : ${files}">
             <th scope="row" th:text="${file.fileName}">File Name</th>
-            <td th:text ="${user.username}">Author</td>
+            <td th:text ="${file.username}">Author</td>
             <td th:text="${file.date}"></td>
             <td>N/A</td>
             <td th:text="${file.tag}">Tag</td>
             <td th:text="${file.accessLevel}">Access Level</td>
-            <td><a th:attr="href=@{'/file/download/'+${file.fileID}}" download><button type="button" class="btn btn-primary">Download</button></a></td>
-            <td><span th:if="${file.type == 'application/pdf'}"><a th:href="@{/file/view/{furl}(furl=${file.fileID})}"><button type="button" class="btn btn-primary">View</button></a></span><span th:unless="${file.type == 'application/pdf'}"><button type="button" class="btn btn-primary" disabled>View</button></span></td>
+            <td><a th:attr="href=@{'/file/download/'+${file.fileId}}" download><button type="button" class="btn btn-primary">Download</button></a></td>
+            <td><span th:if="${file.fileType == 'application/pdf'}"><a th:href="@{/file/view/{furl}(furl=${file.fileId})}"><button type="button" class="btn btn-primary">View</button></a></span><span th:unless="${file.fileType == 'application/pdf'}"><button type="button" class="btn btn-primary" disabled>View</button></span></td>
         </tr>
         </tbody>
     </table>
 </div>
 
-<div class="container" th:if="${user.files.isEmpty}">
+<div class="container" th:if="${files.isEmpty}">
     No matching files.
 </div>
 

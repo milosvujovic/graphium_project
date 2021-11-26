@@ -1,6 +1,7 @@
 package uk.ac.cardiff.team5.graphium.service;
 
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.UserEntity;
+import uk.ac.cardiff.team5.graphium.domain.FileDisplayer;
 import uk.ac.cardiff.team5.graphium.exception.EmailInUseException;
 import uk.ac.cardiff.team5.graphium.exception.UsernameInUseException;
 import uk.ac.cardiff.team5.graphium.service.dto.FileDTO;
@@ -14,4 +15,7 @@ public interface UserService {
     boolean checkUsernameInUse(String username);
     boolean checkPasswordsMatch(String password1, String password2);
     UserDTO getUser(String username);
+    List<FileDisplayer> getsUsersFiles(String username);
+    List<FileDisplayer> getFilesForOrg(String username);
+    List<FileDisplayer> getPublicFiles();
 }
