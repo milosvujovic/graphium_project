@@ -51,9 +51,9 @@ public class UserUploadController {
     }
 //    Displays the users file
     @GetMapping("myFiles")
-    public String displayUsersFiles(Model model) {
-//        Deals with getting the user here. Needs to be changed once log in working.
-        UserDTO user = userService.getUser("user");
+    public String displayUsersFiles(Model model, Principal principal) {
+//        Deals with getting the user here
+        UserDTO user = userService.getUser(principal.getName());
 //        Adds the users details including the files to the model and returns the page.
         model.addAttribute("user", user);
         return "files.html";

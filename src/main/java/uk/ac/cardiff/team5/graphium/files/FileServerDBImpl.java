@@ -27,7 +27,7 @@ public class FileServerDBImpl implements FileServer{
         String fileId = null;
 //        Converts FileDTO to a DBFile
         DBFile dbFile = new DBFile(null,aFile.getFileName(),aFile.getType() ,aFile.getTag(),aFile.getAccessLevel() ,aFile.getComment(),aFile.getData(), aFile.getDate());
-        
+
         UserEntity user =  userRepository.findByUsername(username);
 
 //        Adds file to the user
