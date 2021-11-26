@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/main-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/user-registration.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+
+<div layout:fragment="content">
+    <script>
+        function niceInputs() {
+            [].forEach.call(document.getElementsByClassName("form-input"), (form_input) => {
+                form_input.getElementsByTagName("input")[0].addEventListener("focus", () => {
+                    form_input.classList.add("active");
+                });
+
+                form_input.getElementsByTagName("input")[0].addEventListener("focusout", () => {
+                    if (form_input.getElementsByTagName("input")[0].value === "") {
+                        form_input.classList.remove("active");
+                    }
+                });
+
+                if (form_input.getElementsByTagName("input")[0].value !== "") {
+                    form_input.classList.add("active");
+                }
+
+            });
+
+        }
+
+        window.onload = () => {
+            niceInputs();
+        }
+
+    </script>
+
+    <div class="container register">
+        <h1>Login To Your Account</h1>
+        <div class="container register-form" style="margin-bottom: 30px">
+            <form th:action="@{/login}" method="post" style="max-width: 350px; margin: 0 auto;">
+
+                <div class="form-input" style="margin-top: 0;">
+                    <label for="username" >Username</label>
+                    <input type="text" >
+                </div>
+
+                <div class="form-input" style="margin-top: 20px">
+                    <label for="password" >Password</label>
+                    <input type="password">
+                </div>
+
+                <div th:if="${param.error}">
+                    <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+                </div>
+
+                <input type="submit" class="form-submit">
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
