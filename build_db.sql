@@ -57,3 +57,12 @@ insert into users (organisation_id, role_id, first_name, last_name, username, em
 insert into users (organisation_id, role_id, first_name, last_name, username, email, password, active, organisation_approved, email_verified) values (2, 2, 'OrgAdmin', 'Example', 'orgadmin', 'orgadmin@example.com', '$2a$10$/vOrWfM8MJ.Dzpj3t5oGyeuNoERADR5LlEGrV6pwSr0Did8JikTTq', true, true, true);
 
 insert into users (role_id, first_name, last_name, username, email, password, active, organisation_approved, email_verified) values (3, 'SystemAdmin', 'Example', 'sysadmin', 'sysadmin@example.com', '$2a$10$/vOrWfM8MJ.Dzpj3t5oGyeuNoERADR5LlEGrV6pwSr0Did8JikTTq', true, true, true);
+
+
+DELIMITER //
+CREATE PROCEDURE getFilesForOrganisation(IN usernameParameter varchar(30))
+BEGIN 
+set @OrganisationID = (Select organisation_id from users where username = usernameParameter);
+SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment,files.data, files.date,users.username FROM graphium.files JOIN users on files.user_id = users.user_id JOIN organisation on organisation.organisation_id = users.organisation_id WHERE users.organisation_id = @OrganisationID and files.access_level != 'private' ORDER BY files.date;
+END //
+DELIMITER ;

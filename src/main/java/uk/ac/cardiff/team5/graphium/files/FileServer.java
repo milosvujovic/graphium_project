@@ -6,5 +6,5 @@ import uk.ac.cardiff.team5.graphium.service.dto.FileDTO;
 import java.util.List;
 
 public interface FileServer {
-    String saveFiles(FileDTO aFile);
+    String saveFiles(FileDTO aFile, String username);
 }
