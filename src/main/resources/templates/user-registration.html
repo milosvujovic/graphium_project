@@ -1,94 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/main-layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Graphium | Register</title>
+    <title>Register</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="/user-registration.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
 
-<script>
-    function niceInputs() {
-        [].forEach.call(document.getElementsByClassName("form-input"), (form_input) => {
-            form_input.getElementsByTagName("input")[0].addEventListener("focus", () => {
-               form_input.classList.add("active");
-            });
+<div layout:fragment="content">
+    <script>
+        function niceInputs() {
+            [].forEach.call(document.getElementsByClassName("form-input"), (form_input) => {
+                form_input.getElementsByTagName("input")[0].addEventListener("focus", () => {
+                    form_input.classList.add("active");
+                });
 
-            form_input.getElementsByTagName("input")[0].addEventListener("focusout", () => {
-                if (form_input.getElementsByTagName("input")[0].value === "") {
-                    form_input.classList.remove("active");
+                form_input.getElementsByTagName("input")[0].addEventListener("focusout", () => {
+                    if (form_input.getElementsByTagName("input")[0].value === "") {
+                        form_input.classList.remove("active");
+                    }
+                });
+
+                if (form_input.getElementsByTagName("input")[0].value !== "") {
+                    form_input.classList.add("active");
                 }
+
             });
 
-            if (form_input.getElementsByTagName("input")[0].value !== "") {
-                form_input.classList.add("active");
-            }
+        }
 
-        });
+        window.onload = () => {
+            niceInputs();
+        }
 
-    }
+    </script>
 
-    window.onload = () => {
-        niceInputs();
-    }
+    <div class="container register">
+        <h1>Register an account</h1>
+        <div class="container register-form" style="margin-bottom: 30px">
+            <form th:action="@{/register}" th:method="post" th:object="${userRegistrationForm}">
 
-</script>
+                <div class="container">
+                    <div>
+                        <div class="form-input" style="margin-top: 0; width: 120px; margin-right: 5px">
+                            <label for="firstName" th:style="${#fields.hasErrors('firstName') ? 'color: #a00;' : 'color: #777'}">First Name</label>
+                            <input type="text" th:field="*{firstName}" th:style="${#fields.hasErrors('firstName') ? 'border-color: #a00;' : 'border-color: #777'}">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-input" style="margin-top: 0; width: 120px; margin-left: 5px">
+                            <label for="lastName" th:style="${#fields.hasErrors('lastName') ? 'color: #a00;' : 'color: #777'}">Last Name</label>
+                            <input type="text" th:field="*{lastName}" th:style="${#fields.hasErrors('lastName') ? 'border-color: #a00;' : 'border-color: #777'}">
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 5px; display: flex; flex-direction: column" th:if="${#fields.hasErrors('firstName')} or ${#fields.hasErrors('lastName')}">
+                    <span class="error-msg" style="margin-top: 1px;" th:errors="*{firstName}" th:if="${#fields.hasErrors('firstName')}">First Name Error</span>
+                    <span class="error-msg" style="margin-top: 1px;" th:errors="*{lastName}" th:if="${#fields.hasErrors('lastName')}">First Name Error</span>
+                </div>
 
-<div class="content">
-    <div class="container register-form">
-        <h1>Create a Graphium account</h1>
-        <form th:action="@{/register}" th:method="post" th:object="${userRegistrationForm}">
+                <span class="seperator"></span>
 
-            <div class="form-input">
-                <label for="firstName" th:style="${#fields.hasErrors('firstName') ? 'color: #a00;' : 'color: #777'}">First Name</label>
-                <input type="text" th:field="*{firstName}" th:style="${#fields.hasErrors('firstName') ? 'border-color: #a00;' : 'border-color: #777'}">
-            </div>
-            <span class="error-msg" th:errors="*{firstName}" th:if="${#fields.hasErrors('firstName')}">First Name Error</span>
+                <div class="form-input" style="margin-top: 0;">
+                    <label for="username" th:style="${#fields.hasErrors('username') ? 'color: #a00;' : 'color: #777'}">Username</label>
+                    <input type="text" th:field="*{username}" th:style="${#fields.hasErrors('username') ? 'border-color: #a00;' : 'border-color: #777'}">
+                </div>
+                <span class="error-msg" th:errors="*{username}" th:if="${#fields.hasErrors('username')}">First Name Error</span>
 
-            <div class="form-input">
-                <label for="lastName" th:style="${#fields.hasErrors('lastName') ? 'color: #a00;' : 'color: #777'}">Last Name</label>
-                <input type="text" th:field="*{lastName}" th:style="${#fields.hasErrors('lastName') ? 'border-color: #a00;' : 'border-color: #777'}">
-            </div>
-            <span class="error-msg" th:errors="*{lastName}" th:if="${#fields.hasErrors('lastName')}">First Name Error</span>
+                <div class="form-input">
+                    <label for="email" th:style="${#fields.hasErrors('email') ? 'color: #a00;' : 'color: #777'}">Email</label>
+                    <input type="text" th:field="*{email}" th:style="${#fields.hasErrors('email') ? 'border-color: #a00;' : 'border-color: #777'}">
+                </div>
+                <span class="error-msg" th:errors="*{email}" th:if="${#fields.hasErrors('email')}">First Name Error</span>
 
-            <div class="form-input">
-                <label for="username" th:style="${#fields.hasErrors('username') ? 'color: #a00;' : 'color: #777'}">Username</label>
-                <input type="text" th:field="*{username}" th:style="${#fields.hasErrors('username') ? 'border-color: #a00;' : 'border-color: #777'}">
-            </div>
-            <span class="error-msg" th:errors="*{username}" th:if="${#fields.hasErrors('username')}">First Name Error</span>
+                <span class="seperator"></span>
 
-            <div class="form-input">
-                <label for="email" th:style="${#fields.hasErrors('email') ? 'color: #a00;' : 'color: #777'}">Email</label>
-                <input type="text" th:field="*{email}" th:style="${#fields.hasErrors('email') ? 'border-color: #a00;' : 'border-color: #777'}">
-            </div>
-            <span class="error-msg" th:errors="*{email}" th:if="${#fields.hasErrors('email')}">First Name Error</span>
+                <div class="form-input" style="margin-top: 0">
+                    <label for="password" th:style="${#fields.hasErrors('password') ? 'color: #a00;' : 'color: #777'}">Password</label>
+                    <input type="password" th:field="*{password}" th:style="${#fields.hasErrors('password') ? 'border-color: #a00;' : 'border-color: #777'}">
+                </div>
+                <span class="error-msg" th:errors="*{password}" th:if="${#fields.hasErrors('password')}">First Name Error</span>
 
-            <div class="form-input">
-                <label for="password" th:style="${#fields.hasErrors('password') ? 'color: #a00;' : 'color: #777'}">Password</label>
-                <input type="password" th:field="*{password}" th:style="${#fields.hasErrors('password') ? 'border-color: #a00;' : 'border-color: #777'}">
-            </div>
-            <span class="error-msg" th:errors="*{password}" th:if="${#fields.hasErrors('password')}">First Name Error</span>
+                <div class="form-input">
+                    <label for="passwordConf" th:style="${#fields.hasErrors('passwordConf') ? 'color: #a00;' : 'color: #777'}">Confirm Password</label>
+                    <input type="password" th:field="*{passwordConf}" th:style="${#fields.hasErrors('passwordConf') ? 'border-color: #a00;' : 'border-color: #777'}" >
+                </div>
+                <span class="error-msg" th:errors="*{passwordConf}" th:if="${#fields.hasErrors('passwordConf')}">First Name Error</span>
 
-            <div class="form-input">
-                <label for="passwordConf" th:style="${#fields.hasErrors('passwordConf') ? 'color: #a00;' : 'color: #777'}">Confirm Password</label>
-                <input type="password" th:field="*{passwordConf}" th:style="${#fields.hasErrors('passwordConf') ? 'border-color: #a00;' : 'border-color: #777'}" >
-            </div>
-            <span class="error-msg" th:errors="*{passwordConf}" th:if="${#fields.hasErrors('passwordConf')}">First Name Error</span>
+                <span class="seperator"></span>
+
+                <div>
+                    <select th:field="*{organisationId}" class="form-select">
+                        <option value="" selected>Choose Organisation</option>
+                        <option th:each="organisationEntity: ${organisationEntities}" th:value="${organisationEntity.getOrganisationId()}" th:text="${organisationEntity.getOrganisationName()}"></option>
+                    </select>
+                </div>
+                <span class="error-msg" th:errors="*{organisationId}" th:if="${#fields.hasErrors('organisationId')}">First Name Error</span>
 
 
-            <div>
-                <select th:field="*{organisationId}" class="form-select">
-                    <option value="" selected>Choose Organisation</option>
-                    <option th:each="organisationEntity: ${organisationEntities}" th:value="${organisationEntity.getOrganisationId()}" th:text="${organisationEntity.getOrganisationName()}"></option>
-                </select>
-            </div>
-            <span class="error-msg" th:errors="*{organisationId}" th:if="${#fields.hasErrors('organisationId')}">First Name Error</span>
-
-
-            <input type="submit" class="form-submit">
-        </form>
+                <input type="submit" class="form-submit">
+            </form>
+        </div>
     </div>
 </div>
 </body>
