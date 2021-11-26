@@ -6,6 +6,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import uk.ac.cardiff.team5.graphium.domain.FileDisplayer;
 import uk.ac.cardiff.team5.graphium.files.FileServer;
 import uk.ac.cardiff.team5.graphium.service.UserService;
@@ -20,11 +21,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Controller
-public class UserUploadController {
+public class FileUploadController {
     private FileServer fileServer ;
     private UserService userService;
 
-    public UserUploadController(FileServer anFileServer, UserService aUserService) {
+    public FileUploadController(FileServer anFileServer, UserService aUserService) {
         fileServer = anFileServer;
         userService = aUserService;
     }
@@ -80,11 +81,20 @@ public class UserUploadController {
     }
 
 
-
 //   Lets the user view the file on the page
     @GetMapping("file/view/{fileId}")
     public String viewFile(@PathVariable(value = "fileId", required = true) String name, Model model){
         model.addAttribute("id" , name);
         return "/file-viewer.html";
     }
+
+    //      Lets the user search through their files
+    @GetMapping("/searchFiles")
+    public String searchFiles(@RequestParam(value = "search") String searchTerm, Model model, Principal principal) {
+        List<FileDisplayer> fileList;
+        fileList = userService.findBySearchTerm(searchTerm, principal.getName());
+        model.addAttribute("files", fileList);
+        return "files";
+    }
+
 }

@@ -18,4 +18,5 @@ public interface UserService {
     List<FileDisplayer> getsUsersFiles(String username);
     List<FileDisplayer> getFilesForOrg(String username);
     List<FileDisplayer> getPublicFiles();
+    List<FileDisplayer> findBySearchTerm(String search, String username);
 }

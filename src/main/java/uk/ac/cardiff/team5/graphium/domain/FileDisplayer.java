@@ -15,4 +15,9 @@ public class FileDisplayer {
     private byte[] data;
     private String date;
     private String username;
+
+    public boolean matches(String search) {
+        String searchLower = search.toLowerCase();
+        return fileName.toLowerCase().contains(searchLower) || username.toLowerCase().contains(searchLower) || comment.toLowerCase().contains(searchLower);
+    }
 }
