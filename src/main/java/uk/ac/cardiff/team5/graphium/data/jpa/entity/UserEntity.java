@@ -62,7 +62,13 @@ public class UserEntity {
         this.password = password;
         this.role = userRole;
     }
+
+    public UserEntity(String username) {
+        this.username = username;
+    }
+
     public void addFile(DBFile aFile){
         this.files.add(aFile);
     }
+
 }

@@ -5,11 +5,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uk.ac.cardiff.team5.graphium.GraphiumApplication;
+import uk.ac.cardiff.team5.graphium.data.jdbc.repository.FileRepository;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.RoleEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.UserEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.OrganisationRepository;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.RoleRepository;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.UserRepository;
+import uk.ac.cardiff.team5.graphium.domain.FileDisplayer;
 import uk.ac.cardiff.team5.graphium.domain.User;
 import uk.ac.cardiff.team5.graphium.exception.EmailInUseException;
 import uk.ac.cardiff.team5.graphium.exception.UsernameInUseException;
@@ -28,6 +30,8 @@ public class UserServiceImpl implements UserService {
     private OrganisationRepository organisationRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private FileRepository fileRepository;
     @Autowired
     PasswordEncoder passwordEncoder = GraphiumApplication.encoder();
 
@@ -77,5 +81,18 @@ public class UserServiceImpl implements UserService {
         return userDTO;
 
 
+    }
+    public List<FileDisplayer> getsUsersFiles(String username){
+        UserEntity user = userRepository.findByUsername(username);
+        UserDTO userDTO = new UserDTO(user);
+        return userDTO.getFiles()
+                .stream()
+                .map(c -> new FileDisplayer(c.getFileID(),c.getFileName(),c.getType(),c.getTag(),c.getAccessLevel(),c.getComment(),c.getData(),c.getDate(),userDTO.getUsername()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<FileDisplayer> getFilesForOrg(String username) {
+        return fileRepository.findAllByOrg(username);
     }
 }

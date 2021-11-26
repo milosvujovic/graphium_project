@@ -26,5 +26,4 @@ public class DBFile {
     @Lob
     private byte[] data;
     private String date;
-
 }

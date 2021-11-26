@@ -6,6 +6,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import uk.ac.cardiff.team5.graphium.domain.FileDisplayer;
 import uk.ac.cardiff.team5.graphium.files.FileServer;
 import uk.ac.cardiff.team5.graphium.service.UserService;
 import uk.ac.cardiff.team5.graphium.service.dto.FileDTO;
@@ -16,6 +17,8 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.List;
+
 @Controller
 public class UserUploadController {
     private FileServer fileServer ;
@@ -53,11 +56,23 @@ public class UserUploadController {
     @GetMapping("myFiles")
     public String displayUsersFiles(Model model, Principal principal) {
 //        Deals with getting the user here
-        UserDTO user = userService.getUser(principal.getName());
+        List<FileDisplayer> files = userService.getsUsersFiles(principal.getName());
 //        Adds the users details including the files to the model and returns the page.
-        model.addAttribute("user", user);
+        model.addAttribute("files", files);
+        model.addAttribute("title", "Your Files");
         return "files.html";
     }
+    //    Displays the users organistions file
+    @GetMapping("myOrgFiles")
+    public String displayOrgFiles(Model model, Principal principal) {
+        List<FileDisplayer> files = userService.getFilesForOrg(principal.getName());
+        model.addAttribute("files", files);
+        model.addAttribute("title", "Organisation Files");
+        return "files.html";
+    }
+
+
+
 //   Lets the user view the file on the page
     @GetMapping("file/view/{fileId}")
     public String viewFile(@PathVariable(value = "fileId", required = true) String name, Model model){
