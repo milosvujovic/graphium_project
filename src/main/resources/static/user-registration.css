@@ -1,12 +1,12 @@
 .content {
-    height: 100vh;
+    height: calc(100vh - 120px);
     width: 100vw;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    background-image: url("/img/register-bg2.png");
+    background-image: url("/img/bg.png");
     background-size: cover;
 }
 
