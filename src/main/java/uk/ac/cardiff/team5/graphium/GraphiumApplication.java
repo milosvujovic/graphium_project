@@ -15,9 +15,6 @@ import java.security.SecureRandom;
 @SpringBootApplication
 public class GraphiumApplication {
 
-    @Autowired
-    private EmailSenderService senderService;
-
     @Bean
     public static PasswordEncoder encoder() {
         return new BCryptPasswordEncoder(10, new SecureRandom());
@@ -25,11 +22,6 @@ public class GraphiumApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(GraphiumApplication.class, args);
-    }
-
-    @EventListener(ApplicationReadyEvent.class)
-    public void sendMail(){
-        senderService.sendEmail("mohammed.s.hussain@outlook.com", "NEW USER", "NEW USER");
     }
 
 }
