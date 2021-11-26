@@ -14,6 +14,7 @@ import uk.ac.cardiff.team5.graphium.web.controllers.userRegistration.forms.FileF
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.security.Principal;
 import java.time.LocalDate;
 @Controller
 public class UserUploadController {
@@ -34,7 +35,7 @@ public class UserUploadController {
 
 //    Post method for uploading a file
     @PostMapping("file")
-    public String getFile(@Valid FileForm form, BindingResult bindingResult, Model model) throws IOException {
+    public String getFile(@Valid FileForm form, BindingResult bindingResult, Model model, Principal principal) throws IOException {
 //      Error catching.
         if (bindingResult.hasErrors()) {
             model.addAttribute("errorMessage","Only PDF and Word Documents allowed.");
@@ -43,7 +44,7 @@ public class UserUploadController {
 //            Saves the form as a FileDTO and then saves it to the database.
             LocalDate today = LocalDate.now();
             FileDTO newFile = new FileDTO(form.getFileId(), form.getLogoFileName(),form.getLogoFile().getContentType(),form.getTag(),form.getAccessLevel(),form.getComment(),form.getLogoFile().getBytes(), today.toString());
-            String fileId = fileServer.saveFiles(newFile);
+            String fileId = fileServer.saveFiles(newFile,principal.getName());
 //            Displays the users files
             return "redirect:/myFiles";
         }
