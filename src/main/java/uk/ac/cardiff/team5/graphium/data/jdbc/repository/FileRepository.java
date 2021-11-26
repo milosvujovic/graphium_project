@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import uk.ac.cardiff.team5.graphium.domain.FileDisplayer;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class FileRepository {
