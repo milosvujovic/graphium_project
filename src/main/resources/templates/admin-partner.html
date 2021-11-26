@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Verify</title>
+</head>
+<body>
+<div class="container">
+    <h1>Potential Partners</h1>
+    <div class="container" th:if="${!organisations.isEmpty}">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Organisation Name</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="organisation : ${organisations}">
+            <th scope="row" th:text="${organisation.organisationName}">Username</th>
+            <td><a th:attr="href=@{'/partner/'+${organisation.organisation_id}}"><button type="button" class="btn btn-primary">Partner</button></a></td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+    <div class="container" th:if="${organisations.isEmpty}">
+        No partners possible.
+    </div>
+</div>
+
+</body>
+</html>

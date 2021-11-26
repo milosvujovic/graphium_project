@@ -6,6 +6,7 @@ drop table if exists `organisation`;
 drop table if exists `role`;
 drop table if exists `users`;
 drop table if exists `files`;
+drop table if exists `partnerships`;
 
 create table if not exists `organisation` (
 						`organisation_id` integer auto_increment primary key,
@@ -42,10 +43,38 @@ create table if not exists `files` (
                        `data` LONGBLOB not null,
                        `date` DATE not null
 );
+create table if not exists `partnerships`(
+			`partner_id` int primary key auto_increment,
+            `sharing_organisation_id` integer references `organisation`(`organisation_id`),
+            `viewing_organisation_id` integer references `organisation`(`organisation_id`)
+);
+
+DELIMITER //
+CREATE PROCEDURE getPossiblePartnerships(IN organisationID varchar(30))
+BEGIN 
+SELECT organisation_id, organisation_name FROM organisation WHERE organisation_id NOT IN (SELECT viewing_organisation_id
+FROM organisation
+JOIN partnerships on partnerships.sharing_organisation_id = organisation.organisation_id
+WHERE organisation.organisation_id = organisationID) and organisation.organisation_id != organisationID;
+
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE createPartnership(IN organisationID int, IN usernameParameter varchar(30))
+BEGIN 
+set @SharingOrganisationID = (Select organisation_id from users where username = usernameParameter);
+INSERT INTO partnerships(sharing_organisation_id,viewing_organisation_id)  values(@SharingOrganisationID,organisationID);
+END //
+DELIMITER ;
+
 
 insert into organisation (organisation_name) values ('ExampleOrg1');
 insert into organisation (organisation_name) values ('ExampleOrg2');
 insert into organisation (organisation_name) values ('ExampleOrg3');
+
+insert into partnerships(sharing_organisation_id,viewing_organisation_id) values (1,2);
+insert into partnerships(sharing_organisation_id,viewing_organisation_id) values (2,3);
 
 insert into role (role_name) values ('USER');
 insert into role (role_name) values ('ORG_ADMIN');
@@ -58,7 +87,6 @@ insert into users (organisation_id, role_id, first_name, last_name, username, em
 
 insert into users (role_id, first_name, last_name, username, email, password, active, organisation_approved, email_verified) values (3, 'SystemAdmin', 'Example', 'sysadmin', 'sysadmin@example.com', '$2a$10$/vOrWfM8MJ.Dzpj3t5oGyeuNoERADR5LlEGrV6pwSr0Did8JikTTq', true, true, true);
 
-
 DELIMITER //
 CREATE PROCEDURE getFilesForOrganisation(IN usernameParameter varchar(30))
 BEGIN 
@@ -66,3 +94,4 @@ set @OrganisationID = (Select organisation_id from users where username = userna
 SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment,files.data, files.date,users.username FROM graphium.files JOIN users on files.user_id = users.user_id JOIN organisation on organisation.organisation_id = users.organisation_id WHERE users.organisation_id = @OrganisationID and files.access_level != 'private' ORDER BY files.date;
 END //
 DELIMITER ;
+

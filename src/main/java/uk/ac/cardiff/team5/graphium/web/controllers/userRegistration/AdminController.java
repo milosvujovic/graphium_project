@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import uk.ac.cardiff.team5.graphium.service.AdminService;
 import uk.ac.cardiff.team5.graphium.service.UserService;
+import uk.ac.cardiff.team5.graphium.service.dto.OrganisationDTO;
 import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -22,7 +24,6 @@ public class AdminController {
     @GetMapping("/verify")
     public String verify(Model model) {
         List<UserDTO> unverified =adminService.verify(Long.valueOf(1));
-        System.out.println(unverified);
         model.addAttribute("userList", unverified);
         return "admin-verify";
     }
@@ -31,5 +32,16 @@ public class AdminController {
     public String verifyUser(@PathVariable(value = "userName", required = true) String userName){
         adminService.verifyUser(userName);
         return "redirect:/verify";
+    }
+    @GetMapping("/partner")
+    public String possiblePartners(Model model, Principal principal){
+         List<OrganisationDTO> organisations =adminService.findPossiblePartners(principal.getName());
+        model.addAttribute("organisations", organisations);
+        return "admin-partner";
+    }
+    @GetMapping("/partner/{orgID}")
+    public String recordPartner(@PathVariable(value = "orgID", required = true) String orgId, Model model, Principal principal){
+        adminService.recordPartnership(orgId,principal.getName());
+        return "redirect:/partner";
     }
 }
