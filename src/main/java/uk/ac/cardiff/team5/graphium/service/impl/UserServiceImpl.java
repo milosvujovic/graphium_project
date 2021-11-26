@@ -95,4 +95,9 @@ public class UserServiceImpl implements UserService {
     public List<FileDisplayer> getFilesForOrg(String username) {
         return fileRepository.findAllByOrg(username);
     }
+
+    @Override
+    public List<FileDisplayer> getPublicFiles() {
+        return fileRepository.findAllPublic();
+    }
 }

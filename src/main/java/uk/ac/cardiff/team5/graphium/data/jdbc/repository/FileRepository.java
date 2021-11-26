@@ -39,5 +39,13 @@ public class FileRepository {
                 new Object[]{username},
                 fileMapper);
 
-    }}
+    }
+
+    public List<FileDisplayer> findAllPublic() {
+        return jdbc.query(
+                "SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment,files.data, files.date,users.username FROM graphium.files JOIN users on files.user_id = users.user_id where files.access_level = 'public' ORDER BY files.date;",
+                new Object[]{},
+                fileMapper);
+    }
+}
 

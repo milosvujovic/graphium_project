@@ -70,6 +70,14 @@ public class UserUploadController {
         model.addAttribute("title", "Organisation Files");
         return "files.html";
     }
+    //    Displays all public file
+    @GetMapping("public")
+    public String displayPublicFiles(Model model) {
+        List<FileDisplayer> files = userService.getPublicFiles();
+        model.addAttribute("files", files);
+        model.addAttribute("title", "Public Files");
+        return "files.html";
+    }
 
 
 

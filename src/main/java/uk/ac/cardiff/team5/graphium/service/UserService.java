@@ -17,5 +17,5 @@ public interface UserService {
     UserDTO getUser(String username);
     List<FileDisplayer> getsUsersFiles(String username);
     List<FileDisplayer> getFilesForOrg(String username);
-
+    List<FileDisplayer> getPublicFiles();
 }
