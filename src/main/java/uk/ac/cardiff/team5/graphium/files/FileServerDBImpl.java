@@ -23,13 +23,12 @@ public class FileServerDBImpl implements FileServer{
     }
 
     @Override
-    public String saveFiles(FileDTO aFile) {
+    public String saveFiles(FileDTO aFile, String username) {
         String fileId = null;
 //        Converts FileDTO to a DBFile
         DBFile dbFile = new DBFile(null,aFile.getFileName(),aFile.getType() ,aFile.getTag(),aFile.getAccessLevel() ,aFile.getComment(),aFile.getData(), aFile.getDate());
-        //           Gather the user here
-//            Basic one at the moment
-        UserEntity user =  userRepository.findByUsername("user");
+
+        UserEntity user =  userRepository.findByUsername(username);
 
 //        Adds file to the user
         user.addFile(dbFile);
