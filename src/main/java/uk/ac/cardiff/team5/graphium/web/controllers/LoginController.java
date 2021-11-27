@@ -6,9 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class LoginController {
     @GetMapping("/login")
-    public String viewLoginPage() {
-        // custom logic before showing login page...
-
+    public String Login() {
         return "login";
     }
 }

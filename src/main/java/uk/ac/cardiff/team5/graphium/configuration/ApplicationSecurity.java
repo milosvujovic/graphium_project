@@ -54,7 +54,6 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                     .loginPage("/login")
-                    .usernameParameter("username")
                     .permitAll()
                 .and()
                 .logout().permitAll();
