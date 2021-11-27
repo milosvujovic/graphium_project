@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/main-layout}">
+
 <head>
     <meta charset="UTF-8">
-    <title>My Files</title>
+    <title>Test</title>
     <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/user-registration.css">
+    <link rel="stylesheet" href="/files.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
-<body>
 
+
+<body>
 <div layout:fragment="content">
     <script>
         function niceInputs() {
@@ -37,53 +39,66 @@
         }
 
     </script>
-    <div>
-        <form action="/searchFiles" th:method="get">
-            <div class="form-group" style="max-width:200px">
-                <label class="form-label" for="search">Search:</label>
-                <input aria-describedby="Enter a term to search for files." class="form-control" id="search"
-                       name="search" placeholder="Enter file details" type="text" value=""/>
+    <div style="display: inline-flex;width: 87.5%;padding-bottom: 10px">
+        <div style="width: 50%;display: flex;justify-content: left;align-items: start;">
+            <h1>My Organisation Name</h1>
+        </div>
+        <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
+            <a href="/myFiles">VIEW MY FILES</a>
+        </div>
+        <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
+            <a href="/file">UPLOAD A FILE</a>
+        </div>
+    </div>
+    <div class="--graphium-window">
+        <div>
+            <form action="/searchFiles" th:method="get">
+                <div style="display:inline-flex; width: 100%">
+                    <div style="width:75% ">
+                    <input class="form-input" aria-describedby="Enter a term to search for files." id="search" name="search" placeholder="Search for file" type="text" value=""/>
+                    </div>
+                    <div style="width:25%;display: flex;justify-content: right;align-items: end;">
+                    <button class="form-submit">Search</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div>
+            <div class="container" th:if="${!files.isEmpty}">
+                <table style="width: 100%;">
+                    <thead >
+                    <tr class="table-headers">
+                        <th scope="col">File Name</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Expires On</th>
+                        <th scope="col">Tag</th>
+                        <th scope="col">Access Level</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="file : ${files}">
+                        <th scope="row" th:text="${file.fileName}">File Name</th>
+                        <td th:text ="${file.username}">Author</td>
+                        <td th:text="${file.date}"></td>
+                        <td >N/A</td>
+                        <td th:text="${file.tag}">Tag</td>
+                        <td th:text="${file.accessLevel}">Access Level</td>
+                        <td><a th:attr="href=@{'/file/download/'+${file.fileId}}" download><button type="button" class="btn btn-primary">Download</button></a></td>
+                        <td><span th:if="${file.fileType == 'application/pdf'}"><a th:href="@{/file/view/{furl}(furl=${file.fileId})}"><button type="button" class="btn btn-primary">View</button></a></span><span th:unless="${file.fileType == 'application/pdf'}"><button type="button" class="btn btn-primary" disabled>View</button></span></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <button class="btn btn-primary">Submit</button>
-        </form>
+            <div class="container" th:if="${files.isEmpty}">
+                No matching files.
+            </div>
+        </div>
     </div>
-
-    <div class="container" th:if="${!files.isEmpty}">
-        <h1 th:text="${title}">Title</h1>
-        <hr>
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">File Name</th>
-                <th scope="col">Author</th>
-                <th scope="col">Date</th>
-                <th scope="col">Expires On</th>
-                <th scope="col">Tag</th>
-                <th scope="col">Access Level</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="file : ${files}">
-                <th scope="row" th:text="${file.fileName}">File Name</th>
-                <td th:text ="${file.username}">Author</td>
-                <td th:text="${file.date}"></td>
-                <td>N/A</td>
-                <td th:text="${file.tag}">Tag</td>
-                <td th:text="${file.accessLevel}">Access Level</td>
-                <td><a th:attr="href=@{'/file/download/'+${file.fileId}}" download><button type="button" class="btn btn-primary">Download</button></a></td>
-                <td><span th:if="${file.fileType == 'application/pdf'}"><a th:href="@{/file/view/{furl}(furl=${file.fileId})}"><button type="button" class="btn btn-primary">View</button></a></span><span th:unless="${file.fileType == 'application/pdf'}"><button type="button" class="btn btn-primary" disabled>View</button></span></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="container" th:if="${files.isEmpty}">
-        No matching files.
-    </div>
-
 </div>
 </body>
 </html>
