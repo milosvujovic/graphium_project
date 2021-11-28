@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Test</title>
+    <title>My Files</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="/files.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -66,7 +66,7 @@
         </div>
         <div>
             <div class="container" th:if="${!files.isEmpty}">
-                <table style="width: 100%;">
+                <table style="width: 100%;padding-left: 10px;padding-right: 10px">
                     <thead >
                     <tr class="table-headers">
                         <th scope="col">File Name</th>
@@ -75,7 +75,7 @@
                         <th scope="col">Expires On</th>
                         <th scope="col">Tag</th>
                         <th scope="col">Access Level</th>
-                        <th scope="col"></th>
+                        <th scope="col">Actions</th>
                         <th scope="col"></th>
                     </tr>
                     </thead>
@@ -87,8 +87,8 @@
                         <td >N/A</td>
                         <td th:text="${file.tag}">Tag</td>
                         <td th:text="${file.accessLevel}">Access Level</td>
-                        <td><a th:attr="href=@{'/file/download/'+${file.fileId}}" download><button type="button" class="btn btn-primary">Download</button></a></td>
-                        <td><span th:if="${file.fileType == 'application/pdf'}"><a th:href="@{/file/view/{furl}(furl=${file.fileId})}"><button type="button" class="btn btn-primary">View</button></a></span><span th:unless="${file.fileType == 'application/pdf'}"><button type="button" class="btn btn-primary" disabled>View</button></span></td>
+                        <td ><a th:attr="href=@{'/file/download/'+${file.fileId}}" download><button type="button" class="download-btn">Download</button></a></td>
+                        <td><span th:if="${file.fileType == 'application/pdf'}"><a th:href="@{/file/view/{furl}(furl=${file.fileId})}"><button type="button" class="view-btn">View</button></a></span><span th:unless="${file.fileType == 'application/pdf'}"><button type="button" class="btn btn-primary" disabled>View</button></span></td>
                     </tr>
                     </tbody>
                 </table>

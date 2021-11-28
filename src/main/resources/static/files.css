@@ -36,13 +36,7 @@ a{
     text-decoration: none;
 }
 
-tr{
-    padding: 5px;
-}
 
-.table-headers{
-    padding: 10px;
-}
 
 .form-submit {
     font-size: 12px;
@@ -59,6 +53,40 @@ tr{
 
 .form-submit:hover {
     background-color: #23b557;
+}
+
+.download-btn {
+    font-size: 12px;
+    background-color: #00b9ff;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    height: 26px;
+    transition: ease all 0.15s;
+    margin: 10px;
+    width: 70%;
+}
+
+.download-btn:hover {
+    background-color: #20c1ff;
+}
+
+.view-btn {
+    font-size: 12px;
+    background-color: #b2b2b2;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    height: 26px;
+    transition: ease all 0.15s;
+    margin: 10px;
+    width: 70%;
+}
+
+.view-btn:hover {
+    background-color: #bdbdbd;
 }
 .form-input {
     position: relative;
@@ -100,4 +128,10 @@ tr{
     font-size: 10px;
     top: -7px;
     padding: 1px 4px;
+}
+
+td
+{
+    text-align: center;
+    vertical-align: middle;
 }
