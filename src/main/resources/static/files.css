@@ -1,0 +1,137 @@
+.--graphium-window{
+    height: 75%;
+    width: 90%;
+    background: white;
+    border-radius: 10px;
+}
+
+--graphium-window-tab{
+    display: inline-flex;
+    width: 90%;
+}
+
+--graphium-window-title{
+    width: 50%;
+    display: flex;
+    justify-content: left;
+    align-items: start;
+}
+
+--graphium-window-options{
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+h1{
+    font-size: 24px;
+    margin: 0;
+    color: white;
+    font-weight: lighter;
+}
+
+a{
+    color: white;
+    text-decoration: none;
+}
+
+
+
+.form-submit {
+    font-size: 12px;
+    background-color: #149845;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    height: 26px;
+    transition: ease all 0.15s;
+    margin: 10px;
+    width: 100%;
+}
+
+.form-submit:hover {
+    background-color: #23b557;
+}
+
+.download-btn {
+    font-size: 12px;
+    background-color: #00b9ff;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    height: 26px;
+    transition: ease all 0.15s;
+    margin: 10px;
+    width: 70%;
+}
+
+.download-btn:hover {
+    background-color: #20c1ff;
+}
+
+.view-btn {
+    font-size: 12px;
+    background-color: #b2b2b2;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    height: 26px;
+    transition: ease all 0.15s;
+    margin: 10px;
+    width: 70%;
+}
+
+.view-btn:hover {
+    background-color: #bdbdbd;
+}
+.form-input {
+    position: relative;
+    width: 98%;
+    height: 20px;
+    margin: 10px;
+
+}
+
+.form-input input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 24px);
+    height: calc(100% - 2px);
+    z-index: 1;
+    border-radius: 5px;
+    border: 1px solid #777;
+    padding: 0 12px;
+}
+
+.form-input input:focus {
+    outline: none;
+}
+
+.form-input label {
+    z-index: 2;
+    position: absolute;
+    top: 9px;
+    left: 12px;
+    font-size: 12px;
+    color: #777;
+    transition: ease all 0.15s;
+    background-color: white;
+    border-radius: 6px;
+}
+
+.form-input.active label {
+    font-size: 10px;
+    top: -7px;
+    padding: 1px 4px;
+}
+
+td
+{
+    text-align: center;
+    vertical-align: middle;
+}
