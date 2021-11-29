@@ -7,6 +7,18 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+<div>
+    <form action="/searchFiles" th:method="get">
+        <div class="form-group" style="max-width:200px">
+            <label class="form-label" for="search">Search:</label>
+            <input aria-describedby="Enter a term to search for files." class="form-control" id="search"
+                   name="search" placeholder="Enter file details" type="text" value=""/>
+        </div>
+
+        <button class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
 <div class="container" th:if="${!files.isEmpty}">
     <h1 th:text="${title}">Title</h1>
     <hr>

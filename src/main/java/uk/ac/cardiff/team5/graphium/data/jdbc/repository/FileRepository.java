@@ -47,5 +47,12 @@ public class FileRepository {
                 new Object[]{},
                 fileMapper);
     }
+
+    public List<FileDisplayer> findAllPartners(String username) {
+        return jdbc.query(
+                "call getPartnersFiles(?);",
+                new Object[]{username},
+                fileMapper);
+    }
 }
 

@@ -78,6 +78,14 @@ public class UserUploadController {
         model.addAttribute("title", "Public Files");
         return "files.html";
     }
+    //    Displays partners files
+    @GetMapping("partnersFiles")
+    public String displayPartnersFiles(Model model, Principal principal) {
+        List<FileDisplayer> files = userService.getPartnersFiles(principal.getName());
+        model.addAttribute("files", files);
+        model.addAttribute("title", "Partners Files");
+        return "files.html";
+    }
 
 
 
