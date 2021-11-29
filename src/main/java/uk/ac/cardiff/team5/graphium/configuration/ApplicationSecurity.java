@@ -52,11 +52,11 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/myOrgFiles").authenticated()
                 .antMatchers("/verify").hasRole("ORG_ADMIN")
                 .and()
-                .formLogin().permitAll()
+                .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
                 .and()
                 .logout().permitAll();
-                //.and()
-                //.antMatcher("/resources/**");
     }
 
     // ignore register URL for non-authenticated users
