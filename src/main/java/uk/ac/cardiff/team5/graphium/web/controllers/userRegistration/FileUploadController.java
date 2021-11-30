@@ -84,7 +84,7 @@ public class FileUploadController {
     @GetMapping("files")
     public String diplayFiles(Model model, Principal principal) {
         model.addAttribute("id", principal.getName());
-        return "MyTab.html";
+        return "files.html";
     }
 
 //   Lets the user view the file on the page

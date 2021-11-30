@@ -10,8 +10,4 @@ public class TestController {
     public String test(Model model) {
         return "test-page";
     }
-    @GetMapping("/tab")
-    public String tab(Model model) {
-        return "MyTab.html";
-    }
 }
