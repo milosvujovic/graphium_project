@@ -14,6 +14,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     UserEntity findByEmail(String email);
     UserEntity findByUsername(String username);
+    List<UserEntity> findAll();
 
     List<UserEntity> findUserEntitiesByOrganisation(OrganisationEntity organisation);
     @Modifying
