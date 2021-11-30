@@ -9,6 +9,7 @@ import uk.ac.cardiff.team5.graphium.domain.FileDisplayer;
 import uk.ac.cardiff.team5.graphium.domain.User;
 import uk.ac.cardiff.team5.graphium.service.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -33,5 +34,12 @@ public class FileSearchAPIController {
     public ResponseEntity<List<FileDisplayer>> findPartnerFiles(@PathVariable String username){
         return ResponseEntity.ok(userService.getPartnersFiles(username));
     }
-
+    @GetMapping("/publicFiles")
+    public ResponseEntity<List<FileDisplayer>> findPublicFiles(){
+        return ResponseEntity.ok(userService.getPublicFiles());
+    }
+    @GetMapping("/allFiles/{username}")
+    public ResponseEntity<List<FileDisplayer>> findAllFiles(@PathVariable String username){
+        return ResponseEntity.ok(userService.getAllFiles(username));
+    }
 }

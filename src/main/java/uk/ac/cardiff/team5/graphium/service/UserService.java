@@ -1,10 +1,8 @@
 package uk.ac.cardiff.team5.graphium.service;
 
-import uk.ac.cardiff.team5.graphium.data.jpa.entity.UserEntity;
 import uk.ac.cardiff.team5.graphium.domain.FileDisplayer;
 import uk.ac.cardiff.team5.graphium.exception.EmailInUseException;
 import uk.ac.cardiff.team5.graphium.exception.UsernameInUseException;
-import uk.ac.cardiff.team5.graphium.service.dto.FileDTO;
 import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 
 import java.util.List;
@@ -20,6 +18,8 @@ public interface UserService {
 
     UserDTO getUser(String username);
 
+    List<UserDTO> getOrgAdmin(String organisationID);
+
     List<FileDisplayer> getsUsersFiles(String username);
 
     List<FileDisplayer> getFilesForOrg(String username);
@@ -27,5 +27,11 @@ public interface UserService {
     List<FileDisplayer> getPublicFiles();
 
     List<FileDisplayer> getPartnersFiles(String username);
+
+    List<FileDisplayer> getAllFiles(String username);
+
+    List<FileDisplayer> findBySearchTerm(String search, String username);
+
+
 
 }

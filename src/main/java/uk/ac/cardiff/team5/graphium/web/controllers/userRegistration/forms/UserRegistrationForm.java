@@ -3,6 +3,10 @@ package uk.ac.cardiff.team5.graphium.web.controllers.userRegistration.forms;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import uk.ac.cardiff.team5.graphium.service.EmailSenderService;
 import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 
 import javax.validation.constraints.NotEmpty;

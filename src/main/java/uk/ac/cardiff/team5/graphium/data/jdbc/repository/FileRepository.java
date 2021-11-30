@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import uk.ac.cardiff.team5.graphium.domain.FileDisplayer;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class FileRepository {
@@ -51,6 +52,13 @@ public class FileRepository {
     public List<FileDisplayer> findAllPartners(String username) {
         return jdbc.query(
                 "call getPartnersFiles(?);",
+                new Object[]{username},
+                fileMapper);
+    }
+
+    public List<FileDisplayer> findAllFiles(String username) {
+        return jdbc.query(
+                "call getAllFiles(?);",
                 new Object[]{username},
                 fileMapper);
     }
