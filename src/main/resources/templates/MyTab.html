@@ -57,7 +57,6 @@
 </div>
 
 <div id="allDetails">
-  <h3 id="files">My Files</h3>
   <div id ="tableDiv">
     <table id ="table" class = "table">
         <tr>
@@ -96,9 +95,9 @@
   function addRowTable(value, index, array) {
     var tableRow = document.createElement("tr");
     tableRow.className="dataRow";
-    var username = document.createElement("th");
-    username.scope="row";
-    var fileName = document.createElement("td");
+    var username = document.createElement("td");
+    var fileName = document.createElement("th");
+    fileName.scope="row";
     var date = document.createElement("td");
     var expiryDate = document.createElement("td");
     var tag = document.createElement("td");
@@ -132,9 +131,8 @@
 
 
 
-
-    tableRow.append(username);
     tableRow.append(fileName);
+    tableRow.append(username);
     tableRow.append(date);
     tableRow.append(expiryDate);
     tableRow.append(tag);
