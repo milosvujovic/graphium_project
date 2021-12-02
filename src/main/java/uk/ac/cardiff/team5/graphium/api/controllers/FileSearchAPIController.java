@@ -36,6 +36,7 @@ public class FileSearchAPIController {
     }
     @GetMapping("/publicFiles")
     public ResponseEntity<List<FileDisplayer>> findPublicFiles(){
+        System.out.println(userService.getPublicFiles());
         return ResponseEntity.ok(userService.getPublicFiles());
     }
     @GetMapping("/allFiles/{username}")
