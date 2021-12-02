@@ -1,6 +1,8 @@
 package uk.ac.cardiff.team5.graphium.web.controllers.userRegistration;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,6 +12,7 @@ import uk.ac.cardiff.team5.graphium.data.jpa.entity.OrganisationEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.OrganisationRepository;
 import uk.ac.cardiff.team5.graphium.exception.EmailInUseException;
 import uk.ac.cardiff.team5.graphium.exception.UsernameInUseException;
+import uk.ac.cardiff.team5.graphium.service.EmailSenderService;
 import uk.ac.cardiff.team5.graphium.service.UserService;
 import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 import uk.ac.cardiff.team5.graphium.web.controllers.userRegistration.forms.UserRegistrationForm;
@@ -23,6 +26,8 @@ public class UserRegistrationController {
     private OrganisationRepository organisationRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private EmailSenderService senderService;
 
     @GetMapping("/register")
     public String register(Model model) {
@@ -76,6 +81,13 @@ public class UserRegistrationController {
             model.addAttribute("organisationEntities", organisationEntities);
             model.addAttribute("userRegistrationForm", userRegistrationForm);
             return "user-registration";
+        }
+
+        try {
+            List<UserDTO> admins = userService.getOrgAdmin(userRegistrationForm.getOrganisationId());
+            senderService.sendEmail(admins.get(0).getEmail(), "Your organisation has a new user: " + userRegistrationForm.getEmail(), "Check your admin panel on the website to approve or reject this new user.\n\nUser Details:\n" + "Full Name: " + userRegistrationForm.getFirstName() + " " + userRegistrationForm.getLastName() + "\n" + "Email Address: " + userRegistrationForm.getEmail());
+        } catch (Exception e){
+            System.out.println("Organisation admin not found - user cannot be verified");
         }
 
         return "redirect:/";
