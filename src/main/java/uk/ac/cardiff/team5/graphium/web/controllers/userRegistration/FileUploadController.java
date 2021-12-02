@@ -1,5 +1,6 @@
 package uk.ac.cardiff.team5.graphium.web.controllers.userRegistration;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,7 +31,7 @@ public class FileUploadController {
         userService = aUserService;
     }
 //      Displays form to upload files to the webpage.
-    @GetMapping("file")
+    @GetMapping({"upload","file"})
     public String file(Model model) {
         FileForm form = new FileForm();
         model.addAttribute("fileForm",form);
@@ -38,7 +39,7 @@ public class FileUploadController {
     }
 
 //    Post method for uploading a file
-    @PostMapping("file")
+    @PostMapping("upload")
     public String getFile(@Valid FileForm form, BindingResult bindingResult, Model model, Principal principal) throws IOException {
 //      Error catching.
         if (bindingResult.hasErrors()) {
@@ -50,7 +51,7 @@ public class FileUploadController {
             FileDTO newFile = new FileDTO(form.getFileId(), form.getLogoFileName(),form.getLogoFile().getContentType(),form.getTag(),form.getAccessLevel(),form.getComment(),form.getLogoFile().getBytes(), today.toString());
             String fileId = fileServer.saveFiles(newFile,principal.getName());
 //            Displays the users files
-            return "redirect:/myFiles";
+            return "redirect:/files";
         }
     }
 //    Displays the users file
@@ -82,7 +83,7 @@ public class FileUploadController {
 
     //    Displays partners files
     @GetMapping("files")
-    public String diplayFiles(Model model, Principal principal) {
+    public String displayFiles(Model model, Principal principal) {
         model.addAttribute("id", principal.getName());
         return "files.html";
     }
