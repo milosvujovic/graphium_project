@@ -6,6 +6,7 @@
     <title>My Files</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="/user-registration.css">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
@@ -38,87 +39,54 @@
 
     </script>
 
-    <div class="container" >
+    <div>
         <div>
-            <form th:action="@{/file}" enctype="multipart/form-data" th:method="post" th:object="${fileForm}">
+            <form th:action="@{/upload}" enctype="multipart/form-data" th:method="post" th:object="${fileForm}">
 
                 <input th:field="*{fileId}" type="hidden"/>
-                <div class="row">
-                    <div class = "col-md">
-                        <div class="mb-3">
-                            <label class="text-secondary" for="logoFile">File: </label><br>
-                            <input th:field="*{logoFile}" type="file" required/>
-
-                        </div>
+                <div class = "grid-container">
+                    <div>
+                        <label class="text-secondary" for="logoFile">File: </label><br>
+                        <input th:field="*{logoFile}" type="file" required/>
                     </div>
-                    <div class = "col-md">
-                        <div class="mb-3">
-                            <label class="text-secondary" for="logoFileName">Upload Name: </label><br>
-                            <input th:field="*{logoFileName}" type="text" required/>
-                        </div>
-                    </div>>
-                </div>
-                <div class = "row">
+                    <div class="mb-3">
+                        <label class="text-secondary" for="logoFileName">Upload Name: </label><br>
+                        <input th:field="*{logoFileName}" type="text" required/>
+                    </div>
                     <div class="alert alert-danger" th:if="${errorMessage != null}" th:text="${errorMessage}">File Error</div>
-                </div>
-                <div class="row">
-                    <div class = "col-lg-6">
-                        <div class = "form-check form-check-inline">
-                            <div class="mb-3">
-                                <label class="form-label text-secondary" for="tag">Tag: </label><br>
-
-                                <input class="form-check-input" type="radio" id="urgent" name="tag" value="urgent">
-                                <label class="form-check-label" for="urgent">Urgent</label>
-                                <input class="form-check-input" type="radio" id="draft" name="tag" value="draft">
-                                <label class="form-check-label" for="draft">Draft</label>
-                                <input class="form-check-input" type="radio" id="final" name="tag" value="final">
-                                <label class="form-check-label" for="final">Final</label>
-                            </div>
-                        </div>
+                    <div>
+                        <label class="form-label text-secondary" for="tag">Tag: </label><br>
+                        <input class="form-check-input" type="radio" id="urgent" name="tag" value="urgent">
+                        <label class="form-check-label" for="urgent">Urgent</label>
+                        <input class="form-check-input" type="radio" id="draft" name="tag" value="draft">
+                        <label class="form-check-label" for="draft">Draft</label>
+                        <input class="form-check-input" type="radio" id="final" name="tag" value="final">
+                        <label class="form-check-label" for="final">Final</label>
                     </div>
-                    <div class = "col-lg-6">
-                        <div class = "form-check form-check-inline">
-                            <div class="mb-3">
-                                <label class="form-label text-secondary" for="accessLevel">Access Level: </label><br>
-                                <input class="form-check-input" type="radio" id="myOrganisation" name="accessLevel" value="myOrganisation">
-                                <label class="form-check-label" for="myOrganisation">My Organisation</label>
-                                <input class="form-check-input" type="radio" id="myPartners" name="accessLevel" value="private">
-                                <label class="form-check-label" for="myPartners">My Partners</label>
-
-
-                                <input class="form-check-input" type="radio" id="public" name="accessLevel" value="public">
-                                <label class="form-check-label" for="public">Public</label>
-                                <input class="form-check-input" type="radio" id="private" name="accessLevel" value="private">
-                                <label class="form-check-label" for="private">Private</label>
-                            </div>
-                        </div>
+                    <div class = "form-check form-check-inline">
+                        <label class="form-label text-secondary" for="accessLevel">Access Level: </label><br>
+                        <input class="form-check-input" type="radio" id="myOrganisation" name="accessLevel" value="myOrganisation">
+                        <label class="form-check-label" for="myOrganisation">My Organisation</label>
+                        <input class="form-check-input" type="radio" id="myPartners" name="accessLevel" value="private">
+                        <label class="form-check-label" for="myPartners">My Partners</label>
+                        <input class="form-check-input" type="radio" id="public" name="accessLevel" value="public">
+                        <label class="form-check-label" for="public">Public</label>
+                        <input class="form-check-input" type="radio" id="private" name="accessLevel" value="private">
+                        <label class="form-check-label" for="private">Private</label>
                     </div>
-                </div>
-                <div class="row">
-                    <div class = "col-md-6">
-                        <div class="mb-3">
-                            <label class="text-secondary">Share with someone:</label><br>
-                            <input type="text" value="Enter contact's email"/>
-                        </div>
+                    <div>
+                        <label class="text-secondary">Share with someone:</label><br>
+                        <input type="text" value="Enter contact's email"/>
                     </div>
-                    <div class = "col-md-6">
-                        <div class="mb-3">
-                            <label class="text-secondary" for="comment">Comment: </label><br>
-                            <input th:field="*{comment}" type="text"/>
-                        </div>
+                    <div>
+                        <label class="text-secondary" for="comment">Comment: </label><br>
+                        <input th:field="*{comment}" type="text"/>
                     </div>
-                </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm">
-                            <div class = "d-flex justify-content-end">
-                                <button class="btn btn-danger btn-lg">Cancel</button>
-                            </div>
-
-                        </div>
-                        <div class="col-sm">
-                            <button class="btn btn-dark btn-lg">Submit</button>
-                        </div>
+                    <div>
+                        <button class="btn btn-danger btn-lg">Cancel</button>
+                    </div>
+                    <div>
+                        <button class="btn btn-dark btn-lg">Submit</button>
                     </div>
                 </div>
             </form>
