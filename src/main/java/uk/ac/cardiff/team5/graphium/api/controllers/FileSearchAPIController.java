@@ -20,26 +20,26 @@ public class FileSearchAPIController {
         this.userService = aUserService;
     }
 
-    @GetMapping("/myFiles/{username}")
-    public ResponseEntity<List<FileDisplayer>> findMyFiles(@PathVariable String username){
-        return ResponseEntity.ok(userService.getsUsersFiles(username));
+    @GetMapping("/myFiles")
+    public ResponseEntity<List<FileDisplayer>> findMyFiles(Principal principal){
+        return ResponseEntity.ok(userService.getsUsersFiles(principal.getName()));
     }
 
-    @GetMapping("/myOrgFiles/{username}")
-    public ResponseEntity<List<FileDisplayer>> findOrgFiles(@PathVariable String username){
-        return ResponseEntity.ok(userService.getFilesForOrg(username));
+    @GetMapping("/myOrgFiles")
+    public ResponseEntity<List<FileDisplayer>> findOrgFiles(Principal principal){
+        return ResponseEntity.ok(userService.getFilesForOrg(principal.getName()));
     }
 
-    @GetMapping("/myPartnerFiles/{username}")
-    public ResponseEntity<List<FileDisplayer>> findPartnerFiles(@PathVariable String username){
-        return ResponseEntity.ok(userService.getPartnersFiles(username));
+    @GetMapping("/myPartnerFiles")
+    public ResponseEntity<List<FileDisplayer>> findPartnerFiles(Principal principal){
+        return ResponseEntity.ok(userService.getPartnersFiles(principal.getName()));
     }
     @GetMapping("/publicFiles")
     public ResponseEntity<List<FileDisplayer>> findPublicFiles(){
         return ResponseEntity.ok(userService.getPublicFiles());
     }
-    @GetMapping("/allFiles/{username}")
-    public ResponseEntity<List<FileDisplayer>> findAllFiles(@PathVariable String username){
-        return ResponseEntity.ok(userService.getAllFiles(username));
+    @GetMapping("/allFiles")
+    public ResponseEntity<List<FileDisplayer>> findAllFiles(Principal principal){
+        return ResponseEntity.ok(userService.getAllFiles(principal.getName()));
     }
 }
