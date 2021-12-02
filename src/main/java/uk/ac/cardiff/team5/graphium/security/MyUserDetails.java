@@ -1,13 +1,18 @@
 package uk.ac.cardiff.team5.graphium.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.UserEntity;
+import uk.ac.cardiff.team5.graphium.data.jpa.repository.UserRepository;
 
 import java.util.Arrays;
 import java.util.Collection;
 
 public class MyUserDetails implements org.springframework.security.core.userdetails.UserDetails {
+
+    @Autowired
+    private UserRepository userRepository;
 
     private UserEntity user;
 
@@ -48,6 +53,6 @@ public class MyUserDetails implements org.springframework.security.core.userdeta
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return userRepository.findByUsername(getUsername()).getOrganisation_approved();
     }
 }
