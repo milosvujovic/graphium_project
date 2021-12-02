@@ -7,6 +7,8 @@
 <body>
 <div layout:fragment="content">
     <p>Home Page</p>
+    <p th:text="${_csrf.parameterName}"></p>
+    <p th:text="${_csrf.token}"></p>
 </div>
 </body>
 </html>
