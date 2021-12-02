@@ -122,8 +122,7 @@ public class UserServiceImpl implements UserService {
         return fileRepository.findAllFiles(username);
     }
 
-    @Override
-    public List<FileDisplayer> findBySearchTerm(String search, String username) {
+    @Override    public List<FileDisplayer> findBySearchTerm(String search, String username) {
         return fileRepository.findAllByOrg(username).stream().filter(c -> c.matches(search)).collect(Collectors.toList());
     }
 }

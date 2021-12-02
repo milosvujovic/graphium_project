@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/main-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/user-registration.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+
+<div layout:fragment="content">
+    <script>
+        function niceInputs() {
+            [].forEach.call(document.getElementsByClassName("form-input"), (form_input) => {
+                form_input.getElementsByTagName("input")[0].addEventListener("focus", () => {
+                    form_input.classList.add("active");
+                });
+
+                form_input.getElementsByTagName("input")[0].addEventListener("focusout", () => {
+                    if (form_input.getElementsByTagName("input")[0].value === "") {
+                        form_input.classList.remove("active");
+                    }
+                });
+
+                if (form_input.getElementsByTagName("input")[0].value !== "") {
+                    form_input.classList.add("active");
+                }
+
+            });
+
+        }
+
+        window.onload = () => {
+            niceInputs();
+        }
+
+    </script>
+
+    <div class="container register">
+        <h1>Login To Your Account</h1>
+        <div class="container register-form" style="margin-bottom: 30px">
+            <form name="f" th:action="@{/login}" method="post">
+                <div>
+                    <div class="form-input" style="margin-top: 0;">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username"/>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-input" >
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password"/>
+                    </div>
+                </div>
+                <div class="error-msg" th:if="${param.error}">Invalid username and password</div>
+                <div class="error-msg" th:if="${param.logout}">You have been logged out.</div>
+                <div class="form-actions">
+                    <button class="form-submit" type="submit" >Log in</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <a  style="color: #ffffff; text-decoration: none" href="/register">Don't have an account?</a>
+</div>
+</body>
+</html>
