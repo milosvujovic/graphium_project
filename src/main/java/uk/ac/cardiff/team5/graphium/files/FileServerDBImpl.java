@@ -1,15 +1,13 @@
 package uk.ac.cardiff.team5.graphium.files;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.DBFile;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.UserEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.UserRepository;
 import uk.ac.cardiff.team5.graphium.service.dto.FileDTO;
 
-import java.io.IOException;
-import java.sql.SQLOutput;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class FileServerDBImpl implements FileServer{
@@ -37,5 +35,17 @@ public class FileServerDBImpl implements FileServer{
 //      Returns filesId
         fileId = dbFile.getFileId();
         return fileId;
+    }
+
+    @Override
+    public void modifyFiles(byte[] bytes, String fileId, LocalDate today, String contentType) {
+        Optional<DBFile> file = dbFileStore.findById(fileId);
+        if (file.isPresent()){
+            DBFile actualFile = file.get();
+            actualFile.setData(bytes);
+            actualFile.setDate(today.toString());
+            actualFile.setFileType(contentType);
+            dbFileStore.save(actualFile);
+        }
     }
 }

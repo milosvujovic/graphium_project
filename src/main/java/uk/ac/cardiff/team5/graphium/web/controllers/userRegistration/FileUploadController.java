@@ -16,6 +16,7 @@ import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 import uk.ac.cardiff.team5.graphium.web.controllers.userRegistration.forms.FileForm;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
@@ -103,6 +104,34 @@ public class FileUploadController {
         fileList = userService.findBySearchTerm(searchTerm, principal.getName());
         model.addAttribute("files", fileList);
         return "files";
+    }
+
+    //      Displays form to upload files to the webpage.
+    @GetMapping("/file/reupload")
+    public String fileReUpload(Model model, Principal principal) {
+        List<FileDisplayer> files =  userService.getsUsersFiles(principal.getName());
+        model.addAttribute("files",files);
+        FileForm form = new FileForm();
+        model.addAttribute("fileForm",form);
+        return "file-reupload.html";
+    }
+
+    //    Post method for uploading a file
+    @PostMapping("/file/reupload")
+    public String fileReUploader(@Valid FileForm submittedForm, BindingResult bindingResult, Model model, Principal principal) throws IOException {
+//      Error catching.
+        if (bindingResult.hasErrors()) {
+            FileForm form = new FileForm();
+            form.setFileId(submittedForm.getFileId());
+            model.addAttribute("fileForm",form);
+            model.addAttribute("errorMessage","Only PDF and Word Documents allowed.");
+            return "file-reupload.html";
+        }else{
+            LocalDate today = LocalDate.now();
+            fileServer.modifyFiles(submittedForm.getLogoFile().getBytes(), submittedForm.getFileId(), today, submittedForm.getLogoFile().getContentType());
+//            Displays the users files
+            return "redirect:/files";
+        }
     }
 
 }
