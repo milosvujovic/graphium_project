@@ -83,18 +83,12 @@ public class UserRegistrationController {
             return "user-registration";
         }
 
-<<<<<<< HEAD
-        List<UserDTO> admins = userService.getOrgAdmin(userRegistrationForm.getOrganisationId());
-
-        senderService.sendEmail(admins.get(0).getEmail(), "Your organisation has a new user: "+userRegistrationForm.getEmail(), "Check your admin panel on the website to approve or reject this new user.\n\nUser Details:\n"+"Full Name: " + userRegistrationForm.getFirstName()+" " + userRegistrationForm.getLastName()+ "\n" + "Email Address: " + userRegistrationForm.getEmail());
-=======
         try {
             List<UserDTO> admins = userService.getOrgAdmin(userRegistrationForm.getOrganisationId());
             senderService.sendEmail(admins.get(0).getEmail(), "Your organisation has a new user: " + userRegistrationForm.getEmail(), "Check your admin panel on the website to approve or reject this new user.\n\nUser Details:\n" + "Full Name: " + userRegistrationForm.getFirstName() + " " + userRegistrationForm.getLastName() + "\n" + "Email Address: " + userRegistrationForm.getEmail());
         } catch (Exception e){
             System.out.println("Organisation admin not found - user cannot be verified");
         }
->>>>>>> main
 
         return "redirect:/";
     }

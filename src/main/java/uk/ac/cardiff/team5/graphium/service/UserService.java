@@ -17,13 +17,9 @@ public interface UserService {
     boolean checkPasswordsMatch(String password1, String password2);
 
     UserDTO getUser(String username);
-<<<<<<< HEAD
 
     List<UserDTO> getOrgAdmin(String organisationID);
 
-=======
-    List<UserDTO> getOrgAdmin(String organisationID);
->>>>>>> main
     List<FileDisplayer> getsUsersFiles(String username);
 
     List<FileDisplayer> getFilesForOrg(String username);
