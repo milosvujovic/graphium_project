@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import uk.ac.cardiff.team5.graphium.service.AdminService;
 import uk.ac.cardiff.team5.graphium.service.UserService;
 import uk.ac.cardiff.team5.graphium.service.dto.OrganisationDTO;
@@ -14,11 +15,17 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
     private AdminService adminService;
 
     public AdminController(AdminService adminService) {
         this.adminService = adminService;
+    }
+
+    @GetMapping("/")
+    public String home() {
+        return "admin-index";
     }
 
     @GetMapping("/verify")
@@ -35,7 +42,8 @@ public class AdminController {
     }
     @GetMapping("/partner")
     public String possiblePartners(Model model, Principal principal){
-         List<OrganisationDTO> organisations =adminService.findPossiblePartners(principal.getName());
+        List<OrganisationDTO> organisations =adminService.findPossiblePartners(principal.getName());
+        System.out.println(organisations);
         model.addAttribute("organisations", organisations);
         return "admin-partner";
     }

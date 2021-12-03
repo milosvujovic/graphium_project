@@ -16,11 +16,12 @@ public class FileDTO {
     private String tag;
     private String accessLevel;
     private String comment;
+    private String subject;
     @Lob
     private byte[] data;
     private String date;
 
-    public FileDTO(String id, String logoFileName,String type ,String tag, String accessLevel, String comment, byte[] logoFile, String date) {
+    public FileDTO(String id, String logoFileName,String type ,String tag, String accessLevel, String comment, byte[] logoFile, String date, String subject) {
         this.fileID = id;
         this.fileName = logoFileName;
         this.type = type;
@@ -29,6 +30,7 @@ public class FileDTO {
         this.comment = comment;
         this.data = logoFile;
         this.date = date;
+        this.subject = subject;
     }
 //    Converts a DBFile to a FileDTO
     public FileDTO(DBFile file){
@@ -40,6 +42,7 @@ public class FileDTO {
         this.comment = file.getComment();
         this.data = file.getData();
         this.date = file.getDate();
+        this.subject = file.getSubject();
     }
 
 }

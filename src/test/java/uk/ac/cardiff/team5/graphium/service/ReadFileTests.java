@@ -1,10 +1,13 @@
 package uk.ac.cardiff.team5.graphium.service;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
@@ -18,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Sql(scripts={"/schema-test.sql", "/data-test.sql"})
+//@Sql(scripts={"/schema-test.sql", "/data-test.sql"})
 @ActiveProfiles("MariaDB")
 @DirtiesContext
 @SpringBootTest
@@ -40,16 +43,22 @@ public class ReadFileTests {
     }
 
 
-//    @Test
-//    @ParameterizedTest
-//    @CsvSource({"heart,1","cancer, 3", "dogs, 0", "cats, 2"})
-//    public void shouldGetNCharitiesFromSearchAsJSON(String search, String countAsString) throws Exception{
-//        Integer count = Integer.valueOf(countAsString);
-//        mvc.perform(get("/api/charity?search="+search).contentType(MediaType.APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$", hasSize(count)));
-//        }
-//    }
+    @Test
+    @WithMockUser("user")
+    public void shouldGet1FileUserAsJSON() throws Exception{
+        mvc.perform(get("/api/myFiles").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+        }
 
+    @Test
+    @WithMockUser("user")
+    public void shouldGet2FileUserAllFilesAsJSON() throws Exception{
+        mvc.perform(get("/api/allFiles").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
+    }
 }
+

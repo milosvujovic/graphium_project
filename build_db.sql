@@ -39,6 +39,7 @@ create table if not exists `files` (
                        `file_type` varchar(100) NOT NULL,
                        `tag` varchar(100) NOT NULL,
                        `access_level` varchar(100) NOT NULL,
+						`subject` varchar(100) NOT NULL,
                        `comment` varchar(100) NOT NULL,
                        `data` LONGBLOB not null,
                        `date` DATE not null
@@ -56,7 +57,6 @@ SELECT organisation_id, organisation_name FROM organisation WHERE organisation_i
 FROM organisation
 JOIN partnerships on partnerships.sharing_organisation_id = organisation.organisation_id
 WHERE organisation.organisation_id = organisationID) and organisation.organisation_id != organisationID;
-
 END //
 DELIMITER ;
 
@@ -67,6 +67,45 @@ set @SharingOrganisationID = (Select organisation_id from users where username =
 INSERT INTO partnerships(sharing_organisation_id,viewing_organisation_id)  values(@SharingOrganisationID,organisationID);
 END //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE getFilesForOrganisation(IN usernameParameter varchar(30))
+BEGIN 
+set @OrganisationID = (Select organisation_id from users where username = usernameParameter);
+SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment, files.date,users.username,files.subject FROM graphium.files JOIN users on files.user_id = users.user_id JOIN organisation on organisation.organisation_id = users.organisation_id WHERE users.organisation_id = @OrganisationID and files.access_level != 'private' ORDER BY files.date;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE getPartnersFiles(IN usernameParameter varchar(30))
+BEGIN 
+set @OrganisationID = (Select organisation_id from users where username = usernameParameter);
+SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment, files.date,users.username,files.subject
+FROM files
+JOIN users on files.user_id = users.user_id 
+JOIN organisation on organisation.organisation_id = users.organisation_id 
+WHERE organisation.organisation_id IN (SELECT sharing_organisation_id
+FROM organisation
+JOIN partnerships on partnerships.sharing_organisation_id = organisation.organisation_id
+WHERE viewing_organisation_id = @OrganisationID) and files.access_level !='private'
+ORDER BY files.date;
+END //
+DELIMITER ;
+DELIMITER //
+CREATE PROCEDURE getAllFiles(IN usernameParameter varchar(30))
+BEGIN  
+set @OrganisationID = (Select organisation_id from users where username = usernameParameter);
+
+SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment, files.date,users.username, files.subject
+FROM files
+JOIN users on files.user_id = users.user_id 
+JOIN organisation on organisation.organisation_id = users.organisation_id 
+WHERE (organisation.organisation_id IN (((SELECT sharing_organisation_id
+FROM organisation
+JOIN partnerships on partnerships.sharing_organisation_id = organisation.organisation_id
+WHERE viewing_organisation_id = @OrganisationID) and files.access_level !='private') and organisation.organisation_id != @organisationID) and files.access_level !='private') or (files.access_level = 'public') or (users.username = usernameParameter) or (organisation.organisation_id = @OrganisationID)
+ORDER BY files.date;
+END //
 
 
 insert into organisation (organisation_name) values ('ExampleOrg1');
@@ -87,42 +126,3 @@ insert into users (organisation_id, role_id, first_name, last_name, username, em
 
 insert into users (role_id, first_name, last_name, username, email, password, active, organisation_approved, email_verified) values (3, 'SystemAdmin', 'Example', 'sysadmin', 'sysadmin@example.com', '$2a$10$/vOrWfM8MJ.Dzpj3t5oGyeuNoERADR5LlEGrV6pwSr0Did8JikTTq', true, true, true);
 
-DELIMITER //
-CREATE PROCEDURE getFilesForOrganisation(IN usernameParameter varchar(30))
-BEGIN 
-set @OrganisationID = (Select organisation_id from users where username = usernameParameter);
-SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment,files.data, files.date,users.username FROM graphium.files JOIN users on files.user_id = users.user_id JOIN organisation on organisation.organisation_id = users.organisation_id WHERE users.organisation_id = @OrganisationID and files.access_level != 'private' ORDER BY files.date;
-END //
-DELIMITER ;
-
-DELIMITER //
-CREATE PROCEDURE getPartnersFiles(IN usernameParameter varchar(30))
-BEGIN 
-set @OrganisationID = (Select organisation_id from users where username = usernameParameter);
-SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment,files.data, files.date,users.username 
-FROM files
-JOIN users on files.user_id = users.user_id 
-JOIN organisation on organisation.organisation_id = users.organisation_id 
-WHERE organisation.organisation_id IN (SELECT sharing_organisation_id
-FROM organisation
-JOIN partnerships on partnerships.sharing_organisation_id = organisation.organisation_id
-WHERE viewing_organisation_id = @OrganisationID) and files.access_level !='private'
-ORDER BY files.date;
-END //
-DELIMITER ;
-DELIMITER //
-CREATE PROCEDURE getAllFiles(IN usernameParameter varchar(30))
-BEGIN  
-set @OrganisationID = (Select organisation_id from users where username = usernameParameter);
-
-SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment,files.data, files.date,users.username 
-FROM files
-JOIN users on files.user_id = users.user_id 
-JOIN organisation on organisation.organisation_id = users.organisation_id 
-WHERE (organisation.organisation_id IN (((SELECT sharing_organisation_id
-FROM organisation
-JOIN partnerships on partnerships.sharing_organisation_id = organisation.organisation_id
-WHERE viewing_organisation_id = @OrganisationID) and files.access_level !='private') and organisation.organisation_id != @organisationID) and files.access_level !='private') or (files.access_level = 'public') or (users.username = usernameParameter) or (organisation.organisation_id = @OrganisationID)
-ORDER BY files.date;
-
-END //

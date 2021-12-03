@@ -12,9 +12,9 @@ public class FileDisplayer {
     private String tag;
     private String accessLevel;
     private String comment;
-    private byte[] data;
     private String date;
     private String username;
+    private String subject;
 
     public boolean matches(String search) {
         String searchLower = search.toLowerCase();

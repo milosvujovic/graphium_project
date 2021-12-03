@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import uk.ac.cardiff.team5.graphium.domain.FileDisplayer;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class FileRepository {
@@ -27,9 +26,9 @@ public class FileRepository {
                 rs.getString("tag"),
                 rs.getString("access_level"),
                 rs.getString("comment"),
-                rs.getBytes("data"),
                 rs.getString("date"),
-                rs.getString("username"));
+                rs.getString("username"),
+                rs.getString("subject"));
     }
 
 
@@ -44,7 +43,7 @@ public class FileRepository {
 
     public List<FileDisplayer> findAllPublic() {
         return jdbc.query(
-                "SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment,files.data, files.date,users.username FROM graphium.files JOIN users on files.user_id = users.user_id where files.access_level = 'public' ORDER BY files.date;",
+                "SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment, files.date,users.username,files.subject FROM graphium.files JOIN users on files.user_id = users.user_id where files.access_level = 'public' ORDER BY files.date;",
                 new Object[]{},
                 fileMapper);
     }

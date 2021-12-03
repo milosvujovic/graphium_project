@@ -17,4 +17,5 @@ public class FileForm {
     private String tag;
     private String accessLevel;
     private String comment;
+    private String subject;
 }

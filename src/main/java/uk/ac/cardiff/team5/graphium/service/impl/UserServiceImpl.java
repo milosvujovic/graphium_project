@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
         UserDTO userDTO = new UserDTO(user);
         return userDTO.getFiles()
                 .stream()
-                .map(c -> new FileDisplayer(c.getFileID(),c.getFileName(),c.getType(),c.getTag(),c.getAccessLevel(),c.getComment(),c.getData(),c.getDate(),userDTO.getUsername()))
+                .map(c -> new FileDisplayer(c.getFileID(),c.getFileName(),c.getType(),c.getTag(),c.getAccessLevel(),c.getComment(),c.getDate(),userDTO.getUsername(),c.getSubject()))
                 .collect(Collectors.toList());
     }
 

@@ -36,19 +36,24 @@
             var fileName = document.createElement("th");
             fileName.scope="row";
             var date = document.createElement("td");
-            var expiryDate = document.createElement("td");
+            // var expiryDate = document.createElement("td");
             var tag = document.createElement("td");
             var accessLevel = document.createElement("td");
             var fileType = document.createElement("td");
+            var subject = document.createElement("td");
+            var comment = document.createElement("td");
             var download = document.createElement("td");
             var view = document.createElement("td");
             fileName.innerText = value['fileName'];
             username.innerText = value['username'];
             date.innerText = value['date'];
-            expiryDate.innerText = "N/A";
+            // expiryDate.innerText = "N/A";
             tag.innerText = value['tag'];
             accessLevel.innerText=value['accessLevel'];
             fileType.innerText=value['fileType'];
+            subject.innerText=value['subject'];
+            comment.innerText=value['comment'];
+
             var downloadLink = document.createElement("a");
             downloadLink.href='/file/download/' + value['fileId'];
             var downloadButton = document.createElement("button");
@@ -71,7 +76,9 @@
             tableRow.append(fileName);
             tableRow.append(username);
             tableRow.append(date);
-            tableRow.append(expiryDate);
+            tableRow.append(subject);
+            tableRow.append(comment);
+            // tableRow.append(expiryDate);
             tableRow.append(tag);
             tableRow.append(accessLevel);
             tableRow.append(fileType);
@@ -150,7 +157,9 @@
                             <th scope="col">File Name</th>
                             <th scope="col">Author</th>
                             <th scope="col">Date</th>
-                            <th scope="col">Expires On</th>
+                              <th scope="col">Subject</th>
+                              <th scope="col">Comment</th>
+<!--                            <th scope="col">Expires On</th>-->
                             <th scope="col">Tag</th>
                             <th scope="col">Access Level</th>
                             <th scope="col">File Type</th>

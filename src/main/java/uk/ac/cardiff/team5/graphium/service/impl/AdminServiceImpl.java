@@ -43,6 +43,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<OrganisationDTO> findPossiblePartners(String name) {
         Long organisationId = userRepository.findByUsername(name).getOrganisation().getOrganisationId();
+        System.out.println(organisationId);
         return organisationRepository.findPossiblePartners(organisationId)
                 .stream()
                 .map(c -> new OrganisationDTO(c))
