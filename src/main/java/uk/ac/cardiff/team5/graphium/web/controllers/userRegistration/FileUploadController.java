@@ -54,32 +54,32 @@ public class FileUploadController {
             return "redirect:/files";
         }
     }
-////    Displays the users file
-//    @GetMapping("myFiles")
-//    public String displayUsersFiles(Model model, Principal principal) {
-////        Deals with getting the user here
-//        List<FileDisplayer> files = userService.getsUsersFiles(principal.getName());
-////        Adds the users details including the files to the model and returns the page.
-//        model.addAttribute("files", files);
-//        model.addAttribute("title", "Your Files");
-//        return "files.html";
-//    }
-//    //    Displays the users organistions file
-//    @GetMapping("myOrgFiles")
-//    public String displayOrgFiles(Model model, Principal principal) {
-//        List<FileDisplayer> files = userService.getFilesForOrg(principal.getName());
-//        model.addAttribute("files", files);
-//        model.addAttribute("title", "Organisation Files");
-//        return "files.html";
-//    }
-//    //    Displays all public file
-//    @GetMapping("public")
-//    public String displayPublicFiles(Model model) {
-//        List<FileDisplayer> files = userService.getPublicFiles();
-//        model.addAttribute("files", files);
-//        model.addAttribute("title", "Public Files");
-//        return "files.html";
-//    }
+//    Displays the users file
+    @GetMapping("myFiles")
+    public String displayUsersFiles(Model model, Principal principal) {
+//        Deals with getting the user here
+        List<FileDisplayer> files = userService.getsUsersFiles(principal.getName());
+//        Adds the users details including the files to the model and returns the page.
+        model.addAttribute("files", files);
+        model.addAttribute("title", "Your Files");
+        return "files.html";
+    }
+    //    Displays the users organistions file
+    @GetMapping("myOrgFiles")
+    public String displayOrgFiles(Model model, Principal principal) {
+        List<FileDisplayer> files = userService.getFilesForOrg(principal.getName());
+        model.addAttribute("files", files);
+        model.addAttribute("title", "Organisation Files");
+        return "files.html";
+    }
+    //    Displays all public file
+    @GetMapping("public")
+    public String displayPublicFiles(Model model) {
+        List<FileDisplayer> files = userService.getPublicFiles();
+        model.addAttribute("files", files);
+        model.addAttribute("title", "Public Files");
+        return "files.html";
+    }
 
     //    Displays all files available to the user
     @GetMapping("files")

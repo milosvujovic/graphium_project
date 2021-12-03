@@ -1,4 +1,4 @@
-package uk.ac.cardiff.team5.graphium.web.controllers.userRegistration;
+package uk.ac.cardiff.team5.graphium.web.controllers.adminController;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +23,7 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    @GetMapping("/")
+    @GetMapping({"/","","/home"})
     public String home() {
         return "admin-index";
     }
@@ -50,6 +50,6 @@ public class AdminController {
     @GetMapping("/partner/{orgID}")
     public String recordPartner(@PathVariable(value = "orgID", required = true) String orgId, Model model, Principal principal){
         adminService.recordPartnership(orgId,principal.getName());
-        return "redirect:/partner";
+        return "redirect:/admin/partner";
     }
 }
