@@ -53,7 +53,7 @@
     </div>
     <div class="--graphium-window">
         <div>
-            <form th:action="@{/file}" enctype="multipart/form-data" th:method="post" th:object="${fileForm}">
+            <form th:action="@{/upload}" enctype="multipart/form-data" th:method="post" th:object="${fileForm}">
 
                 <input th:field="*{fileId}" type="hidden"/>
                 <div class="row">

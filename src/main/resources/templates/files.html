@@ -70,9 +70,6 @@
             viewButton.innerText="View";
             viewLink.append(viewButton);
             view.append(viewLink);
-
-
-
             tableRow.append(fileName);
             tableRow.append(username);
             tableRow.append(date);
@@ -84,6 +81,16 @@
             tableRow.append(fileType);
             tableRow.append(download);
             tableRow.append(view);
+            if (route === "myFiles"){
+                var modifyLink = document.createElement("a");
+                modifyLink.href = 'file/modify/' + value['fileId'];
+                var modifyButton = document.createElement("button");
+                modifyButton.type = "button";
+                modifyButton.className = "btn btn-primary";
+                modifyButton.innerText="Modify";
+                modifyButton.append(modifyLink);
+                tableRow.append(modifyButton);
+            }
             var table = document.getElementById("table");
             table.append(tableRow);
         }
@@ -165,6 +172,7 @@
                             <th scope="col">File Type</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
+                              <th scope="col"></th>
                           </tr>
                       </table>
                     </div>
