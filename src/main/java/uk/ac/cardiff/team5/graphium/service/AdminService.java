@@ -13,4 +13,6 @@ public interface AdminService {
     List<OrganisationDTO> findPossiblePartners(String name);
 
     void recordPartnership(String orgId, String name);
+
+    List<UserDTO> getOrganisationMembers(String username);
 }

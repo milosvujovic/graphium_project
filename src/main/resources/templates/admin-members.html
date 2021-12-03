@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/main-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Members</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/files.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        function niceInputs() {
+            [].forEach.call(document.getElementsByClassName("form-input"), (form_input) => {
+                form_input.getElementsByTagName("input")[0].addEventListener("focus", () => {
+                    form_input.classList.add("active");
+                });
+
+                form_input.getElementsByTagName("input")[0].addEventListener("focusout", () => {
+                    if (form_input.getElementsByTagName("input")[0].value === "") {
+                        form_input.classList.remove("active");
+                    }
+                });
+
+                if (form_input.getElementsByTagName("input")[0].value !== "") {
+                    form_input.classList.add("active");
+                }
+
+            });
+
+        }
+
+        window.onload = () => {
+            niceInputs();
+        }
+    </script>
+</head>
+
+
+<body>
+<div layout:fragment="content">
+    <div style="display: inline-flex;width: 87.5%;padding-bottom: 10px">
+        <div style="width: 50%;display: flex;justify-content: left;align-items: start;">
+            <h1>My Organisation Name</h1>
+        </div>
+        <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
+            <a href="/admin/verify">Pending Members</a>
+        </div>
+        <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
+            <a href="/admin/members">All Members</a>
+        </div>
+        <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
+            <a href="/admin/partner">Share Files</a>
+        </div>
+        <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
+            <a href="/files">My Files</a>
+        </div>
+    </div>
+    <div class="--graphium-window">
+        <div>
+            <div class="container">
+                <p>Organisation Members</p>
+                <div class="container" th:if="${!members.isEmpty}">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Username</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Email Address</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="member : ${members}">
+                            <th scope="row" th:text="${member.username}">Username</th>
+                            <th scope="row" th:text="${member.firstName}">FirstName</th>
+                            <th scope="row" th:text="${member.lastName}">Surname</th>
+                            <th scope="row" th:text="${member.email}">Email Address</th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="container" th:if="${members.isEmpty}">
+                    No members.
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

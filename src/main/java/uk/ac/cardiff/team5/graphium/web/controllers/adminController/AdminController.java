@@ -43,7 +43,6 @@ public class AdminController {
     @GetMapping("/partner")
     public String possiblePartners(Model model, Principal principal){
         List<OrganisationDTO> organisations =adminService.findPossiblePartners(principal.getName());
-        System.out.println(organisations);
         model.addAttribute("organisations", organisations);
         return "admin-partner";
     }
@@ -51,5 +50,11 @@ public class AdminController {
     public String recordPartner(@PathVariable(value = "orgID", required = true) String orgId, Model model, Principal principal){
         adminService.recordPartnership(orgId,principal.getName());
         return "redirect:/admin/partner";
+    }
+    @GetMapping("/members")
+    public String getMembers( Model model, Principal principal){
+        List<UserDTO> members = adminService.getOrganisationMembers(principal.getName());
+        model.addAttribute("members", members);
+        return "admin-members";
     }
 }

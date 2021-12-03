@@ -60,4 +60,14 @@ public class AdminServiceImpl implements AdminService {
         System.out.println("saving partnership");
         partnershipRepository.save(partnership);
     }
+
+    @Override
+    public List<UserDTO> getOrganisationMembers(String username) {
+        OrganisationEntity organisation = organisationRepository.findById(userRepository.findByUsername(username).getOrganisation().getOrganisationId()).get();
+        return userRepository.findUserEntitiesByOrganisation(organisation)
+                .stream()
+                .filter(c -> c.getOrganisation_approved() == true)
+                .map(c -> new UserDTO(c))
+                .collect(Collectors.toList());
+    }
 }
