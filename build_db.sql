@@ -6,10 +6,19 @@ drop table if exists `organisation`;
 drop table if exists `role`;
 drop table if exists `users`;
 drop table if exists `files`;
+drop table if exists `insights`;
 
 create table if not exists `organisation` (
 						`organisation_id` integer auto_increment primary key,
 						`organisation_name` varchar(127)
+);
+
+create table if not exists `insights` (
+						`insight_id` integer auto_increment primary key,
+						`date` DATE not null,
+                        `user_id` bigint references `users`(`user_id`),
+                        `file_id` varchar(100) references `files`(`file_id`),
+                        `organisation_id` integer references `organisation`(`organisation_id`)
 );
 
 create table if not exists `role` (
