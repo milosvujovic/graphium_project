@@ -91,6 +91,9 @@ public class UserRegistrationController {
             System.out.println("Organisation admin not found - user cannot be verified");
         }
 
-        return "redirect:/";
+        redirAttrs.addFlashAttribute("message","Registration was successful");
+
+        return "redirect:/login";
+
     }
 }
