@@ -11,24 +11,6 @@
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script>
-        async function openFiles(evt, route) {
-            let div;
-            var i, tablinks;
-            var fullRoute = "http://localhost:8080/api/" + route;
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            var dataRowsToRemove = document.getElementsByClassName("dataRow");
-            var index = 0;
-            while(index < dataRowsToRemove.length){
-                dataRowsToRemove[index].remove();
-            }
-            fetch(fullRoute)
-                .then(response => response.json())
-                .then(data => data.forEach(addRowTable));
-            evt.currentTarget.className += " active";
-        }
         function addRowTable(value, index, array) {
             var tableRow = document.createElement("tr");
             tableRow.className="dataRow";
@@ -44,6 +26,8 @@
             var comment = document.createElement("td");
             var download = document.createElement("td");
             var view = document.createElement("td");
+            var modify = document.createElement("td");
+            modify.id =  "modifyBlock";
             fileName.innerText = value['fileName'];
             username.innerText = value['username'];
             date.innerText = value['date'];
@@ -62,6 +46,7 @@
             downloadButton.innerText="Download";
             downloadLink.append(downloadButton);
             download.append(downloadLink);
+
             var viewLink = document.createElement("a");
             viewLink.href='/file/view/' + value['fileId'];
             var viewButton = document.createElement("button");
@@ -71,6 +56,16 @@
             viewLink.append(viewButton);
             view.append(viewLink);
 
+
+            var modifyLink = document.createElement("a");
+            modifyLink.href='/file/modify/' + value['fileId'];
+            var modifyButton = document.createElement("button");
+            modifyButton.type="button";
+            modifyButton.className = "btn btn-primary";
+            modifyButton.innerText="Modify";
+            modifyButton.id = "modify";
+            modifyLink.append(modifyButton);
+            modify.append(modifyLink);
 
             tableRow.append(fileName);
             tableRow.append(username);
@@ -83,9 +78,38 @@
             tableRow.append(fileType);
             tableRow.append(download);
             tableRow.append(view);
+            tableRow.append(modify);
             var table = document.getElementById("table");
             table.append(tableRow);
         }
+        function loadTable(route){
+            var modifySection = document.getElementById("modifyBlock");
+            if (route === "myFiles"){
+                modifySection.display = "block";
+            }else{
+                modifySection.display = "none";
+            }
+        }
+
+        async function openFiles(evt, route) {
+            let div;
+            var i, tablinks;
+            var fullRoute = "http://localhost:8080/api/" + route;
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            var dataRowsToRemove = document.getElementsByClassName("dataRow");
+            var index = 0;
+            while(index < dataRowsToRemove.length){
+                dataRowsToRemove[index].remove();
+            }
+            fetch(fullRoute)
+                .then(response => response.json())
+                .then(data => data.forEach(addRowTable));
+            evt.currentTarget.className += " active";
+        }
+
         function niceInputs() {
             [].forEach.call(document.getElementsByClassName("form-input"), (form_input) => {
                 form_input.getElementsByTagName("input")[0].addEventListener("focus", () => {
@@ -113,7 +137,7 @@
 </head>
 
 
-<body onload="openFiles(event, 'myFiles')">
+<body onload="openFiles(event, 'myFiles'); loadTable('myFiles')">
 <div layout:fragment="content">
     <div style="display: inline-flex;width: 87.5%;padding-bottom: 10px">
         <div style="width: 50%;display: flex;justify-content: left;align-items: start;">
@@ -142,11 +166,11 @@
         </div>
         <div>
             <div class="tab">
-                <button class="tablinks" onclick="openFiles(event, 'myFiles')">My Files</button>
-                <button class="tablinks" onclick="openFiles(event, 'allFiles')">All Files</button>
-                <button class="tablinks" onclick="openFiles(event, 'myOrgFiles')">Organisation Files</button>
-                    <button class="tablinks" onclick="openFiles(event, 'myPartnerFiles')">Partners Files</button>
-                    <button class="tablinks" onclick="openFiles(event, 'publicFiles')">Public Files</button>
+                <button class="tablinks" onclick="openFiles(event, 'myFiles'); loadTable('myFiles')">My Files</button>
+                <button class="tablinks" onclick="openFiles(event, 'allFiles'); loadTable('allFiles')">All Files</button>
+                <button class="tablinks" onclick="openFiles(event, 'myOrgFiles'); loadTable('myOrgFiles')">Organisation Files</button>
+                    <button class="tablinks" onclick="openFiles(event, 'myPartnerFiles'); loadTable('myPartnerFiles')">Partners Files</button>
+                    <button class="tablinks" onclick="openFiles(event, 'publicFiles'); loadTable('publicFiles')">Public Files</button>
                   </div>
 
                   <div id="allDetails">
@@ -164,6 +188,7 @@
                             <th scope="col">File Type</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
+                              <th scope="col"></th>
                           </tr>
                       </table>
                     </div>
