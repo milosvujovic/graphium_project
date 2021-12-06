@@ -73,7 +73,7 @@
                         <tr th:each="user : ${userList}">
                             <th scope="row" th:text="${user.username}">Username</th>
                             <td th:text ="${user.email}">Email</td>
-                            <td><a th:attr="href=@{'/verified/'+${user.username}}" verify><button type="button" class="btn btn-primary">Verify</button></a></td>
+                            <td><a th:attr="href=@{'/admin/verified/'+${user.username}}" verify><button type="button" class="btn btn-primary">Verify</button></a></td>
                         </tr>
                         </tbody>
                     </table>

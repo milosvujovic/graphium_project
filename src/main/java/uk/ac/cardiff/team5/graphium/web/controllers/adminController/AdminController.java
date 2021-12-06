@@ -30,7 +30,7 @@ public class AdminController {
 
     @GetMapping("/verify")
     public String verify(Model model) {
-        List<UserDTO> unverified =adminService.verify(Long.valueOf(1));
+        List<UserDTO> unverified =adminService.verify(Long.valueOf(2));
         model.addAttribute("userList", unverified);
         return "admin-verify";
     }
@@ -38,7 +38,7 @@ public class AdminController {
     @GetMapping("/verified/{userName}")
     public String verifyUser(@PathVariable(value = "userName", required = true) String userName){
         adminService.verifyUser(userName);
-        return "redirect:/verify";
+        return "redirect:/admin/verify";
     }
     @GetMapping("/partner")
     public String possiblePartners(Model model, Principal principal){
