@@ -13,13 +13,7 @@ create table if not exists `organisation` (
 						`organisation_name` varchar(127)
 );
 
-create table if not exists `insights` (
-						`insight_id` integer auto_increment primary key,
-						`date` DATE not null,
-                        `user_id` bigint references `users`(`user_id`),
-                        `file_id` varchar(100) references `files`(`file_id`),
-                        `organisation_id` integer references `organisation`(`organisation_id`)
-);
+
 
 create table if not exists `role` (
                       `role_id` integer auto_increment primary key,
@@ -56,6 +50,13 @@ create table if not exists `partnerships`(
 			`partner_id` int primary key auto_increment,
             `sharing_organisation_id` integer references `organisation`(`organisation_id`),
             `viewing_organisation_id` integer references `organisation`(`organisation_id`)
+);
+create table if not exists `insights` (
+						`insight_id` integer auto_increment primary key,
+						`date` DATE not null,
+                        `user_id` bigint references `users`(`user_id`),
+                        `file_id` varchar(100) references `files`(`file_id`),
+                        `organisation_id` integer references `organisation`(`organisation_id`)
 );
 
 DELIMITER //
@@ -145,16 +146,16 @@ insert into users (organisation_id, role_id, first_name, last_name, username, em
 insert into users (role_id, first_name, last_name, username, email, password, active, organisation_approved, email_verified) values (3, 'SystemAdmin', 'Example', 'sysadmin', 'sysadmin@example.com', '$2a$10$/vOrWfM8MJ.Dzpj3t5oGyeuNoERADR5LlEGrV6pwSr0Did8JikTTq', true, true, true);
 
 
-insert into files(file_id, user_id, file_name, file_type, tag, access_level, subject, comment, data, date) values(1,2,'Tax Report', 'pdf', 'urgent','private' ,'Finances', 'Published', '111', '2021-12-06');
-insert into files(file_id, user_id, file_name, file_type, tag, access_level, subject, comment, data, date) values(2,2,'Council Report on Tax', 'pdf', 'Final','private' ,'Finances', 'Publish', '111', '2021-12-06');
+insert into files(file_id, user_id, file_name, file_type, tag, access_level, subject, comment, data, date) values(1,2,'Tax Report', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'urgent','private' ,'Finances', 'Published', '111', '2021-12-06');
+insert into files(file_id, user_id, file_name, file_type, tag, access_level, subject, comment, data, date) values(2,2,'Council Report on Tax', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'Final','private' ,'Finances', 'Publish', '111', '2021-12-06');
 
 
-insert into files(file_id, user_id, file_name, file_type, tag, access_level, subject, comment, data, date) values(3,3,'Covid Report December 2021', 'pdf', 'draft','private' ,'Health', 'Pre Omicron', '111', '2021-12-06');
-insert into files(file_id, user_id, file_name, file_type, tag, access_level, subject, comment, data, date) values(4,3,'Covid Report November 2021', 'pdf', 'Final','myOrganisation' ,'Health', 'Includes Christmas', '111', '2021-12-06');
-insert into files(file_id, user_id, file_name, file_type, tag, access_level, subject, comment, data, date) values(5,7,'Covid Back Up Plan', 'pdf', 'Final','myPartners' ,'Health', 'Post XMAS', '111', '2021-12-06');
+insert into files(file_id, user_id, file_name, file_type, tag, access_level, subject, comment, data, date) values(3,3,'Covid Report December 2021', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'draft','private' ,'Health', 'Pre Omicron', '111', '2021-12-06');
+insert into files(file_id, user_id, file_name, file_type, tag, access_level, subject, comment, data, date) values(4,3,'Covid Report November 2021', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'Final','myOrganisation' ,'Health', 'Includes Christmas', '111', '2021-12-06');
+insert into files(file_id, user_id, file_name, file_type, tag, access_level, subject, comment, data, date) values(5,7,'Covid Back Up Plan', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'Final','myPartners' ,'Health', 'Post XMAS', '111', '2021-12-06');
 
-insert into files(file_id, user_id, file_name, file_type, tag, access_level, subject, comment, data, date) values(6,4,'WeatherDataJan', 'pdf', 'Final','myOrganisation' ,'Georgraphy', 'Includes Newport', '111', '2021-12-06');
-insert into files(file_id, user_id, file_name, file_type, tag, access_level, subject, comment, data, date) values(7,8,'WeatherDataFeb', 'pdf', 'Final','myPartners' ,'Georgraphy', 'Just Cardiff', '111', '2021-12-06');
-insert into files(file_id, user_id, file_name, file_type, tag, access_level, subject, comment, data, date) values(8,4,'WeatherDataMar', 'pdf', 'Final','myPartners' ,'Georgraphy', 'InaccurateData', '111', '2021-12-06');
+insert into files(file_id, user_id, file_name, file_type, tag, access_level, subject, comment, data, date) values(6,4,'WeatherDataJan', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'Final','myOrganisation' ,'Georgraphy', 'Includes Newport', '111', '2021-12-06');
+insert into files(file_id, user_id, file_name, file_type, tag, access_level, subject, comment, data, date) values(7,8,'WeatherDataFeb', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'Final','myPartners' ,'Georgraphy', 'Just Cardiff', '111', '2021-12-06');
+insert into files(file_id, user_id, file_name, file_type, tag, access_level, subject, comment, data, date) values(8,4,'WeatherDataMar', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'Final','myPartners' ,'Georgraphy', 'InaccurateData', '111', '2021-12-06');
 
-insert into files(file_id, user_id, file_name, file_type, tag, access_level, subject, comment, data, date) values(9,1,'Youth Sport Report', 'pdf', 'Final','public' ,'Sport', 'Published with WRU, FAW', '111', '2021-12-06');
+insert into files(file_id, user_id, file_name, file_type, tag, access_level, subject, comment, data, date) values(9,1,'Youth Sport Report', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'Final','public' ,'Sport', 'Published with WRU, FAW', '111', '2021-12-06');
