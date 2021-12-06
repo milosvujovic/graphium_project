@@ -27,7 +27,7 @@
             var download = document.createElement("td");
             var view = document.createElement("td");
             var modify = document.createElement("td");
-            modify.id =  "modifyBlock";
+            modify.className =  "modifyBlock";
             fileName.innerText = value['fileName'];
             username.innerText = value['username'];
             date.innerText = value['date'];
@@ -82,13 +82,11 @@
             var table = document.getElementById("table");
             table.append(tableRow);
         }
-        function loadTable(route){
-            var modifySection = document.getElementById("modifyBlock");
-            if (route === "myFiles"){
-                modifySection.display = "block";
-            }else{
-                modifySection.display = "none";
-            }
+        function loadTable(evt,route){
+            openFiles(evt,route);
+            const modifySection = document.getElementsByClassName("modifyBlock");
+            var item = modifySection.item(1);
+            console.log(item);
         }
 
         async function openFiles(evt, route) {
@@ -137,7 +135,7 @@
 </head>
 
 
-<body onload="openFiles(event, 'myFiles'); loadTable('myFiles')">
+<body onload="loadTable(event, 'myFiles');">
 <div layout:fragment="content">
     <div style="display: inline-flex;width: 87.5%;padding-bottom: 10px">
         <div style="width: 50%;display: flex;justify-content: left;align-items: start;">
@@ -166,11 +164,11 @@
         </div>
         <div>
             <div class="tab">
-                <button class="tablinks" onclick="openFiles(event, 'myFiles'); loadTable('myFiles')">My Files</button>
-                <button class="tablinks" onclick="openFiles(event, 'allFiles'); loadTable('allFiles')">All Files</button>
-                <button class="tablinks" onclick="openFiles(event, 'myOrgFiles'); loadTable('myOrgFiles')">Organisation Files</button>
-                    <button class="tablinks" onclick="openFiles(event, 'myPartnerFiles'); loadTable('myPartnerFiles')">Partners Files</button>
-                    <button class="tablinks" onclick="openFiles(event, 'publicFiles'); loadTable('publicFiles')">Public Files</button>
+                <button class="tablinks" onclick="loadTable(event, 'myFiles')">My Files</button>
+                <button class="tablinks" onclick="loadTable(event, 'allFiles')">All Files</button>
+                <button class="tablinks" onclick="loadTable(event, 'myOrgFiles')">Organisation Files</button>
+                    <button class="tablinks" onclick="loadTable(event, 'myPartnerFiles')">Partners Files</button>
+                    <button class="tablinks" onclick="loadTable(event, 'publicFiles')" >Public Files</button>
                   </div>
 
                   <div id="allDetails">
