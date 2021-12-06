@@ -53,11 +53,8 @@
     </div>
     <div class="--graphium-window">
         <div>
-            <div class="container" th:if="${!files.isEmpty}">
-                <form th:action="@{/file/reupload}" enctype="multipart/form-data" th:method="post" th:object="${fileForm}">
-                    <select th:field="*{fileId}" th:each="file : ${files}">
-                        <option th:value="${file.fileId}" th:text="${file.fileName}">"${file.fileName}"</option>
-                    </select>
+            <form th:action="@{/file/reupload}" enctype="multipart/form-data" th:method="post" th:object="${fileForm}">
+                <input th:field="*{fileId}" type="hidden"/>
 
 
                     <div class="row">
@@ -87,9 +84,6 @@
                     </div>
                 </form>
              </div>
-            <div class="container" th:if="${files.isEmpty}">
-              <p>No files to edit.</p>
-            </div>
 
         </div>
     </div>

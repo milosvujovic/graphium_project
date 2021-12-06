@@ -107,11 +107,10 @@ public class FileUploadController {
     }
 
     //      Displays form to upload files to the webpage.
-    @GetMapping("/file/reupload")
-    public String fileReUpload(Model model, Principal principal) {
-        List<FileDisplayer> files =  userService.getsUsersFiles(principal.getName());
-        model.addAttribute("files",files);
+    @GetMapping("/file/modify/{fileID}")
+    public String fileReUpload(Model model, @PathVariable(value = "fileID", required = true) String fileID) {
         FileForm form = new FileForm();
+        form.setFileId(fileID);
         model.addAttribute("fileForm",form);
         return "file-reupload.html";
     }
