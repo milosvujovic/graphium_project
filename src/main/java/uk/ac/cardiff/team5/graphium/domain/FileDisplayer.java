@@ -18,6 +18,6 @@ public class FileDisplayer {
 
     public boolean matches(String search) {
         String searchLower = search.toLowerCase();
-        return fileName.toLowerCase().contains(searchLower) || username.toLowerCase().contains(searchLower) || comment.toLowerCase().contains(searchLower);
+        return fileName.toLowerCase().contains(searchLower) || username.toLowerCase().contains(searchLower) || comment.toLowerCase().contains(searchLower) || subject.toLowerCase().contains(searchLower);
     }
 }

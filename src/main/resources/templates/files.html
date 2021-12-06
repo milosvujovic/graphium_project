@@ -141,6 +141,12 @@
         window.onload = () => {
             niceInputs();
         }
+        function searchTerm(evt){
+            var term = document.forms["searchForm"]["search"].value;
+            loadTable(evt,"searchFiles/" + term);
+            return false;
+
+        }
     </script>
 </head>
 
@@ -160,7 +166,7 @@
     </div>
     <div class="--graphium-window">
         <div>
-            <form action="/searchFiles" th:method="get">
+            <form id = "searchForm" action="/searchFiles" th:method="get" onsubmit="return searchTerm(event)">
                 <div style="display:inline-flex; width: 100%">
                     <div style="width:75% ">
                     <input class="form-input" aria-describedby="Enter a term to search for files." id="search" name="search" placeholder="Search for file" type="text" value=""/>

@@ -11,6 +11,7 @@ import uk.ac.cardiff.team5.graphium.service.UserService;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api")
@@ -43,5 +44,10 @@ public class FileSearchAPIController {
     public ResponseEntity<List<FileDisplayer>> findAllFiles(Principal principal){
         return ResponseEntity.ok(userService.getAllFiles(principal.getName()));
 
+    }
+    @GetMapping("/searchFiles/{term}")
+    public ResponseEntity<List<FileDisplayer>> findMyFiles(@PathVariable String term,Principal principal){
+        userService.findBySearchTerm(term, principal.getName());
+        return ResponseEntity.ok(userService.findBySearchTerm(term, principal.getName()));
     }
 }
