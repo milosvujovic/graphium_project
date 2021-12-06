@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.OrganisationEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.OrganisationRepository;
 import uk.ac.cardiff.team5.graphium.exception.EmailInUseException;
@@ -40,7 +41,7 @@ public class UserRegistrationController {
     }
 
     @PostMapping("/register")
-    public String userRegistration(final @Valid UserRegistrationForm userRegistrationForm, final BindingResult bindingResult, Model model) {
+    public String userRegistration(final @Valid UserRegistrationForm userRegistrationForm, final BindingResult bindingResult, Model model, RedirectAttributes redirAttrs) {
         if(bindingResult.hasErrors()){
             List<OrganisationEntity> organisationEntities = organisationRepository.findAll();
             model.addAttribute("organisationEntities", organisationEntities);
@@ -88,6 +89,9 @@ public class UserRegistrationController {
             System.out.println("Organisation admin not found - user cannot be verified");
         }
 
-        return "redirect:/";
+        redirAttrs.addFlashAttribute("message","Registration was successful");
+
+        return "redirect:/login";
+
     }
 }

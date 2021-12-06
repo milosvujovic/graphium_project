@@ -13,6 +13,7 @@ import java.util.Optional;
 public class FileServerDBImpl implements FileServer{
 
     private UserRepository userRepository;
+
     private DBFileStore dbFileStore;
 
     public FileServerDBImpl(DBFileStore aDbFileStore, UserRepository aUserRepository){
@@ -27,7 +28,6 @@ public class FileServerDBImpl implements FileServer{
         DBFile dbFile = new DBFile(null,aFile.getFileName(),aFile.getType() ,aFile.getTag(),aFile.getAccessLevel() ,aFile.getComment(),aFile.getData(), aFile.getDate(), aFile.getSubject());
 
         UserEntity user =  userRepository.findByUsername(username);
-
 //        Adds file to the user
         user.addFile(dbFile);
 //        Updates user in the database
