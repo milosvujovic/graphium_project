@@ -79,13 +79,14 @@
             var table = document.getElementById("table");
             table.append(tableRow);
         }
-        function loadTable(evt,route){
-            openFiles(evt,route);
-            var modifyButtonsToRemove = document.getElementsByClassName("modifyBlock");
-            console.log(modifyButtonsToRemove);
-            for (let item of modifyButtonsToRemove) {
-                console.log(item.className);
-            }
+        async function loadTable(evt,route){
+            await openFiles(evt,route);
+            // var modifyButtonsToRemove = document.getElementsByClassName("modifyBlock");
+            // console.log(Array.from(document.getElementsByClassName("modifyBlock")));
+            // console.log(modifyButtonsToRemove);
+            // console.log("Length is - ",modifyButtonsToRemove.length);
+            let collection = document.getElementsByClassName("modifyBlock");
+            console.log()
         }
 
         async function openFiles(evt, route) {
