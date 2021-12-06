@@ -11,7 +11,7 @@
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script>
-        function addRowTable(value, index, array) {
+        function addRowTable(value, route) {
             var tableRow = document.createElement("tr");
             tableRow.className="dataRow";
             var username = document.createElement("td");
@@ -54,16 +54,16 @@
             viewLink.append(viewButton);
             view.append(viewLink);
 
-
-            var modifyLink = document.createElement("a");
-            modifyLink.href='/file/modify/' + value['fileId'];
-            var modifyButton = document.createElement("button");
-            modifyButton.type="button";
-            modifyButton.className = "btn btn-primary";
-            modifyButton.innerText="Modify";
-            modifyLink.append(modifyButton);
-            modify.append(modifyLink);
-
+            if (route == "myFiles"){
+                var modifyLink = document.createElement("a");
+                modifyLink.href='/file/modify/' + value['fileId'];
+                var modifyButton = document.createElement("button");
+                modifyButton.type="button";
+                modifyButton.className = "btn btn-primary";
+                modifyButton.innerText="Modify";
+                modifyLink.append(modifyButton);
+                modify.append(modifyLink);
+            }
             tableRow.append(fileName);
             tableRow.append(username);
             tableRow.append(date);
@@ -79,17 +79,11 @@
             var table = document.getElementById("table");
             table.append(tableRow);
         }
-        async function loadTable(evt,route){
-            await openFiles(evt,route);
-            // var modifyButtonsToRemove = document.getElementsByClassName("modifyBlock");
-            // console.log(Array.from(document.getElementsByClassName("modifyBlock")));
-            // console.log(modifyButtonsToRemove);
-            // console.log("Length is - ",modifyButtonsToRemove.length);
-            let collection = document.getElementsByClassName("modifyBlock");
-            console.log()
+        function loadTable(evt,route){
+            openFiles(evt,route);
         }
 
-        async function openFiles(evt, route) {
+        function openFiles(evt, route) {
             let div;
             var i, tablinks;
             var fullRoute = "http://localhost:8080/api/" + route;
@@ -102,9 +96,28 @@
             while(index < dataRowsToRemove.length){
                 dataRowsToRemove[index].remove();
             }
-            fetch(fullRoute)
-                .then(response => response.json())
-                .then(data => data.forEach(addRowTable));
+
+            // Create a request variable and assign a new XMLHttpRequest object to it.
+            var request = new XMLHttpRequest()
+
+            // Open a new connection, using the GET request on the URL endpoint
+            request.open('GET', fullRoute, true)
+
+            request.onload = function () {
+                // Begin accessing JSON data here
+                console.log(request.responseText);
+                var files = JSON.parse(request.responseText);
+                for (let j = 0; j < files.length; j++) {
+                    addRowTable(files[j], route);
+                }
+            }
+
+            // Send request
+            request.send()
+
+            // fetch(fullRoute)
+            //     .then(response => response.json())
+            //     .then(data => data.forEach(addRowTable));
             evt.currentTarget.className += " active";
         }
 
