@@ -12,9 +12,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import uk.ac.cardiff.team5.graphium.data.jpa.entity.AuditEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.DBFile;
+import uk.ac.cardiff.team5.graphium.service.AuditService;
 import uk.ac.cardiff.team5.graphium.service.dto.FileDTO;
+import uk.ac.cardiff.team5.graphium.service.UserService;
+import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 
+import java.security.Principal;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,12 +35,16 @@ public class FileController {
     private DBFileStore dbFileStore;
 
     @Autowired
+    private AuditService auditService;
+    @Autowired
+    private UserService userService;
+    @Autowired
     public FileController(DBFileStore aDbFileStore) {
         dbFileStore = aDbFileStore;
     }
 
     @GetMapping("file/download/{fileId}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) {
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileId,Principal principal) {
 
         // Load file from database
         Optional<DBFile> dbFile = dbFileStore.findById(fileId);
@@ -49,6 +60,14 @@ public class FileController {
             }else{
                 fileName = theFile.getFileName() + ".pdf";
             }
+            UserDTO currentUser = userService.getUser(principal.getName());
+            LocalDate today = LocalDate.now();
+            AuditEntity auditEntity = new AuditEntity(today,"1", theFile.getFileId(), currentUser.getOrganisationId());
+            auditService.addAudit(auditEntity);
+
+
+
+
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(theFile.getFileType()))
                     .header(HttpHeaders.CONTENT_DISPOSITION, "filename=" + fileName)
