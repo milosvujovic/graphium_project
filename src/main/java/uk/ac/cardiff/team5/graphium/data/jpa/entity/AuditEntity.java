@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Entity
@@ -15,10 +16,10 @@ public class AuditEntity {
     private long insight_id;
 
     @Column
-    private LocalDate date;
+    private String date;
 
     @Column
-    private String user_id;
+    private String username;
 
     @Column
     private String file_id;
@@ -26,9 +27,9 @@ public class AuditEntity {
     @Column
     private Long organisation_id;
 
-    public AuditEntity(LocalDate date, String user_id, String file_id, Long organisation_id){
+    public AuditEntity(String date, String username, String file_id, Long organisation_id){
         this.date = date;
-        this.user_id = user_id;
+        this.username = username;
         this.file_id = file_id;
         this.organisation_id = organisation_id;
     }

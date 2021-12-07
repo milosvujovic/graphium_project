@@ -22,6 +22,8 @@ import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 import java.security.Principal;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,9 +63,11 @@ public class FileController {
                 fileName = theFile.getFileName() + ".pdf";
             }
             UserDTO currentUser = userService.getUser(principal.getName());
-            LocalDate today = LocalDate.now();
-            AuditEntity auditEntity = new AuditEntity(today,"1", theFile.getFileId(), currentUser.getOrganisationId());
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            AuditEntity auditEntity = new AuditEntity(dtf.format(now), principal.getName(), theFile.getFileId(), currentUser.getOrganisationId());
             auditService.addAudit(auditEntity);
+
 
 
 

@@ -15,8 +15,8 @@ create table if not exists `organisation` (
 
 create table if not exists `insights` (
 						`insight_id` integer auto_increment primary key,
-						`date` DATE not null,
-                        `user_id` bigint references `users`(`user_id`),
+						`date` varchar(100) not null,
+                        `username` varchar(30) references `users`(`username`),
                         `file_id` varchar(100) references `files`(`file_id`),
                         `organisation_id` integer references `organisation`(`organisation_id`)
 );
@@ -75,3 +75,11 @@ set @OrganisationID = (Select organisation_id from users where username = userna
 SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment,files.data, files.date,users.username FROM graphium.files JOIN users on files.user_id = users.user_id JOIN organisation on organisation.organisation_id = users.organisation_id WHERE users.organisation_id = @OrganisationID and files.access_level != 'private' ORDER BY files.date;
 END //
 DELIMITER ;
+/*
+DELIMITER //
+CREATE PROCEDURE GET_USER_ID(IN usernameParameter varchar(30))
+BEGIN 
+SELECT users.user_id FROM graphium.users WHERE users.username = usernameParameter;
+END //
+DELIMITER ;
+*/
