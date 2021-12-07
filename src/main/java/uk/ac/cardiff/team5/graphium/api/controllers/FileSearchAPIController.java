@@ -23,7 +23,6 @@ public class FileSearchAPIController {
 
     @GetMapping("/myFiles")
     public ResponseEntity<List<FileDisplayer>> findMyFiles(Principal principal){
-//        return ResponseEntity.ok(userService.getsUsersFiles(principal.getName()));
         return ResponseEntity.ok().body(userService.getsUsersFiles(principal.getName()));
     }
 

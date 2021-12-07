@@ -15,6 +15,7 @@ public class FileDisplayer {
     private String date;
     private String username;
     private String subject;
+    private String organisationName;
 
     public boolean matches(String search) {
         String searchLower = search.toLowerCase();
