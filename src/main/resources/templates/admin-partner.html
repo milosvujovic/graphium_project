@@ -10,6 +10,67 @@
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script>
+        function addRowTable(value, route) {
+            var tableRow = document.createElement("tr");
+            tableRow.className="dataRow";
+            var username = document.createElement("td");
+            username.innerHTML = value['organisationName'];
+
+            tableRow.append(username);
+
+            if (route == "potentialPartners"){
+                var button = document.createElement("td");
+                var link = document.createElement("a");
+                link.href='/partner/' + value['organisation_id'];
+                var shareButton = document.createElement("button");
+                shareButton.type="button";
+                shareButton.className = "btn btn-primary";
+                shareButton.innerText="Share with";
+                link.append(shareButton);
+                button.append(link);
+                tableRow.append(button);
+            }
+            var table = document.getElementById("table");
+            table.append(tableRow);
+        }
+        function loadTable(evt,route){
+            openFiles(evt,route);
+        }
+
+        function openFiles(evt, route) {
+            let div;
+            var i, tablinks;
+            var fullRoute = "http://localhost:8080/api/admin/" + route;
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            var dataRowsToRemove = document.getElementsByClassName("dataRow");
+            var index = 0;
+            while(index < dataRowsToRemove.length){
+                dataRowsToRemove[index].remove();
+            }
+
+            // Create a request variable and assign a new XMLHttpRequest object to it.
+            var request = new XMLHttpRequest()
+
+            // Open a new connection, using the GET request on the URL endpoint
+            request.open('GET', fullRoute, true)
+
+            request.onload = function () {
+                // Begin accessing JSON data here
+                var partners = JSON.parse(request.responseText);
+                for (let j = 0; j < partners.length; j++) {
+                    addRowTable(partners[j], route);
+                }
+            }
+
+            // Send request
+            request.send()
+
+            evt.currentTarget.className += " active";
+        }
+
         function niceInputs() {
             [].forEach.call(document.getElementsByClassName("form-input"), (form_input) => {
                 form_input.getElementsByTagName("input")[0].addEventListener("focus", () => {
@@ -34,10 +95,11 @@
             niceInputs();
         }
     </script>
+
 </head>
 
 
-<body>
+<body onload = "loadTable(event, 'potentialPartners')">
 <div layout:fragment="content">
     <div style="display: inline-flex;width: 87.5%;padding-bottom: 10px">
         <div style="width: 50%;display: flex;justify-content: left;align-items: start;">
@@ -58,28 +120,46 @@
     </div>
     <div class="--graphium-window">
         <div>
-            <div class="container">
-                <h1>Potential Partners</h1>
-                <div class="container" th:if="${!organisations.isEmpty}">
-                    <table class="table">
-                        <thead>
+            <div class="tab">
+                <button class="tablinks" onclick="loadTable(event, 'potentialPartners')">Potential Partners</button>
+                <button class="tablinks" onclick="loadTable(event, 'currentPartners')">Organisations that you are sharing with</button>
+                <button class="tablinks" onclick="loadTable(event, 'partnersThatYouCanView')">Organisations that you can view</button>
+            </div>
+
+            <div id="allDetails">
+                <div id ="tableDiv" class="container">
+                    <h1 id = "title">Title</h1>
+                    <table id ="table" class = "table" style="width: 100%;padding-left: 10px;padding-right: 10px">
                         <tr>
                             <th scope="col">Organisation Name</th>
-                            <th></th>
+                            <th scope="col"></th>
                         </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="organisation : ${organisations}">
-                            <th scope="row" th:text="${organisation.organisationName}">Username</th>
-                            <td><a th:attr="href=@{'/admin/partner/'+${organisation.organisation_id}}"><button type="button" class="btn btn-primary">Partner</button></a></td>
-                        </tr>
-                        </tbody>
                     </table>
                 </div>
-                <div class="container" th:if="${organisations.isEmpty}">
-                    No partners possible.
-                </div>
             </div>
+
+<!--            <div class="container">-->
+<!--                <h1>Potential Partners</h1>-->
+<!--                <div class="container" th:if="${!organisations.isEmpty}">-->
+<!--                    <table class="table">-->
+<!--                        <thead>-->
+<!--                        <tr>-->
+<!--                            <th scope="col">Organisation Name</th>-->
+<!--                            <th></th>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                        <tr th:each="organisation : ${organisations}">-->
+<!--                            <th scope="row" th:text="${organisation.organisationName}">Username</th>-->
+<!--                            <td><a th:attr="href=@{'/admin/partner/'+${organisation.organisation_id}}"><button type="button" class="btn btn-primary">Partner</button></a></td>-->
+<!--                        </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--                <div class="container" th:if="${organisations.isEmpty}">-->
+<!--                    No partners possible.-->
+<!--                </div>-->
+<!--            </div>-->
 
         </div>
     </div>

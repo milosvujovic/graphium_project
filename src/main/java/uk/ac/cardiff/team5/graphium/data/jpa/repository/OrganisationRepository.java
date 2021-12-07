@@ -16,4 +16,10 @@ public interface OrganisationRepository extends JpaRepository<OrganisationEntity
 
     @Query(value = "CALL getPossiblePartnerships(:orgID);", nativeQuery = true)
     List<OrganisationEntity> findPossiblePartners(@Param("orgID") Long name);
+
+    @Query(value = "CALL getCurrentSharingPartnerships(:orgID);", nativeQuery = true)
+    List<OrganisationEntity> findPartnersThatYouShareWith(@Param("orgID") Long name);
+
+    @Query(value = "CALL getCurrentViewingPartnerships(:orgID);", nativeQuery = true)
+    List<OrganisationEntity> findPartnersThatYouCanView(@Param("orgID") Long name);
 }

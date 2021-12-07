@@ -15,4 +15,8 @@ public interface AdminService {
     void recordPartnership(String orgId, String name);
 
     List<UserDTO> getOrganisationMembers(String username);
+
+    List<OrganisationDTO> findSharingPartners(String name);
+
+    List<OrganisationDTO> findPartnersThatYouCanView(String name);
 }

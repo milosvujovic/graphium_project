@@ -70,6 +70,28 @@ END //
 DELIMITER ;
 
 DELIMITER //
+CREATE PROCEDURE getCurrentSharingPartnerships(IN organisationID varchar(30))
+BEGIN
+SELECT organisation_id, organisation_name FROM organisation WHERE organisation_id IN (SELECT viewing_organisation_id
+FROM organisation
+JOIN partnerships on partnerships.sharing_organisation_id = organisation.organisation_id
+WHERE organisation.organisation_id = organisationID) and organisation.organisation_id != organisationID;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE getCurrentViewingPartnerships(IN organisationID varchar(30))
+BEGIN
+SELECT organisation_id, organisation_name FROM organisation WHERE organisation_id IN (
+SELECT sharing_organisation_id
+FROM organisation
+JOIN partnerships on partnerships.sharing_organisation_id = organisation.organisation_id
+WHERE partnerships.viewing_organisation_id = organisationID) and organisation.organisation_id != organisationID;
+END //
+DELIMITER ;
+
+
+DELIMITER //
 CREATE PROCEDURE createPartnership(IN organisationID int, IN usernameParameter varchar(30))
 BEGIN
 set @SharingOrganisationID = (Select organisation_id from users where username = usernameParameter);

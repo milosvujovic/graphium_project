@@ -43,7 +43,6 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<OrganisationDTO> findPossiblePartners(String name) {
         Long organisationId = userRepository.findByUsername(name).getOrganisation().getOrganisationId();
-        System.out.println(organisationId);
         return organisationRepository.findPossiblePartners(organisationId)
                 .stream()
                 .map(c -> new OrganisationDTO(c))
@@ -53,11 +52,8 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void recordPartnership(String orgId, String name) {
         OrganisationEntity sharingOrganisation = userRepository.findByUsername(name).getOrganisation();
-        System.out.println("got sharingOrganisation");
         OrganisationEntity readingOrganisation = organisationRepository.findByOrganisationId(Long.valueOf(orgId));
-        System.out.println("got readingOrganisation");
         PartnershipEntity partnership = new PartnershipEntity(sharingOrganisation, readingOrganisation);
-        System.out.println("saving partnership");
         partnershipRepository.save(partnership);
     }
 
@@ -68,6 +64,23 @@ public class AdminServiceImpl implements AdminService {
                 .stream()
                 .filter(c -> c.getOrganisation_approved() == true)
                 .map(c -> new UserDTO(c))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrganisationDTO> findSharingPartners(String name) {
+        Long organisationId = userRepository.findByUsername(name).getOrganisation().getOrganisationId();
+        return organisationRepository.findPartnersThatYouShareWith(organisationId)
+                .stream()
+                .map(c -> new OrganisationDTO(c))
+                .collect(Collectors.toList());
+    }
+    @Override
+    public List<OrganisationDTO> findPartnersThatYouCanView(String name) {
+        Long organisationId = userRepository.findByUsername(name).getOrganisation().getOrganisationId();
+        return organisationRepository.findPartnersThatYouCanView(organisationId)
+                .stream()
+                .map(c -> new OrganisationDTO(c))
                 .collect(Collectors.toList());
     }
 }
