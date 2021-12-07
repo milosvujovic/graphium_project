@@ -78,8 +78,6 @@ public class UserServiceImpl implements UserService {
         UserEntity user = userRepository.findByUsername(username);
         UserDTO userDTO = new UserDTO(user);
         return userDTO;
-
-
     }
 
     @Override
