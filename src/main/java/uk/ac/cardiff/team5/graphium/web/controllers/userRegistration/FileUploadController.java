@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import uk.ac.cardiff.team5.graphium.domain.FileDisplayer;
 import uk.ac.cardiff.team5.graphium.files.FileServer;
+import uk.ac.cardiff.team5.graphium.service.AuditService;
 import uk.ac.cardiff.team5.graphium.service.UserService;
 import uk.ac.cardiff.team5.graphium.service.dto.FileDTO;
-import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 import uk.ac.cardiff.team5.graphium.web.controllers.userRegistration.forms.FileForm;
 
 import javax.validation.Valid;
@@ -24,10 +24,13 @@ import java.util.List;
 public class FileUploadController {
     private FileServer fileServer ;
     private UserService userService;
+    private AuditService auditService;
 
-    public FileUploadController(FileServer anFileServer, UserService aUserService) {
+
+    public FileUploadController(FileServer anFileServer, UserService aUserService, AuditService aAuditService) {
         fileServer = anFileServer;
         userService = aUserService;
+        auditService = aAuditService;
     }
 //      Displays form to upload files to the webpage.
     @GetMapping("file")
@@ -58,6 +61,15 @@ public class FileUploadController {
     public String displayUsersFiles(Model model, Principal principal) {
 //        Deals with getting the user here
         List<FileDisplayer> files = userService.getsUsersFiles(principal.getName());
+        auditService.retrieveAudit("poo");
+//        for(int i = 0; i< files.size(); i++){
+//            FileDisplayer myFile = files.get(i);
+//            System.out.println(myFile.getFileId());
+//            AuditEntity current = auditService.retrieveAudit(myFile.getFileId());
+//            System.out.println(current.getDate());
+//        }
+
+
 //        Adds the users details including the files to the model and returns the page.
         model.addAttribute("files", files);
         model.addAttribute("title", "Your Files");

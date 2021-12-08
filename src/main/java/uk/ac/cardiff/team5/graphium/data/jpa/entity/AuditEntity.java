@@ -3,8 +3,6 @@ package uk.ac.cardiff.team5.graphium.data.jpa.entity;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Entity
@@ -32,6 +30,10 @@ public class AuditEntity {
         this.username = username;
         this.file_id = file_id;
         this.organisation_id = organisation_id;
+    }
+
+    public String getDate(){
+        return this.date;
     }
 
 

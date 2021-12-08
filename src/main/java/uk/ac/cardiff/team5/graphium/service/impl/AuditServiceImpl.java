@@ -28,4 +28,9 @@ public class AuditServiceImpl implements AuditService {
         return audit;
     }
 
+    public AuditEntity retrieveAudit(String fileId){
+
+        return auditRepository.findByFileId(fileId);
+    }
+
 }
