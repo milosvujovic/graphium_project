@@ -8,6 +8,9 @@ import uk.ac.cardiff.team5.graphium.data.jpa.entity.AuditEntity;
 
 @Repository("auditRepository")
 public interface AuditRepository extends JpaRepository<AuditEntity, Long> {
-    AuditEntity findByFileId(String fileId);
+    //AuditEntity findByfile_id(String file_id);
+    //AuditEntity findAuditEntityByFile_id(String file_id);
+
+    AuditEntity findByUsername(String username);
 
 }

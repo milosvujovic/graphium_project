@@ -7,5 +7,7 @@ import uk.ac.cardiff.team5.graphium.data.jpa.entity.AuditEntity;
 public interface AuditService {
     AuditEntity addAudit(AuditEntity audit);
 
-    AuditEntity retrieveAudit(String fileId);
+//    AuditEntity retrieveAudit(String file_id);
+
+    AuditEntity retrieveAuditByUsername(String username);
 }
