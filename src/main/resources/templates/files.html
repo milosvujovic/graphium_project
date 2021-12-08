@@ -86,10 +86,15 @@
                         <td class="table-content" >N/A</td>
                         <td class="table-content"  th:text="${file.tag}">Tag</td>
                         <td class="table-content"  th:text="${file.accessLevel}">Access Level</td>
-                        <td class="table-content">
-                            <div style="display: inline-flex; width: 100%">
-                                <a th:attr="href=@{'/file/download/'+${file.fileId}}" download><button type="button" class="download-btn">Download</button></a>
-                                <span th:if="${file.fileType == 'application/pdf'}"><a th:href="@{/file/view/{furl}(furl=${file.fileId})}"><button type="button" class="view-btn">View</button></a></span><span th:unless="${file.fileType == 'application/pdf'}"><button type="button" class="btn btn-primary" disabled>View</button></span>
+                        <td>
+                            <div id="wrapper">
+                                <div id="c1">
+                                    <a th:attr="href=@{'/file/download/'+${file.fileId}}" download><button type="button" class="download-btn">Download</button></a>
+                                </div>
+                                <div id="c11"></div>
+                                <div id="c2">
+                                    <span th:if="${file.fileType == 'application/pdf'}"><a th:href="@{/file/view/{furl}(furl=${file.fileId})}"><button type="button" class="view-btn">View</button></a></span><span th:unless="${file.fileType == 'application/pdf'}"><button type="button" class="btn btn-primary" disabled>View</button></span>
+                                </div>
                             </div>
                         </td>
                     </tr>

@@ -133,4 +133,14 @@ a{
     padding: 12px;
     margin: 8px 0;
     box-sizing: border-box;
+    border-radius: 5px;
+}
+
+#wrapper {
+    width: 80%;
+    display: flex;
+}
+
+#wrapper > div {
+    flex-grow: 1;
 }
