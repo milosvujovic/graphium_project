@@ -8,6 +8,12 @@
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="/files.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"
+            integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V"
+            crossorigin="anonymous"
+    />
 </head>
 
 
@@ -52,43 +58,45 @@
     </div>
     <div class="--graphium-window">
         <div>
-            <form action="/searchFiles" th:method="get">
-                <div style="display:inline-flex; width: 100%">
-                    <div style="width:75% ">
-                    <input class="form-input" aria-describedby="Enter a term to search for files." id="search" name="search" placeholder="Search for file" type="text" value=""/>
-                    </div>
-                    <div style="width:25%;display: flex;justify-content: right;align-items: end;">
-                    <button class="form-submit">Search</button>
-                    </div>
-                </div>
 
-            </form>
         </div>
         <div>
             <div class="container" th:if="${!files.isEmpty}">
-                <table style="width: 100%;padding-left: 10px;padding-right: 10px">
-                    <thead >
-                    <tr class="table-headers">
-                        <th scope="col">File Name</th>
-                        <th scope="col">Author</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Expires On</th>
-                        <th scope="col">Tag</th>
-                        <th scope="col">Access Level</th>
-                        <th scope="col">Actions</th>
-                        <th scope="col"></th>
+                <table id="file-table">
+                    <thead>
+                    <tr>
+                        <th class="table-heading" scope="col">File Name</th>
+                        <th class="table-heading" scope="col">Author</th>
+                        <th class="table-heading" scope="col">Date</th>
+                        <th class="table-heading" scope="col">Expires On</th>
+                        <th class="table-heading" scope="col">Tag</th>
+                        <th class="table-heading" scope="col">Access Level</th>
+                        <th class="table-heading" scope="col">
+                            <form action="/searchFiles" th:method="get">
+                                <input class="search-input" aria-describedby="Enter a term to search for files." id="search" name="search" placeholder="Search for file" type="text" value=""/>
+                            </form>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="file : ${files}">
-                        <th scope="row" th:text="${file.fileName}">File Name</th>
-                        <td th:text ="${file.username}">Author</td>
-                        <td th:text="${file.date}"></td>
-                        <td >N/A</td>
-                        <td th:text="${file.tag}">Tag</td>
-                        <td th:text="${file.accessLevel}">Access Level</td>
-                        <td ><a th:attr="href=@{'/file/download/'+${file.fileId}}" download><button type="button" class="download-btn">Download</button></a></td>
-                        <td><span th:if="${file.fileType == 'application/pdf'}"><a th:href="@{/file/view/{furl}(furl=${file.fileId})}"><button type="button" class="view-btn">View</button></a></span><span th:unless="${file.fileType == 'application/pdf'}"><button type="button" class="btn btn-primary" disabled>View</button></span></td>
+                        <th class="table-content" scope="row" th:text="${file.fileName}">File Name</th>
+                        <td class="table-content"  th:text ="${file.username}">Author</td>
+                        <td class="table-content"  th:text="${file.date}"></td>
+                        <td class="table-content" >N/A</td>
+                        <td class="table-content"  th:text="${file.tag}">Tag</td>
+                        <td class="table-content"  th:text="${file.accessLevel}">Access Level</td>
+                        <td>
+                            <div id="wrapper">
+                                <div id="c1">
+                                    <a th:attr="href=@{'/file/download/'+${file.fileId}}" download><button type="button" class="download-btn">Download</button></a>
+                                </div>
+                                <div id="c11"></div>
+                                <div id="c2">
+                                    <span th:if="${file.fileType == 'application/pdf'}"><a th:href="@{/file/view/{furl}(furl=${file.fileId})}"><button type="button" class="view-btn">View</button></a></span><span th:unless="${file.fileType == 'application/pdf'}"><button type="button" class="btn btn-primary" disabled>View</button></span>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
