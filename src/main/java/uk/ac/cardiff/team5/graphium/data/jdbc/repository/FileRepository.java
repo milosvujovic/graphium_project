@@ -44,7 +44,7 @@ public class FileRepository {
 
     public List<FileDisplayer> findAllPublic() {
         return jdbc.query(
-                "SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment, files.date,users.username,files.subject,organisation.organisation_name FROM graphium.files JOIN users on files.user_id = users.user_id  JOIN organisation on organisation.organisation_id = users.organisation_id where files.access_level = 'public' ORDER BY files.date;",
+                "call getPublicFiles();",
                 new Object[]{},
                 fileMapper);
     }
