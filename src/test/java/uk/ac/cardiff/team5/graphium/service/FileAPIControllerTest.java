@@ -35,6 +35,6 @@ public class FileAPIControllerTest {
         mvc.perform(get("/api/publicFiles").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)));
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 }
