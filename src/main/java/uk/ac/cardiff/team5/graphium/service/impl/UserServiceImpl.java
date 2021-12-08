@@ -117,6 +117,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<FileDisplayer> getAllFiles(String username) {
+        System.out.println(fileRepository.findAllFiles(username));
         return fileRepository.findAllFiles(username);
     }
 
