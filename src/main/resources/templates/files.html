@@ -87,13 +87,15 @@
                         <td class="table-content"  th:text="${file.tag}">Tag</td>
                         <td class="table-content"  th:text="${file.accessLevel}">Access Level</td>
                         <td>
-                            <div id="wrapper">
-                                <div id="c1">
+                            <div id="wrapper" class="button-center">
+                                <div id="b1" style="width: 60%">
                                     <a th:attr="href=@{'/file/download/'+${file.fileId}}" download><button type="button" class="download-btn">Download</button></a>
                                 </div>
-                                <div id="c11"></div>
-                                <div id="c2">
-                                    <span th:if="${file.fileType == 'application/pdf'}"><a th:href="@{/file/view/{furl}(furl=${file.fileId})}"><button type="button" class="view-btn">View</button></a></span><span th:unless="${file.fileType == 'application/pdf'}"><button type="button" class="btn btn-primary" disabled>View</button></span>
+                                <div id="b2" style="width: 50%" class="button-center">
+                                    <span th:if="${file.fileType == 'application/pdf'}"><a th:href="@{/file/view/{furl}(furl=${file.fileId})}"><button type="button" class="view-btn">View</button></a></span><span th:unless="${file.fileType == 'application/pdf'}"><button type="button" class="view-btn disabled" disabled>View</button></span>
+                                </div>
+                                <div id="b3"style="width: 20%" class="button-center">
+                                    <button class="insights-btn" >i</button>
                                 </div>
                             </div>
                         </td>

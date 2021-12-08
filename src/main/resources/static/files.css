@@ -83,8 +83,7 @@ a{
     cursor: pointer;
     height: 26px;
     transition: ease all 0.15s;
-    margin: 10px;
-    width: 100%;
+    width: 80%;
 }
 
 .download-btn:hover {
@@ -100,8 +99,20 @@ a{
     cursor: pointer;
     height: 26px;
     transition: ease all 0.15s;
-    margin: 10px;
-    width:100%;
+    width: 60%;
+
+}
+
+.insights-btn {
+    font-size: 12px;
+    background-color: #b2b2b2;
+    color: white;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    height: 26px;
+    width: 26px;
+    transition: ease all 0.15s;
 }
 
 .view-btn:hover {
@@ -136,11 +147,19 @@ a{
     border-radius: 5px;
 }
 
+.disabled{
+    cursor: not-allowed;
+}
+
 #wrapper {
-    width: 80%;
+    width: 100%;
     display: flex;
 }
 
-#wrapper > div {
-    flex-grow: 1;
+/*#wrapper > div {*/
+/*    flex-grow: 1;*/
+/*}*/
+
+.button-center{
+    text-align: center;
 }
