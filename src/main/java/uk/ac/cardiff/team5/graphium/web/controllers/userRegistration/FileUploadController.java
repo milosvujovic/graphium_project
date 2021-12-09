@@ -81,6 +81,7 @@ public class FileUploadController {
     @GetMapping("file/view/{fileId}")
     public String viewFile(@PathVariable(value = "fileId", required = true) String name, Model model){
         model.addAttribute("id" , name);
+
         return "/file-viewer.html";
     }
 

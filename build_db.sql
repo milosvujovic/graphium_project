@@ -56,7 +56,8 @@ create table if not exists `insights` (
 						`date` varchar(50) not null,
                         `username` varchar(30) references `users`(`username`),
                         `file_id` varchar(100) references `files`(`file_id`),
-                        `organisation_id` integer references `organisation`(`organisation_id`)
+                        `organisation_id` integer references `organisation`(`organisation_id`),
+                        `action` varchar(30) 
 );
 
 DELIMITER //

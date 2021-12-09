@@ -25,11 +25,15 @@ public class AuditEntity {
     @Column
     private Long organisation_id;
 
-    public AuditEntity(String date, String username, String file_id, Long organisation_id){
+    @Column
+    private String action;
+
+    public AuditEntity(String date, String username, String file_id, Long organisation_id, String action){
         this.date = date;
         this.username = username;
         this.file_id = file_id;
         this.organisation_id = organisation_id;
+        this.action = action;
     }
 
     public String getDate(){
