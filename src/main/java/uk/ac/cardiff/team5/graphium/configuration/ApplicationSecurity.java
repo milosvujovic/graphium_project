@@ -47,19 +47,18 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/register").permitAll()
+                .antMatchers("/admin/**").access("hasRole('2')")
+                .antMatchers("/api/admin/**").access("hasRole('2')")
+
                 .antMatchers("/upload").authenticated()
-                .antMatchers("/myFiles").authenticated()
-<<<<<<< HEAD
                 .antMatchers("/file").authenticated()
-                .antMatchers("/myOrgFiles").authenticated()
-                .antMatchers("/verify").access("hasRole('2')")
-=======
                 .antMatchers("/files").authenticated()
+                .antMatchers("/myFiles").authenticated()
                 .antMatchers("/file/view/**").authenticated()
                 .antMatchers("/file/modify/**").authenticated()
-                .antMatchers("/admin/**").authenticated()
-                .antMatchers("/api/user/**").authenticated()
->>>>>>> main
+                .antMatchers("/file/reupload").authenticated()
+
+                
                 .and()
                 .formLogin()
                     .loginPage("/login")
