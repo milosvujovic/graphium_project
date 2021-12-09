@@ -70,12 +70,8 @@ public class FileUploadController {
 //            System.out.println(myFile.getFileId());
 //            AuditEntity current = auditService.retrieveAudit(myFile.getFileId());
 //            System.out.println(current.getDate());
-        List<AuditEntity> current = (List<AuditEntity>) auditService.retrieveAuditByUsername("m");
-        for(int i = 0; i< current.size(); i++){
-            AuditEntity rightNow = current.get(i);
-            System.out.println(rightNow.getDate());
-        }
-
+        AuditEntity current = auditService.retrieveAuditByUsername(principal.getName());
+        System.out.println(current.getDate());
 //        }
 
 
