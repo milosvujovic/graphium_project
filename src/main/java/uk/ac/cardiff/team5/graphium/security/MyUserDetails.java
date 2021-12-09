@@ -17,7 +17,8 @@ public class MyUserDetails implements org.springframework.security.core.userdeta
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole());
+        System.out.println(user.getRole());
         return Arrays.asList(authority);
     }
 

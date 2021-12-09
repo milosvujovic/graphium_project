@@ -50,7 +50,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/myFiles").authenticated()
                 .antMatchers("/file").authenticated()
                 .antMatchers("/myOrgFiles").authenticated()
-                .antMatchers("/verify").hasRole("ORG_ADMIN")
+                .antMatchers("/verify").access("hasRole('2')")
                 .and()
                 .formLogin()
                     .loginPage("/login")
