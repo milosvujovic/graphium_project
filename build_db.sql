@@ -53,8 +53,8 @@ create table if not exists `partnerships`(
 );
 create table if not exists `insights` (
 						`insight_id` integer auto_increment primary key,
-						`date` DATE not null,
-                        `user_id` bigint references `users`(`user_id`),
+						`date` varchar(50) not null,
+                        `username` bigint references `users`(`username`),
                         `file_id` varchar(100) references `files`(`file_id`),
                         `organisation_id` integer references `organisation`(`organisation_id`)
 );
