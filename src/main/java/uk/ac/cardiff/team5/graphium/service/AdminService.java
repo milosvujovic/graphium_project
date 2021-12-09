@@ -1,5 +1,6 @@
 package uk.ac.cardiff.team5.graphium.service;
 
+import uk.ac.cardiff.team5.graphium.service.dto.OrganisationDTO;
 import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 
 import java.util.List;

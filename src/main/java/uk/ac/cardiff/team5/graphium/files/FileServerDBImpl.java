@@ -1,6 +1,5 @@
 package uk.ac.cardiff.team5.graphium.files;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.DBFile;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.UserEntity;
@@ -29,7 +28,6 @@ public class FileServerDBImpl implements FileServer{
         DBFile dbFile = new DBFile(null,aFile.getFileName(),aFile.getType() ,aFile.getTag(),aFile.getAccessLevel() ,aFile.getComment(),aFile.getData(), aFile.getDate(), aFile.getSubject());
 
         UserEntity user =  userRepository.findByUsername(username);
-
 //        Adds file to the user
         user.addFile(dbFile);
 //        Updates user in the database
