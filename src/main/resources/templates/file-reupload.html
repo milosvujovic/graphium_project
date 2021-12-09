@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/main-layout}">
+
 <head>
     <meta charset="UTF-8">
-    <title>My Files</title>
+    <title>Modify File</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="/files.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -44,47 +45,50 @@
             <h1>My Organisation Name</h1>
         </div>
         <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
-            <a href="/admin/verify">Pending Members</a>
+            <a href="/myFiles">VIEW MY FILES</a>
         </div>
         <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
-            <a href="/admin/members">All Members</a>
-        </div>
-        <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
-            <a href="/admin/partner">Share Files</a>
-        </div>
-        <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
-            <a href="/files">My Files</a>
+            <a href="/file">UPLOAD A FILE</a>
         </div>
     </div>
     <div class="--graphium-window">
-        <div id = "content">
-            <div class="container">
-                <p>Unverified Users</p>
-                <div class="container" th:if="${!userList.isEmpty}">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">User Name</th>
-                            <th scope="col">Email</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="user : ${userList}">
-                            <th scope="row" th:text="${user.username}">Username</th>
-                            <td th:text ="${user.email}">Email</td>
-                            <td><a th:attr="href=@{'/admin/verified/'+${user.username}}" verify><button type="button" class="btn btn-primary">Verify</button></a></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="container" th:if="${userList.isEmpty}">
-                    No users unverified.
-                </div>
-            </div>
-        </div>
+        <div>
+            <form th:action="@{/file/reupload}" enctype="multipart/form-data" th:method="post" th:object="${fileForm}">
+                <input th:field="*{fileId}" type="hidden"/>
 
+
+                    <div class="row">
+                        <div class = "col-md">
+                            <div class="mb-3">
+                                <label class="text-secondary" for="file">File: </label><br>
+                                <input th:field="*{file}" type="file" required/>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "row">
+                        <div class="alert alert-danger" th:if="${errorMessage != null}" th:text="${errorMessage}">File Error</div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm">
+                                <div class = "d-flex justify-content-end">
+                                    <button class="btn btn-danger btn-lg">Cancel</button>
+                                </div>
+
+                            </div>
+                            <div class="col-sm">
+                                <button class="btn btn-dark btn-lg">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+             </div>
+
+        </div>
     </div>
+
+</div>
 </div>
 </body>
 
