@@ -47,7 +47,7 @@ public class FileUploadController {
         }else{
 //            Saves the form as a FileDTO and then saves it to the database.
             LocalDate today = LocalDate.now();
-            FileDTO newFile = new FileDTO(form.getFileId(), form.getLogoFileName(),form.getLogoFile().getContentType(),form.getTag(),form.getAccessLevel(),form.getComment(),form.getLogoFile().getBytes(), today.toString());
+            FileDTO newFile = new FileDTO(form.getFileId(), form.getFileName(),form.getFile().getContentType(),form.getTag(),form.getAccessLevel(),form.getComment(),form.getFile().getBytes(), today.toString());
             String fileId = fileServer.saveFiles(newFile,principal.getName());
 //            Displays the users files
             return "redirect:/myFiles";

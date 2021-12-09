@@ -10,7 +10,7 @@ public class FileTypeValidator implements ConstraintValidator<ValidFile, FileFor
     public boolean isValid(FileForm fileForm, ConstraintValidatorContext constraintValidatorContext) {
         System.out.println("Testing the valid file");
         List<String> allowedFileTypes = Arrays.asList("application/vnd.openxmlformats-officedocument.wordprocessingml.document","application/pdf");
-        Boolean isValid = allowedFileTypes.contains(fileForm.getLogoFile().getContentType());
+        Boolean isValid = allowedFileTypes.contains(fileForm.getFile().getContentType());
         return isValid;
 
     }
