@@ -205,6 +205,29 @@
                 </div>
             </form>
         </div>
+        <div>
+            <div class="container">
+                <table id="file-table">
+                    <thead>
+                    <tr>
+                        <th class="table-heading" scope="col">File Name</th>
+                        <th class="table-heading" scope="col">Author</th>
+                        <th class="table-heading" scope="col">Date</th>
+                        <th class="table-heading" scope="col">Expires On</th>
+                        <th class="table-heading" scope="col">Tag</th>
+                        <th class="table-heading" scope="col">Access Level</th>
+                        <th class="table-heading" scope="col">
+                            <form action="/searchFiles" th:method="get">
+                                <input class="search-input" aria-describedby="Enter a term to search for files." id="search" name="search" placeholder="Search for file" type="text" value=""/>
+                            </form>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                </table>
+            </div>
+
+        </div>
     </div>
     </div>
 </body>
