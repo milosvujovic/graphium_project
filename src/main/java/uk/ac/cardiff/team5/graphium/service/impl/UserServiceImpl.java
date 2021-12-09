@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
         UserDTO userDTO = new UserDTO(user);
         return userDTO.getFiles()
                 .stream()
-                .map(c -> new FileDisplayer(c.getFileID(),c.getFileName(),c.getType(),c.getTag(),c.getAccessLevel(),c.getComment(),c.getData(),c.getDate(),userDTO.getUsername()))
+                .map(c -> new FileDisplayer(c.getFileID(),c.getFileName(),c.getType(),c.getTag(),c.getAccessLevel(),c.getComment(),c.getDate(),userDTO.getUsername(),c.getSubject(),user.getOrganisation().getOrganisationName()))
                 .collect(Collectors.toList());
     }
 
@@ -113,7 +113,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<FileDisplayer> findBySearchTerm(String search, String username) {
-        return fileRepository.findAllByOrg(username).stream().filter(c -> c.matches(search)).collect(Collectors.toList());
+    public List<FileDisplayer> getPartnersFiles(String username) {
+        return fileRepository.findAllPartners(username);
+    }
+
+    @Override
+    public List<FileDisplayer> getAllFiles(String username) {
+        System.out.println(fileRepository.findAllFiles(username));
+        return fileRepository.findAllFiles(username);
+    }
+
+    @Override    public List<FileDisplayer> findBySearchTerm(String search, String username) {
+        return fileRepository.findAllFiles(username).stream().filter(c -> c.matches(search)).collect(Collectors.toList());
     }
 }

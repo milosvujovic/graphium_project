@@ -7,14 +7,14 @@ import uk.ac.cardiff.team5.graphium.data.jpa.entity.UserEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.UserRepository;
 import uk.ac.cardiff.team5.graphium.service.dto.FileDTO;
 
-import java.io.IOException;
-import java.sql.SQLOutput;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class FileServerDBImpl implements FileServer{
 
     private UserRepository userRepository;
+
     private DBFileStore dbFileStore;
 
     public FileServerDBImpl(DBFileStore aDbFileStore, UserRepository aUserRepository){
@@ -26,7 +26,7 @@ public class FileServerDBImpl implements FileServer{
     public String saveFiles(FileDTO aFile, String username) {
         String fileId = null;
 //        Converts FileDTO to a DBFile
-        DBFile dbFile = new DBFile(null,aFile.getFileName(),aFile.getType() ,aFile.getTag(),aFile.getAccessLevel() ,aFile.getComment(),aFile.getData(), aFile.getDate());
+        DBFile dbFile = new DBFile(null,aFile.getFileName(),aFile.getType() ,aFile.getTag(),aFile.getAccessLevel() ,aFile.getComment(),aFile.getData(), aFile.getDate(), aFile.getSubject());
 
         UserEntity user =  userRepository.findByUsername(username);
 
@@ -37,5 +37,17 @@ public class FileServerDBImpl implements FileServer{
 //      Returns filesId
         fileId = dbFile.getFileId();
         return fileId;
+    }
+
+    @Override
+    public void modifyFiles(byte[] bytes, String fileId, LocalDate today, String contentType) {
+        Optional<DBFile> file = dbFileStore.findById(fileId);
+        if (file.isPresent()){
+            DBFile actualFile = file.get();
+            actualFile.setData(bytes);
+            actualFile.setDate(today.toString());
+            actualFile.setFileType(contentType);
+            dbFileStore.save(actualFile);
+        }
     }
 }

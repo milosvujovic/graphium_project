@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import uk.ac.cardiff.team5.graphium.service.UserDetailsService;
 
 @Configuration
@@ -46,15 +47,18 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/register").permitAll()
-                .antMatchers("/").authenticated()
+                .antMatchers("/upload").authenticated()
                 .antMatchers("/myFiles").authenticated()
-                .antMatchers("/file").authenticated()
-                .antMatchers("/myOrgFiles").authenticated()
-                .antMatchers("/verify").hasRole("ORG_ADMIN")
+                .antMatchers("/files").authenticated()
+                .antMatchers("/file/view/**").authenticated()
+                .antMatchers("/file/modify/**").authenticated()
+                .antMatchers("/admin/**").authenticated()
+                .antMatchers("/api/user/**").authenticated()
                 .and()
                 .formLogin()
                     .loginPage("/login")
                     .permitAll()
+                    .successHandler(myAuthenticationSuccessHandler())
                 .and()
                 .logout().permitAll();
     }
@@ -63,6 +67,11 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         //web.ignoring().antMatchers("/register/**");
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
+        return new MySimpleUrlAuthenticationSuccessHandler();
     }
 
 }

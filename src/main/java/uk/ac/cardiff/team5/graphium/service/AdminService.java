@@ -8,4 +8,14 @@ public interface AdminService {
     List<UserDTO> verify(Long organisationId);
 
     void verifyUser(String userName);
+
+    List<OrganisationDTO> findPossiblePartners(String name);
+
+    void recordPartnership(String orgId, String name);
+
+    List<UserDTO> getOrganisationMembers(String username);
+
+    List<OrganisationDTO> findSharingPartners(String name);
+
+    List<OrganisationDTO> findPartnersThatYouCanView(String name);
 }
