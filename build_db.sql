@@ -145,6 +145,44 @@ BEGIN
 SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment, files.date,users.username,files.subject,organisation.organisation_name FROM graphium.files JOIN users on files.user_id = users.user_id  JOIN organisation on organisation.organisation_id = users.organisation_id where files.access_level = 'public' ORDER BY files.date;
 END //
 
+DELIMITER //
+CREATE PROCEDURE hasAccesToTheFile()
+BEGIN
+SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment, files.date,users.username, files.subject, organisation.organisation_name
+FROM files
+JOIN users on files.user_id = users.user_id
+JOIN organisation on organisation.organisation_id = users.organisation_id
+where files.access_level = 'public' or users.username = usernameParameter or ((organisation.organisation_id = @OrganisationID and files.access_level !='private') or (organisation.organisation_id in (SELECT sharing_organisation_id
+FROM organisation
+JOIN partnerships on partnerships.sharing_organisation_id = organisation.organisation_id
+WHERE viewing_organisation_id = @OrganisationID) and files.access_level = 'myPartners'));
+END //
+
+DELIMITER //
+CREATE FUNCTION `hasAccessToFiles`(usernameP varchar(45),
+fileID long) RETURNS boolean
+BEGIN
+set @OrganisationID = (Select organisation_id from users where username = usernameP);
+return (select distinct count(*)
+where fileID in (
+SELECT files.file_id
+FROM files
+JOIN users on files.user_id = users.user_id
+JOIN organisation on organisation.organisation_id = users.organisation_id
+where files.access_level = 'public' or users.username = usernameP or ((organisation.organisation_id = @OrganisationID and files.access_level !='private') or (organisation.organisation_id in (SELECT sharing_organisation_id
+FROM organisation
+JOIN partnerships on partnerships.sharing_organisation_id = organisation.organisation_id
+WHERE viewing_organisation_id = @OrganisationID) and files.access_level = 'myPartners'))));
+
+IF @amount = '0' THEN
+return false;
+ELSE
+RETURN true;
+END IF;
+
+END //
+
+
 insert into organisation (organisation_name) values ('Welsh Goverment');
 insert into organisation (organisation_name) values ('Cardiff University');
 insert into organisation (organisation_name) values ('Swansea University');

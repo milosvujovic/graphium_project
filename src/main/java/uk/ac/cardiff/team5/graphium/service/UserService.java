@@ -32,6 +32,6 @@ public interface UserService {
 
     List<FileDisplayer> findBySearchTerm(String search, String username);
 
-
+    boolean hasAccessToFile(String username, String fileID);
 
 }
