@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="/files.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link
             rel="stylesheet"
             href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"
@@ -33,8 +31,8 @@
             tag.className ="table-content";
             var accessLevel = document.createElement("td");
             accessLevel.className ="table-content";
-            var fileType = document.createElement("td");
-            fileType.className ="table-content";
+            // var fileType = document.createElement("td");
+            // fileType.className ="table-content";
             var subject = document.createElement("td");
             subject.className ="table-content";
             var comment = document.createElement("td");
@@ -45,7 +43,7 @@
             date.innerText = value['date'];
             tag.innerText = value['tag'];
             accessLevel.innerText=value['accessLevel'];
-            fileType.innerText=value['fileType'];
+            // fileType.innerText=value['fileType'];
             subject.innerText=value['subject'];
             comment.innerText=value['comment'];
 
@@ -65,7 +63,7 @@
             downloadLink.href='/file/download/' + value['fileId'];
             var downloadButton = document.createElement("button");
             downloadButton.type="button";
-            downloadButton.className = "btn btn-primary";
+            downloadButton.className = "download-btn";
             downloadButton.innerText="Download";
             downloadLink.append(downloadButton);
             div2.append(downloadLink);
@@ -74,7 +72,7 @@
             viewLink.href='/file/view/' + value['fileId'];
             var viewButton = document.createElement("button");
             viewButton.type="button";
-            viewButton.className = "btn btn-primary";
+            viewButton.className = "view-btn";
             viewButton.innerText="View";
             viewLink.append(viewButton);
             div3.append(viewLink);
@@ -85,7 +83,7 @@
                 modifyLink.href='/file/modify/' + value['fileId'];
                 var modifyButton = document.createElement("button");
                 modifyButton.type="button";
-                modifyButton.className = "btn btn-primary";
+                modifyButton.className = "download-btn";
                 modifyButton.innerText="Modify";
                 modifyLink.append(modifyButton);
                 div4.append(modifyLink);
@@ -100,7 +98,7 @@
             tableRow.append(comment);
             tableRow.append(tag);
             tableRow.append(accessLevel);
-            tableRow.append(fileType);
+            // tableRow.append(fileType);
             tableRow.append(link);
 
             var table = document.getElementById("file-table");
@@ -180,55 +178,55 @@
 
 
 <body onload="loadTable(event, 'myFiles');">
-<div layout:fragment="content">
-    <div style="display: inline-flex;width: 87.5%;padding-bottom: 10px">
-        <div style="width: 50%;display: flex;justify-content: left;align-items: start;">
-            <h1>My Organisation Name</h1>
+    <div layout:fragment="content">
+        <div style="display: inline-flex;width: 87.5%;padding-bottom: 10px">
+            <div style="width: 50%;display: flex;justify-content: left;align-items: start;">
+                <h1 th:text = "${organisationName}"></h1>
+            </div>
+            <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
+                <a/>
+            </div>
+            <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
+                <a style="color: white; text-decoration: none" href="/file">UPLOAD A FILE</a>
+            </div>
         </div>
-        <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
-            <a href="/myFiles">VIEW MY FILES</a>
-        </div>
-        <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
-            <a href="/file">UPLOAD A FILE</a>
-        </div>
-    </div>
-    <div class="--graphium-window">
-        <div>
-            <form id = "searchForm" action="/searchFiles" th:method="get" onsubmit="return searchTerm(event)">
-                <div style="display:inline-flex; width: 100%">
-                    <div style="width:75% ">
-                    <input class="search-input" aria-describedby="Enter a term to search for files." id="search" name="search" placeholder="Search for file" type="text" value=""/>
-                    </div>
-                    <div style="width:25%;display: flex;justify-content: right;align-items: end;">
-                    <button class="form-submit">Search</button>
+        <div class="--graphium-window">
+            <div>
+                <div>
+                    <button onclick="loadTable(event, 'myFiles')">My Files</button>
+                    <button onclick="loadTable(event, 'allFiles')">All Files</button>
+                    <button onclick="loadTable(event, 'myOrgFiles')">Organisation Files</button>
+                    <button onclick="loadTable(event, 'myPartnerFiles')">Partners Files</button>
+                    <button onclick="loadTable(event, 'publicFiles')" >Public Files</button>
+                </div>
+
+                <div>
+                    <div>
+                        <table id="file-table" style="width: 100%;padding-left: 10px;padding-right: 10px">
+                            <thead>
+                            <tr>
+                                <th class="table-heading" scope="col">File Name</th>
+                                <th class="table-heading" scope="col">Author</th>
+                                <th class="table-heading" scope="col">Organisation</th>
+                                <th class="table-heading" scope="col">Date</th>
+                                <th class="table-heading" scope="col">Subject</th>
+                                <th class="table-heading" scope="col">Comment</th>
+                                <th class="table-heading" scope="col">Tag</th>
+                                <th class="table-heading" scope="col">Access Level</th>
+<!--                                <th class="table-heading" scope="col">File Type</th>-->
+                                <th class="table-heading" scope="col">
+                                    <form action="/searchFiles" th:method="get">
+                                        <input class="search-input" aria-describedby="Enter a term to search for files." id="search" name="search" placeholder="Search for file" type="text" value=""/>
+                                    </form>
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
-            </form>
-        </div>
-        <div>
-            <div class="container">
-                <table id="file-table">
-                    <thead>
-                    <tr>
-                        <th class="table-heading" scope="col">File Name</th>
-                        <th class="table-heading" scope="col">Author</th>
-                        <th class="table-heading" scope="col">Date</th>
-                        <th class="table-heading" scope="col">Expires On</th>
-                        <th class="table-heading" scope="col">Tag</th>
-                        <th class="table-heading" scope="col">Access Level</th>
-                        <th class="table-heading" scope="col">
-                            <form action="/searchFiles" th:method="get">
-                                <input class="search-input" aria-describedby="Enter a term to search for files." id="search" name="search" placeholder="Search for file" type="text" value=""/>
-                            </form>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                </table>
             </div>
 
-        </div>
-    </div>
+            </div>
     </div>
 </body>
 </html>

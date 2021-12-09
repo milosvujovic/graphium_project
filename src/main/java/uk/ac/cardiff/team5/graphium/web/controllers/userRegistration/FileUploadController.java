@@ -1,25 +1,41 @@
 package uk.ac.cardiff.team5.graphium.web.controllers.userRegistration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import uk.ac.cardiff.team5.graphium.data.jpa.entity.AuditEntity;
+import uk.ac.cardiff.team5.graphium.data.jpa.entity.OrganisationEntity;
+import uk.ac.cardiff.team5.graphium.data.jpa.entity.UserEntity;
+import uk.ac.cardiff.team5.graphium.data.jpa.repository.OrganisationRepository;
+import uk.ac.cardiff.team5.graphium.data.jpa.repository.UserRepository;
+import uk.ac.cardiff.team5.graphium.domain.User;
 import uk.ac.cardiff.team5.graphium.files.FileServer;
+import uk.ac.cardiff.team5.graphium.service.AuditService;
 import uk.ac.cardiff.team5.graphium.service.UserService;
 import uk.ac.cardiff.team5.graphium.service.dto.FileDTO;
+import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 import uk.ac.cardiff.team5.graphium.web.controllers.userRegistration.forms.FileForm;
 
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Controller
 public class FileUploadController {
     private FileServer fileServer ;
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private AuditService auditService;
 
     public FileUploadController(FileServer anFileServer, UserService aUserService) {
         fileServer = anFileServer;
@@ -53,12 +69,21 @@ public class FileUploadController {
     //    Displays all files available to the user
     @GetMapping({"files","myFiles"})
     public String displayFiles(Model model, Principal principal) {
+        UserEntity currentUser = userRepository.findByUsername(principal.getName());
+        OrganisationEntity currentOrganisation = currentUser.getOrganisation();
+        String myString = currentOrganisation.getOrganisationName();
+        model.addAttribute("organisationName",myString);
+
         return "files.html";
     }
 
 //   Lets the user view the file on the page
     @GetMapping("file/view/{fileId}")
-    public String viewFile(@PathVariable(value = "fileId", required = true) String name, Model model){
+    public String viewFile(@PathVariable String fileId,String name, Model model, Principal principal){
+        UserDTO currentUser = userService.getUser(principal.getName());
+        LocalDate today = LocalDate.now();
+        AuditEntity auditEntity = new AuditEntity(today.toString(), principal.getName(), fileId, currentUser.getOrganisationId());
+        auditService.addAudit(auditEntity);
         model.addAttribute("id" , name);
         return "/file-viewer.html";
     }

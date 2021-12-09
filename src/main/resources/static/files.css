@@ -4,11 +4,17 @@
     background: white;
     border-radius: 10px;
     box-shadow: 0 0 80px 2px rgba(0,0,0,0.3);
+    overflow: auto;
 }
 
 --graphium-window-tab{
     display: inline-flex;
     width: 90%;
+}
+
+.table-wrapper
+{
+
 }
 
 #file-table{
@@ -24,6 +30,9 @@
     border-radius: 10px;
 }
 
+html, body {
+    overflow: auto;
+}
 
 --graphium-window-title{
     width: 50%;
@@ -72,6 +81,11 @@ a{
 
 .form-submit:hover {
     background-color: #d0cfcf;
+}
+
+h1{
+    font-size: 25px;
+    font-weight: bold;
 }
 
 .download-btn {
@@ -163,48 +177,4 @@ a{
 .button-center{
     text-align: center;
 }
-body {font-family: Arial;}
 
-/* Style the tab */
-.tab {
-    overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
-}
-
-/* Style the buttons inside the tab */
-.tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-    font-size: 17px;
-}
-
-/* Change background color of buttons on hover */
-.tab button:hover {
-    background-color: #ddd;
-}
-
-/* Create an active/current tablink class */
-.tab button.active {
-    background-color: #ccc;
-}
-
-/* Style the tab content */
-.tabcontent {
-    display: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-top: none;
-}
-
-.grid-container {
-    display: grid;
-    grid-template-columns: auto auto;
-    grid-gap: 10px;
-    padding: 10px;
-}
