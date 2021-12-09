@@ -10,24 +10,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"
+            integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V"
+            crossorigin="anonymous"
+    />
     <script>
         function addRowTable(value, route) {
             var tableRow = document.createElement("tr");
-            tableRow.className="dataRow";
+            tableRow.className ="table-content dataRow";
             var username = document.createElement("td");
+            username.className ="table-content";
             var organisation = document.createElement("td");
+            organisation.className ="table-content";
             var fileName = document.createElement("th");
+            fileName.className ="table-content";
             fileName.scope="row";
             var date = document.createElement("td");
+            date.className ="table-content";
             var tag = document.createElement("td");
+            tag.className ="table-content";
             var accessLevel = document.createElement("td");
+            accessLevel.className ="table-content";
             var fileType = document.createElement("td");
+            fileType.className ="table-content";
             var subject = document.createElement("td");
+            subject.className ="table-content";
             var comment = document.createElement("td");
-            var download = document.createElement("td");
-            var view = document.createElement("td");
-            var modify = document.createElement("td");
-            modify.className =  "modifyBlock";
+            comment.className ="table-content";
             fileName.innerText = value['fileName'];
             username.innerText = value['username'];
             organisation.innerText=value['organisationName']
@@ -38,6 +49,18 @@
             subject.innerText=value['subject'];
             comment.innerText=value['comment'];
 
+            var link = document.createElement("td");
+            var div = document.createElement("div");
+            div.id = "wrapper";
+            var div2 = document.createElement("div");
+            div2.id = "c1";
+            var div3 = document.createElement("div");
+            div3.id = "c11";
+            var div3 = document.createElement("div");
+            div3.id = "c2";
+            var div4 = document.createElement("div");
+            div4.id = "c3";
+
             var downloadLink = document.createElement("a");
             downloadLink.href='/file/download/' + value['fileId'];
             var downloadButton = document.createElement("button");
@@ -45,8 +68,8 @@
             downloadButton.className = "btn btn-primary";
             downloadButton.innerText="Download";
             downloadLink.append(downloadButton);
-            download.append(downloadLink);
-
+            div2.append(downloadLink);
+            div.append(div2);
             var viewLink = document.createElement("a");
             viewLink.href='/file/view/' + value['fileId'];
             var viewButton = document.createElement("button");
@@ -54,7 +77,8 @@
             viewButton.className = "btn btn-primary";
             viewButton.innerText="View";
             viewLink.append(viewButton);
-            view.append(viewLink);
+            div3.append(viewLink);
+            div.append(div3);
 
             if (route == "myFiles"){
                 var modifyLink = document.createElement("a");
@@ -64,22 +88,22 @@
                 modifyButton.className = "btn btn-primary";
                 modifyButton.innerText="Modify";
                 modifyLink.append(modifyButton);
-                modify.append(modifyLink);
+                div4.append(modifyLink);
+                div.append(div4);
             }
+            link.append(div);
             tableRow.append(fileName);
             tableRow.append(username);
             tableRow.append(organisation);
             tableRow.append(date);
             tableRow.append(subject);
             tableRow.append(comment);
-            // tableRow.append(expiryDate);
             tableRow.append(tag);
             tableRow.append(accessLevel);
             tableRow.append(fileType);
-            tableRow.append(download);
-            tableRow.append(view);
-            tableRow.append(modify);
-            var table = document.getElementById("table");
+            tableRow.append(link);
+
+            var table = document.getElementById("file-table");
             table.append(tableRow);
         }
         function loadTable(evt,route){
@@ -87,6 +111,7 @@
         }
 
         function openFiles(evt, route) {
+
             let div;
             var i, tablinks;
             var fullRoute = "http://localhost:8080/api/user/" + route;
@@ -105,10 +130,11 @@
 
             // Open a new connection, using the GET request on the URL endpoint
             request.open('GET', fullRoute, true)
-
+            console.log("Getting the Files");
             request.onload = function () {
                 // Begin accessing JSON data here
-                var files = JSON.parse(request.responseText);
+                var json = request.responseText;
+                var files = JSON.parse(json);
                 for (let j = 0; j < files.length; j++) {
                     addRowTable(files[j], route);
                 }
@@ -177,7 +203,6 @@
                     <button class="form-submit">Search</button>
                     </div>
                 </div>
-
             </form>
         </div>
         <div>
@@ -191,21 +216,17 @@
 
                   <div id="allDetails">
                     <div id ="tableDiv" class="container">
-                      <table id ="table" class = "table" style="width: 100%;padding-left: 10px;padding-right: 10px">
+                      <table id="file-table" class = "table" style="width: 100%;padding-left: 10px;padding-right: 10px">
                           <tr>
-                            <th scope="col">File Name</th>
-                            <th scope="col">Author</th>
-                              <th scope="col">Organisation</th>
-                            <th scope="col">Date</th>
-                              <th scope="col">Subject</th>
-                              <th scope="col">Comment</th>
-<!--                            <th scope="col">Expires On</th>-->
-                            <th scope="col">Tag</th>
-                            <th scope="col">Access Level</th>
-                            <th scope="col">File Type</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                              <th scope="col"></th>
+                            <th class="table-heading" scope="col">File Name</th>
+                            <th class="table-heading" scope="col">Author</th>
+                              <th class="table-heading" scope="col">Organisation</th>
+                            <th class="table-heading" scope="col">Date</th>
+                              <th class="table-heading" scope="col">Subject</th>
+                              <th class="table-heading" scope="col">Comment</th>
+                            <th class="table-heading" scope="col">Tag</th>
+                            <th class="table-heading" scope="col">Access Level</th>
+                            <th class="table-heading" scope="col">File Type</th>
                           </tr>
                       </table>
                     </div>
@@ -213,7 +234,7 @@
 
         </div>
     </div>
-</div>
+    </div>
 </body>
 
 </html>

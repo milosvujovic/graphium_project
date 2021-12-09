@@ -59,15 +59,19 @@
                 <div class="row">
                     <div class = "col-md">
                         <div class="mb-3">
-                            <label class="text-secondary" for="logoFile">File: </label><br>
-                            <input th:field="*{logoFile}" type="file" required/>
+                            <label class="text-secondary" for="file">File: </label><br>
+                            <input th:field="*{file}" type="file" required/>
 
                         </div>
                     </div>
                     <div class = "col-md">
                         <div class="mb-3">
-                            <label class="text-secondary" for="logoFileName">Upload Name: </label><br>
-                            <input th:field="*{logoFileName}" type="text" required/>
+                            <label class="text-secondary" for="fileName">Upload Name: </label><br>
+                            <input th:field="*{fileName}" type="text" required/>
+                            <div class="alert alert-warning" th:errors="*{fileName}" th:if="${#fields.hasErrors('fileName')}">Comment
+                                Error
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -119,6 +123,10 @@
                         <div class="mb-3">
                             <label class="text-secondary" for="comment">Comment: </label><br>
                             <input th:field="*{comment}" type="text"/>
+                            <div class="alert alert-warning" th:errors="*{comment}" th:if="${#fields.hasErrors('comment')}">Comment
+                                Error
+                            </div>
+
                         </div>
                     </div>
                 </div>

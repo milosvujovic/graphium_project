@@ -43,7 +43,7 @@ public class FileUploadController {
         }else{
 //            Saves the form as a FileDTO and then saves it to the database.
             LocalDate today = LocalDate.now();
-            FileDTO newFile = new FileDTO(form.getFileId(), form.getLogoFileName(),form.getLogoFile().getContentType(),form.getTag(),form.getAccessLevel(),form.getComment(),form.getLogoFile().getBytes(), today.toString(), form.getSubject());
+            FileDTO newFile = new FileDTO(form.getFileId(), form.getFileName(),form.getFile().getContentType(),form.getTag(),form.getAccessLevel(),form.getComment(),form.getFile().getBytes(), today.toString(), form.getSubject());
             String fileId = fileServer.saveFiles(newFile,principal.getName());
 //            Displays the users files
             return "redirect:/files";
@@ -51,7 +51,7 @@ public class FileUploadController {
     }
 
     //    Displays all files available to the user
-    @GetMapping("files")
+    @GetMapping({"files","myFiles"})
     public String displayFiles(Model model, Principal principal) {
         return "files.html";
     }
@@ -85,7 +85,7 @@ public class FileUploadController {
             return "file-reupload.html";
         }else{
             LocalDate today = LocalDate.now();
-            fileServer.modifyFiles(submittedForm.getLogoFile().getBytes(), submittedForm.getFileId(), today, submittedForm.getLogoFile().getContentType());
+            fileServer.modifyFiles(submittedForm.getFile().getBytes(), submittedForm.getFileId(), today, submittedForm.getFile().getContentType());
 //            Displays the users files
             return "redirect:/files";
         }

@@ -48,12 +48,12 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/upload").authenticated()
+                .antMatchers("/myFiles").authenticated()
                 .antMatchers("/files").authenticated()
                 .antMatchers("/file/view/**").authenticated()
                 .antMatchers("/file/modify/**").authenticated()
                 .antMatchers("/admin/**").authenticated()
                 .antMatchers("/api/user/**").authenticated()
-                .antMatchers("/api/admin/**").simpl
                 .and()
                 .formLogin()
                     .loginPage("/login")
