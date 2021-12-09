@@ -79,11 +79,7 @@ public class FileUploadController {
 
 //   Lets the user view the file on the page
     @GetMapping("file/view/{fileId}")
-    public String viewFile(@PathVariable String fileId,String name, Model model, Principal principal){
-        UserDTO currentUser = userService.getUser(principal.getName());
-        LocalDate today = LocalDate.now();
-        AuditEntity auditEntity = new AuditEntity(today.toString(), principal.getName(), fileId, currentUser.getOrganisationId());
-        auditService.addAudit(auditEntity);
+    public String viewFile(@PathVariable(value = "fileId", required = true) String name, Model model){
         model.addAttribute("id" , name);
         return "/file-viewer.html";
     }
