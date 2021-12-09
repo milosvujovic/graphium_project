@@ -26,7 +26,7 @@ public class FileUploadController {
         userService = aUserService;
     }
 //      Displays form to upload files to the webpage.
-    @GetMapping("upload")
+    @GetMapping({"upload","file"})
     public String file(Model model) {
         FileForm form = new FileForm();
         model.addAttribute("fileForm",form);
