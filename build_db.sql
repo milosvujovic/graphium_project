@@ -42,7 +42,7 @@ create table if not exists `files` (
                        `tag` ENUM('urgent', 'draft', 'final') NOT NULL,
                        `access_level` ENUM('myOrganisation', 'myPartners', 'private', 'public') NOT NULL,
 						`subject` varchar(20) NOT NULL,
-                       `comment` varchar(20) NOT NULL,
+                       `comment` varchar(50) NOT NULL,
                        `data` LONGBLOB not null,
                        `date` DATE not null
 );
