@@ -34,4 +34,5 @@ public interface UserService {
 
     boolean hasAccessToFile(String username, String fileID);
 
+    boolean canModifyFile(String name, String fileID);
 }

@@ -179,8 +179,20 @@ return false;
 ELSE
 RETURN true;
 END IF;
-
 END //
+
+DELIMITER //
+CREATE FUNCTION `hasAccessToModfiyFile`(usernameP varchar(45),
+fileID long) RETURNS boolean
+BEGIN
+set @creatorID = (select users.username from files join users on users.user_id = files.user_id where file_id = fileID);
+IF @creatorID = usernameP THEN
+return true;
+ELSE
+RETURN false;
+END IF;
+END //
+
 
 
 insert into organisation (organisation_name) values ('Welsh Goverment');

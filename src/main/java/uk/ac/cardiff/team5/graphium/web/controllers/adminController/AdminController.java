@@ -42,12 +42,6 @@ public class AdminController {
     }
     @GetMapping("/partner")
     public String possiblePartners(Model model, Principal principal){
-//        List<OrganisationDTO> organisationsToPartner =adminService.findPossiblePartners(principal.getName());
-//        List<OrganisationDTO> organisationsThatYouShareWith =adminService.findSharingPartners(principal.getName());
-//        List<OrganisationDTO> organisationsThatYouCanSee =adminService.findPartnersThatYouCanView(principal.getName());
-//        model.addAttribute("organisations", organisationsToPartner);
-//        model.addAttribute("partnersYouShareWith", organisationsThatYouShareWith);
-//        model.addAttribute("partnersYouCanSee", organisationsThatYouCanSee);
         return "admin-partner";
     }
     @GetMapping("/partner/{orgID}")

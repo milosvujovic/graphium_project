@@ -127,6 +127,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean hasAccessToFile(String username, String fileID){
         return userRepository.hasAccessToFiles(username,fileID);
-
+    }
+    @Override
+    public boolean canModifyFile(String name, String fileID){
+        return userRepository.hasAccessToModify(name, fileID);
     }
 }
