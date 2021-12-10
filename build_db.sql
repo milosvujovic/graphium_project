@@ -42,7 +42,7 @@ create table if not exists `files` (
                        `tag` ENUM('urgent', 'draft', 'final') NOT NULL,
                        `access_level` ENUM('myOrganisation', 'myPartners', 'private', 'public') NOT NULL,
 						`subject` varchar(20) NOT NULL,
-                       `comment` varchar(20) NOT NULL,
+                       `comment` varchar(50) NOT NULL,
                        `data` LONGBLOB not null,
                        `date` DATE not null
 );
@@ -151,6 +151,79 @@ CREATE PROCEDURE getPublicFiles()
 SQL SECURITY INVOKER
 BEGIN
 SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment, files.date,users.username,files.subject,organisation.organisation_name FROM graphium.files JOIN users on files.user_id = users.user_id  JOIN organisation on organisation.organisation_id = users.organisation_id where files.access_level = 'public' ORDER BY files.date;
+END //
+
+DELIMITER //
+CREATE PROCEDURE hasAccesToTheFile()
+BEGIN
+SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment, files.date,users.username, files.subject, organisation.organisation_name
+FROM files
+JOIN users on files.user_id = users.user_id
+JOIN organisation on organisation.organisation_id = users.organisation_id
+where files.access_level = 'public' or users.username = usernameParameter or ((organisation.organisation_id = @OrganisationID and files.access_level !='private') or (organisation.organisation_id in (SELECT sharing_organisation_id
+FROM organisation
+JOIN partnerships on partnerships.sharing_organisation_id = organisation.organisation_id
+WHERE viewing_organisation_id = @OrganisationID) and files.access_level = 'myPartners'));
+END //
+
+DELIMITER //
+CREATE FUNCTION `hasAccessToFiles`(usernameP varchar(45),
+fileID long) RETURNS boolean
+BEGIN
+set @OrganisationID = (Select organisation_id from users where username = usernameP);
+return (select distinct count(*)
+where fileID in (
+SELECT files.file_id
+FROM files
+JOIN users on files.user_id = users.user_id
+JOIN organisation on organisation.organisation_id = users.organisation_id
+where files.access_level = 'public' or users.username = usernameP or ((organisation.organisation_id = @OrganisationID and files.access_level !='private') or (organisation.organisation_id in (SELECT sharing_organisation_id
+FROM organisation
+JOIN partnerships on partnerships.sharing_organisation_id = organisation.organisation_id
+WHERE viewing_organisation_id = @OrganisationID) and files.access_level = 'myPartners'))));
+
+IF @amount = '0' THEN
+return false;
+ELSE
+RETURN true;
+END IF;
+END //
+
+DELIMITER //
+CREATE FUNCTION `hasAccessToModfiyFile`(usernameP varchar(45),
+fileID long) RETURNS boolean
+BEGIN
+set @creatorID = (select users.username from files join users on users.user_id = files.user_id where file_id = fileID);
+IF @creatorID = usernameP THEN
+return true;
+ELSE
+RETURN false;
+END IF;
+END //
+
+DELIMITER //
+CREATE FUNCTION partnershipExists(orgID varchar(45),usernameP varchar(45)) RETURNS boolean
+BEGIN
+set @OrganisationID = (Select organisation_id from users where username = usernameP);
+set @numberOfInstances = (select count(*) from partnerships where sharing_organisation_id = @OrganisationID and viewing_organisation_id = orgID);
+IF @numberOfInstances = '1' THEN
+return true;
+ELSE
+RETURN false;
+END IF;
+END //
+
+DELIMITER //
+CREATE FUNCTION canVerifyUser(usernameP varchar(45), orgAdmin varchar(45)) RETURNS boolean
+BEGIN
+set @OrgIDAdmin = (Select organisation_id from users where username = orgAdmin);
+set @OrgIDUser = (Select organisation_id from users where username = usernameP);
+set @numberOfInstances = (select count(*) from users where usernameP in (select users.username where @OrgIDAdmin = users.organisation_id and @OrgIDUser = users.organisation_id and organisation_approved = false));
+IF @numberOfInstances = '1' THEN
+return true;
+ELSE
+RETURN false;
+END IF;
 END //
 
 insert into organisation (organisation_name) values ('Welsh Goverment');
