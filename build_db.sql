@@ -193,7 +193,30 @@ RETURN false;
 END IF;
 END //
 
+DELIMITER //
+CREATE FUNCTION partnershipExists(orgID varchar(45),usernameP varchar(45)) RETURNS boolean
+BEGIN
+set @OrganisationID = (Select organisation_id from users where username = usernameP);
+set @numberOfInstances = (select count(*) from partnerships where sharing_organisation_id = @OrganisationID and viewing_organisation_id = orgID);
+IF @numberOfInstances = '1' THEN
+return true;
+ELSE
+RETURN false;
+END IF;
+END //
 
+DELIMITER //
+CREATE FUNCTION canVerifyUser(usernameP varchar(45), orgAdmin varchar(45)) RETURNS boolean
+BEGIN
+set @OrgIDAdmin = (Select organisation_id from users where username = orgAdmin);
+set @OrgIDUser = (Select organisation_id from users where username = usernameP);
+set @numberOfInstances = (select count(*) from users where usernameP in (select users.username where @OrgIDAdmin = users.organisation_id and @OrgIDUser = users.organisation_id and organisation_approved = false));
+IF @numberOfInstances = '1' THEN
+return true;
+ELSE
+RETURN false;
+END IF;
+END //
 
 insert into organisation (organisation_name) values ('Welsh Goverment');
 insert into organisation (organisation_name) values ('Cardiff University');

@@ -27,4 +27,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query(value = "SELECT hasAccessToModfiyFile(:username,:fileID);", nativeQuery = true)
     boolean hasAccessToModify(@Param("username") String username, @Param("fileID") String fileID);
+
+    @Query(value = "SELECT canVerifyUser(:username,:adminName);", nativeQuery = true)
+    boolean canVerifyUser(@Param("username") String username, @Param("adminName") String adminName);
+
 }
