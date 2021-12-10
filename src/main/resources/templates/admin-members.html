@@ -3,7 +3,7 @@
       layout:decorate="~{/layout/main-layout}">
 <head>
     <meta charset="UTF-8">
-    <title>My Files</title>
+    <title>Members</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="/files.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -57,33 +57,35 @@
         </div>
     </div>
     <div class="--graphium-window">
-        <div id = "content">
+        <div>
             <div class="container">
-                <p>Unverified Users</p>
-                <div class="container" th:if="${!userList.isEmpty}">
+                <p>Organisation Members</p>
+                <div class="container" th:if="${!members.isEmpty}">
                     <table class="table">
                         <thead>
                         <tr>
-                            <th scope="col">User Name</th>
-                            <th scope="col">Email</th>
-                            <th></th>
+                            <th scope="col">Username</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Email Address</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="user : ${userList}">
-                            <th scope="row" th:text="${user.username}">Username</th>
-                            <td th:text ="${user.email}">Email</td>
-                            <td><a th:attr="href=@{'/admin/verified/'+${user.username}}" verify><button type="button" class="btn btn-primary">Verify</button></a></td>
+                        <tr th:each="member : ${members}">
+                            <th scope="row" th:text="${member.username}">Username</th>
+                            <th scope="row" th:text="${member.firstName}">FirstName</th>
+                            <th scope="row" th:text="${member.lastName}">Surname</th>
+                            <th scope="row" th:text="${member.email}">Email Address</th>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="container" th:if="${userList.isEmpty}">
-                    No users unverified.
+                <div class="container" th:if="${members.isEmpty}">
+                    No members.
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
 </div>
 </body>

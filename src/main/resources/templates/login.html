@@ -54,6 +54,7 @@
                         <input type="password" id="password" name="password"/>
                     </div>
                 </div>
+                <p class="success-msg" th:text="${message}"</p>
                 <div class="error-msg" th:if="${param.error}">Invalid username and password</div>
                 <div class="error-msg" th:if="${param.logout}">You have been logged out.</div>
                 <div class="form-actions">

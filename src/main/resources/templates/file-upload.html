@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/main-layout}">
+
 <head>
     <meta charset="UTF-8">
-    <title>My Files</title>
+    <title>Upload File</title>
     <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/user-registration.css">
+    <link rel="stylesheet" href="/files.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-</head>
-<body>
-
-<div layout:fragment="content">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script>
         function niceInputs() {
             [].forEach.call(document.getElementsByClassName("form-input"), (form_input) => {
@@ -35,28 +34,46 @@
         window.onload = () => {
             niceInputs();
         }
-
     </script>
+</head>
 
-    <div class="container" >
+
+<body>
+<div layout:fragment="content">
+    <div style="display: inline-flex;width: 87.5%;padding-bottom: 10px">
+        <div style="width: 50%;display: flex;justify-content: left;align-items: start;">
+            <h1>My Organisation Name</h1>
+        </div>
+        <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
+            <a href="/myFiles">VIEW MY FILES</a>
+        </div>
+        <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
+            <a href="/file">UPLOAD A FILE</a>
+        </div>
+    </div>
+    <div class="--graphium-window">
         <div>
-            <form th:action="@{/file}" enctype="multipart/form-data" th:method="post" th:object="${fileForm}">
+            <form th:action="@{/upload}" enctype="multipart/form-data" th:method="post" th:object="${fileForm}">
 
                 <input th:field="*{fileId}" type="hidden"/>
                 <div class="row">
                     <div class = "col-md">
                         <div class="mb-3">
-                            <label class="text-secondary" for="logoFile">File: </label><br>
-                            <input th:field="*{logoFile}" type="file" required/>
+                            <label class="text-secondary" for="file">File: </label><br>
+                            <input th:field="*{file}" type="file" required/>
 
                         </div>
                     </div>
                     <div class = "col-md">
                         <div class="mb-3">
-                            <label class="text-secondary" for="logoFileName">Upload Name: </label><br>
-                            <input th:field="*{logoFileName}" type="text" required/>
+                            <label class="text-secondary" for="fileName">Upload Name: </label><br>
+                            <input th:field="*{fileName}" type="text" required/>
+                            <div class="alert alert-warning" th:errors="*{fileName}" th:if="${#fields.hasErrors('fileName')}">Comment
+                                Error
+                            </div>
+
                         </div>
-                    </div>>
+                    </div>
                 </div>
                 <div class = "row">
                     <div class="alert alert-danger" th:if="${errorMessage != null}" th:text="${errorMessage}">File Error</div>
@@ -97,23 +114,26 @@
                 <div class="row">
                     <div class = "col-md-6">
                         <div class="mb-3">
-                            <label class="text-secondary">Share with someone:</label><br>
-                            <input type="text" value="Enter contact's email"/>
+                            <label class="text-secondary" for="subject">Subject:</label><br>
+                            <input th:field="*{subject}" type="text" />
+
                         </div>
                     </div>
                     <div class = "col-md-6">
                         <div class="mb-3">
                             <label class="text-secondary" for="comment">Comment: </label><br>
                             <input th:field="*{comment}" type="text"/>
+                            <div class="alert alert-warning" th:errors="*{comment}" th:if="${#fields.hasErrors('comment')}">Comment
+                                Error
+                            </div>
+
                         </div>
                     </div>
                 </div>
                 <div class="container">
                     <div class="row">
                         <div class="col-sm">
-                            <div class = "d-flex justify-content-end">
-                                <button class="btn btn-danger btn-lg">Cancel</button>
-                            </div>
+
 
                         </div>
                         <div class="col-sm">
@@ -122,10 +142,14 @@
                     </div>
                 </div>
             </form>
+            <div class = "d-flex">
+                <a href = "/myFiles"><button class="btn btn-danger btn-lg">Cancel</button></a>
+            </div>
         </div>
     </div>
 
-
+</div>
 </div>
 </body>
+
 </html>

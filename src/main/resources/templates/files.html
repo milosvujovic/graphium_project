@@ -8,12 +8,144 @@
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="/files.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-</head>
-
-
-<body>
-<div layout:fragment="content">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"
+            integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V"
+            crossorigin="anonymous"
+    />
     <script>
+        function addRowTable(value, route) {
+            var tableRow = document.createElement("tr");
+            tableRow.className ="table-content dataRow";
+            var username = document.createElement("td");
+            username.className ="table-content";
+            var organisation = document.createElement("td");
+            organisation.className ="table-content";
+            var fileName = document.createElement("th");
+            fileName.className ="table-content";
+            fileName.scope="row";
+            var date = document.createElement("td");
+            date.className ="table-content";
+            var tag = document.createElement("td");
+            tag.className ="table-content";
+            var accessLevel = document.createElement("td");
+            accessLevel.className ="table-content";
+            var fileType = document.createElement("td");
+            fileType.className ="table-content";
+            var subject = document.createElement("td");
+            subject.className ="table-content";
+            var comment = document.createElement("td");
+            comment.className ="table-content";
+            fileName.innerText = value['fileName'];
+            username.innerText = value['username'];
+            organisation.innerText=value['organisationName']
+            date.innerText = value['date'];
+            tag.innerText = value['tag'];
+            accessLevel.innerText=value['accessLevel'];
+            fileType.innerText=value['fileType'];
+            subject.innerText=value['subject'];
+            comment.innerText=value['comment'];
+
+            var link = document.createElement("td");
+            var div = document.createElement("div");
+            div.id = "wrapper";
+            var div2 = document.createElement("div");
+            div2.id = "c1";
+            var div3 = document.createElement("div");
+            div3.id = "c11";
+            var div3 = document.createElement("div");
+            div3.id = "c2";
+            var div4 = document.createElement("div");
+            div4.id = "c3";
+
+            var downloadLink = document.createElement("a");
+            downloadLink.href='/file/download/' + value['fileId'];
+            var downloadButton = document.createElement("button");
+            downloadButton.type="button";
+            downloadButton.className = "btn btn-primary";
+            downloadButton.innerText="Download";
+            downloadLink.append(downloadButton);
+            div2.append(downloadLink);
+            div.append(div2);
+            var viewLink = document.createElement("a");
+            viewLink.href='/file/view/' + value['fileId'];
+            var viewButton = document.createElement("button");
+            viewButton.type="button";
+            viewButton.className = "btn btn-primary";
+            viewButton.innerText="View";
+            viewLink.append(viewButton);
+            div3.append(viewLink);
+            div.append(div3);
+
+            if (route == "myFiles"){
+                var modifyLink = document.createElement("a");
+                modifyLink.href='/file/modify/' + value['fileId'];
+                var modifyButton = document.createElement("button");
+                modifyButton.type="button";
+                modifyButton.className = "btn btn-primary";
+                modifyButton.innerText="Modify";
+                modifyLink.append(modifyButton);
+                div4.append(modifyLink);
+                div.append(div4);
+            }
+            link.append(div);
+            tableRow.append(fileName);
+            tableRow.append(username);
+            tableRow.append(organisation);
+            tableRow.append(date);
+            tableRow.append(subject);
+            tableRow.append(comment);
+            tableRow.append(tag);
+            tableRow.append(accessLevel);
+            tableRow.append(fileType);
+            tableRow.append(link);
+
+            var table = document.getElementById("file-table");
+            table.append(tableRow);
+        }
+        function loadTable(evt,route){
+            openFiles(evt,route);
+        }
+
+        function openFiles(evt, route) {
+
+            let div;
+            var i, tablinks;
+            var fullRoute = "http://localhost:8080/api/user/" + route;
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            var dataRowsToRemove = document.getElementsByClassName("dataRow");
+            var index = 0;
+            while(index < dataRowsToRemove.length){
+                dataRowsToRemove[index].remove();
+            }
+
+            // Create a request variable and assign a new XMLHttpRequest object to it.
+            var request = new XMLHttpRequest()
+
+            // Open a new connection, using the GET request on the URL endpoint
+            request.open('GET', fullRoute, true)
+            console.log("Getting the Files");
+            request.onload = function () {
+                // Begin accessing JSON data here
+                var json = request.responseText;
+                var files = JSON.parse(json);
+                for (let j = 0; j < files.length; j++) {
+                    addRowTable(files[j], route);
+                }
+            }
+
+            // Send request
+            request.send()
+
+            evt.currentTarget.className += " active";
+        }
+
         function niceInputs() {
             [].forEach.call(document.getElementsByClassName("form-input"), (form_input) => {
                 form_input.getElementsByTagName("input")[0].addEventListener("focus", () => {
@@ -37,8 +169,18 @@
         window.onload = () => {
             niceInputs();
         }
+        function searchTerm(evt){
+            var term = document.forms["searchForm"]["search"].value;
+            loadTable(evt,"searchFiles/" + term);
+            return false;
 
+        }
     </script>
+</head>
+
+
+<body onload="loadTable(event, 'myFiles');">
+<div layout:fragment="content">
     <div style="display: inline-flex;width: 87.5%;padding-bottom: 10px">
         <div style="width: 50%;display: flex;justify-content: left;align-items: start;">
             <h1>My Organisation Name</h1>
@@ -52,7 +194,7 @@
     </div>
     <div class="--graphium-window">
         <div>
-            <form action="/searchFiles" th:method="get">
+            <form id = "searchForm" action="/searchFiles" th:method="get" onsubmit="return searchTerm(event)">
                 <div style="display:inline-flex; width: 100%">
                     <div style="width:75% ">
                     <input class="form-input" aria-describedby="Enter a term to search for files." id="search" name="search" placeholder="Search for file" type="text" value=""/>
@@ -61,44 +203,36 @@
                     <button class="form-submit">Search</button>
                     </div>
                 </div>
-
             </form>
         </div>
         <div>
-            <div class="container" th:if="${!files.isEmpty}">
-                <table style="width: 100%;padding-left: 10px;padding-right: 10px">
-                    <thead >
-                    <tr class="table-headers">
-                        <th scope="col">File Name</th>
-                        <th scope="col">Author</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Expires On</th>
-                        <th scope="col">Tag</th>
-                        <th scope="col">Access Level</th>
-                        <th scope="col">Actions</th>
-                        <th scope="col"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="file : ${files}">
-                        <th scope="row" th:text="${file.fileName}">File Name</th>
-                        <td th:text ="${file.username}">Author</td>
-                        <td th:text="${file.date}"></td>
-                        <td >N/A</td>
-                        <td th:text="${file.tag}">Tag</td>
-                        <td th:text="${file.accessLevel}">Access Level</td>
-                        <td ><a th:attr="href=@{'/file/download/'+${file.fileId}}" download><button type="button" class="download-btn">Download</button></a></td>
-                        <td><span th:if="${file.fileType == 'application/pdf'}"><a th:href="@{/file/view/{furl}(furl=${file.fileId})}"><button type="button" class="view-btn">View</button></a></span><span th:unless="${file.fileType == 'application/pdf'}"><button type="button" class="btn btn-primary" disabled>View</button></span></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+            <div class="tab">
+                <button class="tablinks" onclick="loadTable(event, 'myFiles')">My Files</button>
+                <button class="tablinks" onclick="loadTable(event, 'allFiles')">All Files</button>
+                <button class="tablinks" onclick="loadTable(event, 'myOrgFiles')">Organisation Files</button>
+                    <button class="tablinks" onclick="loadTable(event, 'myPartnerFiles')">Partners Files</button>
+                    <button class="tablinks" onclick="loadTable(event, 'publicFiles')" >Public Files</button>
+                  </div>
 
-            <div class="container" th:if="${files.isEmpty}">
-                No matching files.
-            </div>
+                  <div id="allDetails">
+                    <div id ="tableDiv" class="container">
+                      <table id="file-table" class = "table" style="width: 100%;padding-left: 10px;padding-right: 10px">
+                          <tr>
+                            <th class="table-heading" scope="col">File Name</th>
+                            <th class="table-heading" scope="col">Author</th>
+                              <th class="table-heading" scope="col">Organisation</th>
+                            <th class="table-heading" scope="col">Date</th>
+                              <th class="table-heading" scope="col">Subject</th>
+                              <th class="table-heading" scope="col">Comment</th>
+                            <th class="table-heading" scope="col">Tag</th>
+                            <th class="table-heading" scope="col">Access Level</th>
+                            <th class="table-heading" scope="col">File Type</th>
+                          </tr>
+                      </table>
+                    </div>
+                  </div>
         </div>
     </div>
-</div>
+    </div>
 </body>
 </html>
