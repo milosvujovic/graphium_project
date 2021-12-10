@@ -23,8 +23,12 @@ public class MyUserDetails implements org.springframework.security.core.userdeta
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole());
-        System.out.println(user.getRole());
-        return Arrays.asList(authority);
+        System.out.println("Approved "+user.getOrganisation_approved());
+        if (user.getOrganisation_approved()){
+            return Arrays.asList(authority);
+        }else{
+            return Arrays.asList();
+        }
     }
 
     @Override
@@ -54,6 +58,6 @@ public class MyUserDetails implements org.springframework.security.core.userdeta
 
     @Override
     public boolean isEnabled() {
-        return userRepository.findByUsername(getUsername()).getOrganisation_approved();
+        return true;
     }
 }
