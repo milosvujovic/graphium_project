@@ -62,10 +62,12 @@ public class FileController {
             }else{
                 fileName = theFile.getFileName() + ".pdf";
             }
+            DBFile currentFile = dbFile.get();
+
             UserDTO currentUser = userService.getUser(principal.getName());
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
-            AuditEntity auditEntity = new AuditEntity(dtf.format(now), principal.getName(), theFile.getFileId(), currentUser.getOrganisationId(),"DOWNLOAD");
+            AuditEntity auditEntity = new AuditEntity(dtf.format(now), principal.getName(), theFile.getFileId(), currentUser.getOrganisationId(),"DOWNLOAD","me");
             auditService.addAudit(auditEntity);
 
 

@@ -19,8 +19,8 @@ public class AuditEntity {
     @Column
     private String username;
 
-    @Column
-    private String file_id;
+    @Column(name = "file_id")
+    private String fileId;
 
     @Column
     private Long organisation_id;
@@ -28,17 +28,25 @@ public class AuditEntity {
     @Column
     private String action;
 
-    public AuditEntity(String date, String username, String file_id, Long organisation_id, String action){
+    @Column
+    private String owner;
+
+    public AuditEntity(String date, String username, String file_id, Long organisation_id, String action, String owner){
         this.date = date;
         this.username = username;
-        this.file_id = file_id;
+        this.fileId = file_id;
         this.organisation_id = organisation_id;
         this.action = action;
+        this.owner = owner;
     }
 
     public String getDate(){
         return this.date;
     }
-
-
+    public Long getInsightId(){ return this.insight_id;}
+    public String getUsername(){ return this.username;}
+    public String getFileId(){ return this.fileId;}
+    public Long getOrganisationId(){ return this.organisation_id;}
+    public String getAction(){ return this.action;}
+    public String getOwner(){ return this.owner;}
 }

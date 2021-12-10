@@ -6,11 +6,9 @@ import org.springframework.stereotype.Service;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.AuditEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.AuditRepository;
 import uk.ac.cardiff.team5.graphium.service.AuditService;
-import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 
 import javax.transaction.Transactional;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Service("auditService")
 @Component
@@ -31,13 +29,13 @@ public class AuditServiceImpl implements AuditService {
         return audit;
     }
 
-//    public AuditEntity retrieveAudit(String file_id){
-//
-//        return auditRepository.findAuditEntityByFile_id(file_id);
-//    }
-
-    public AuditEntity retrieveAuditByUsername(String username){
+    @Override
+    public List<AuditEntity> getAudits(String username) {
         return auditRepository.findAllByUsername(username);
     }
 
+    @Override
+    public List<AuditEntity> getAuditByFileId(String fileId){
+        return auditRepository.findAuditEntityByFileId(fileId);
+    }
 }

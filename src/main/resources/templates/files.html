@@ -53,11 +53,11 @@
             var div2 = document.createElement("div");
             div2.id = "c1";
             var div3 = document.createElement("div");
-            div3.id = "c11";
-            var div3 = document.createElement("div");
             div3.id = "c2";
             var div4 = document.createElement("div");
             div4.id = "c3";
+            var div5 = document.createElement("div");
+            div5.id = "c4";
 
             var downloadLink = document.createElement("a");
             downloadLink.href='/file/download/' + value['fileId'];
@@ -88,6 +88,16 @@
                 modifyLink.append(modifyButton);
                 div4.append(modifyLink);
                 div.append(div4);
+                var insightsLink = document.createElement("a");
+                insightsLink.href='/file/modify/' + value['fileId'];
+                var insightsButton = document.createElement("button");
+                insightsButton.type="button";
+                insightsButton.className = "insights-btn";
+                insightsButton.innerText="i";
+                insightsLink.append(insightsButton);
+                div5.append(insightsLink);
+                div.append(div5);
+
             }
             link.append(div);
             tableRow.append(fileName);
