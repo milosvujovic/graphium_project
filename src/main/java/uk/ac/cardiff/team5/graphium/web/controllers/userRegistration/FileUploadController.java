@@ -58,9 +58,13 @@ public class FileUploadController {
 
 //   Lets the user view the file on the page
     @GetMapping("file/view/{fileId}")
-    public String viewFile(@PathVariable(value = "fileId", required = true) String name, Model model){
-        model.addAttribute("id" , name);
-        return "/file-viewer.html";
+    public String viewFile(@PathVariable(value = "fileId", required = true) String name, Model model, Principal principal){
+        if (userService.hasAccessToFile(principal.getName(), name)){
+            model.addAttribute("id" , name);
+            return "/file-viewer.html";
+        }else{
+            return "error/403.html";
+        }
     }
 
 

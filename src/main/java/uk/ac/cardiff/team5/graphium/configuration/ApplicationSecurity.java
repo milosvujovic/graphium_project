@@ -51,6 +51,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/myFiles").authenticated()
                 .antMatchers("/files").authenticated()
                 .antMatchers("/file/view/**").authenticated()
+                .antMatchers("/file/download/**").authenticated()
                 .antMatchers("/file/modify/**").authenticated()
                 .antMatchers("/admin/**").authenticated()
                 .antMatchers("/api/user/**").authenticated()

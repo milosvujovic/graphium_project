@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public boolean hasAccessToFile(String username, String fileID){
-        return fileRepository
+        return userRepository.hasAccessToFiles(username,fileID);
 
     }
 }
