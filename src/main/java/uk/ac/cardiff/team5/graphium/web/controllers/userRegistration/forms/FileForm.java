@@ -23,5 +23,6 @@ public class FileForm {
     private String accessLevel;
     @Size(min = 0, max = 50, message = "The comment must be less than 50 characters")
     private String comment;
+    @Size(min = 1, max = 20, message = "The subject must contain at least 1 characters and be less than 50 characters")
     private String subject;
 }
