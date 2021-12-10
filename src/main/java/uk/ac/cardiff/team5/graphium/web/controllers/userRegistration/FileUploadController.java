@@ -54,7 +54,9 @@ public class FileUploadController {
     public String getFile(@Valid FileForm form, BindingResult bindingResult, Model model, Principal principal) throws IOException {
 //      Error catching.
         if (bindingResult.hasErrors()) {
-            model.addAttribute("errorMessage","Only PDF and Word Documents allowed.");
+            if (bindingResult.hasFieldErrors("file")){
+                model.addAttribute("errorMessage","Only PDF and Word Documents allowed.");
+            }
             return "file-upload.html";
         }else{
 //            Saves the form as a FileDTO and then saves it to the database.

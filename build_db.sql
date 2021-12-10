@@ -39,10 +39,10 @@ create table if not exists `files` (
                        `user_id` bigint references `users`(`user_id`),
                        `file_name` varchar(100) NOT NULL,
                        `file_type` varchar(100) NOT NULL,
-                       `tag` varchar(100) NOT NULL,
-                       `access_level` varchar(100) NOT NULL,
-						`subject` varchar(100) NOT NULL,
-                       `comment` varchar(100) NOT NULL,
+                       `tag` ENUM('urgent', 'draft', 'final') NOT NULL,
+                       `access_level` ENUM('myOrganisation', 'myPartners', 'private', 'public') NOT NULL,
+						`subject` varchar(20) NOT NULL,
+                       `comment` varchar(20) NOT NULL,
                        `data` LONGBLOB not null,
                        `date` DATE not null
 );
@@ -62,6 +62,7 @@ create table if not exists `insights` (
 
 DELIMITER //
 CREATE PROCEDURE getPossiblePartnerships(IN organisationID varchar(30))
+SQL SECURITY INVOKER
 BEGIN
 SELECT organisation_id, organisation_name FROM organisation WHERE organisation_id NOT IN (SELECT viewing_organisation_id
 FROM organisation
@@ -72,6 +73,7 @@ DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE getCurrentSharingPartnerships(IN organisationID varchar(30))
+SQL SECURITY INVOKER
 BEGIN
 SELECT organisation_id, organisation_name FROM organisation WHERE organisation_id IN (SELECT viewing_organisation_id
 FROM organisation
@@ -82,6 +84,7 @@ DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE getCurrentViewingPartnerships(IN organisationID varchar(30))
+SQL SECURITY INVOKER
 BEGIN
 SELECT organisation_id, organisation_name FROM organisation WHERE organisation_id IN (
 SELECT sharing_organisation_id
@@ -94,6 +97,7 @@ DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE createPartnership(IN organisationID int, IN usernameParameter varchar(30))
+SQL SECURITY INVOKER
 BEGIN
 set @SharingOrganisationID = (Select organisation_id from users where username = usernameParameter);
 INSERT INTO partnerships(sharing_organisation_id,viewing_organisation_id)  values(@SharingOrganisationID,organisationID);
@@ -101,7 +105,9 @@ END //
 DELIMITER ;
 
 DELIMITER //
+
 CREATE PROCEDURE getFilesForOrganisation(IN usernameParameter varchar(30))
+SQL SECURITY INVOKER
 BEGIN
 set @OrganisationID = (Select organisation_id from users where username = usernameParameter);
 SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment, files.date,users.username,files.subject,organisation.organisation_name
@@ -112,6 +118,7 @@ DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE getPartnersFiles(IN usernameParameter varchar(30))
+SQL SECURITY INVOKER
 BEGIN
 set @OrganisationID = (Select organisation_id from users where username = usernameParameter);
 SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment, files.date,users.username,files.subject,organisation.organisation_name
@@ -127,8 +134,8 @@ END //
 DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE getAllFiles(IN usernameParameter varchar(30))
+SQL SECURITY INVOKER
 BEGIN
-
 set @OrganisationID = (Select organisation_id from users where username = usernameParameter);
 SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment, files.date,users.username, files.subject, organisation.organisation_name
 FROM files
@@ -142,6 +149,7 @@ END //
 
 DELIMITER //
 CREATE PROCEDURE getPublicFiles()
+SQL SECURITY INVOKER
 BEGIN
 SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment, files.date,users.username,files.subject,organisation.organisation_name FROM graphium.files JOIN users on files.user_id = users.user_id  JOIN organisation on organisation.organisation_id = users.organisation_id where files.access_level = 'public' ORDER BY files.date;
 END //
