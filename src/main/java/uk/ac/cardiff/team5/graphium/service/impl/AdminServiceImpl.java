@@ -83,4 +83,12 @@ public class AdminServiceImpl implements AdminService {
                 .map(c -> new OrganisationDTO(c))
                 .collect(Collectors.toList());
     }
+    @Override
+    public boolean partnershipAlreadyExists(String orgId, String name){
+        return partnershipRepository.alreadyExists(orgId,name);
+    }
+    @Override
+    public boolean canVerifyUser(String userName, String adminName){
+        return userRepository.canVerifyUser(userName,adminName);
+    }
 }

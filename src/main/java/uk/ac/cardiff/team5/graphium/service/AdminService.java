@@ -19,4 +19,8 @@ public interface AdminService {
     List<OrganisationDTO> findSharingPartners(String name);
 
     List<OrganisationDTO> findPartnersThatYouCanView(String name);
+
+    boolean partnershipAlreadyExists(String orgId, String name);
+
+    boolean canVerifyUser(String userName, String adminName);
 }
