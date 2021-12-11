@@ -14,8 +14,9 @@
             integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V"
             crossorigin="anonymous"
     />
-    <script>
-        function addRowTable(value, route) {
+    <script th:inline="javascript">
+
+        function addRowTable(value, route, insights) {
 
             // COMPARE API FILEID RESPONSE WITH MODEL FILEID ATTRIBUTE, WHERE THEY ARE THE SAME
             // ADD THAT MODEL ATTRIBUTE TO LOCAL JS LIST WHICH CAN BE DISPLAYED ON MODAL BODY
@@ -63,6 +64,33 @@
             var div5 = document.createElement("div");
             div5.id = "c4";
 
+            var modalText = document.createElement("p");
+            modalText.className="modal";
+            modalText.id = insights[0]['fileId'];
+
+            var fullInsights = ""
+
+            for(let i = 0; i<insights.length;i++){
+                var currentUsername = insights[i]['username'];
+                var currentDate = insights[i]['date']
+                var currentAction = insights[i]['action'];
+                var currentInsight = "USER: " + currentUsername + " ACTION: " + currentAction + " @ " + currentDate + "\n";
+                fullInsights += currentInsight;
+            }
+            modalText.innerText = fullInsights;
+
+            // assume that all insights for this file are in this row right now DONE
+            // a single modal body DONE
+            // on row creation we can make a p element with all the required information DONE
+            // but assign that p class that makes it not display
+            // on modal press button, we ask for a file id param in function
+            // this will allow us to remove invisible class style from element with id of fileid given
+
+
+
+            var modalContainer = document.getElementById('modal_body');
+            modalContainer.append(modalText);
+
             var downloadLink = document.createElement("a");
             downloadLink.href='/file/download/' + value['fileId'];
             var downloadButton = document.createElement("button");
@@ -87,20 +115,12 @@
                 modifyLink.href='/file/modify/' + value['fileId'];
                 var modifyButton = document.createElement("button");
                 modifyButton.type="button";
-                modifyButton.className = "download-btn";
+                modifyButton.className = "modify-btn";
                 modifyButton.innerText="Modify";
                 modifyLink.append(modifyButton);
                 div4.append(modifyLink);
                 div.append(div4);
-                var insightsLink = document.createElement("a");
-                var insightsButton = document.createElement("button");
-                insightsButton.type="button";
-                insightsButton.className = "insights-btn";
-                //insightsButton.id="openModal"
-                insightsButton.innerText="i";
-                insightsLink.append(insightsButton);
-                div5.append(insightsLink);
-                div.append(div5);
+
 
             }
             link.append(div);
@@ -137,6 +157,21 @@
                 dataRowsToRemove[index].remove();
             }
 
+            var auditList = []
+
+            /*<![CDATA[*/
+
+            /*[# th:each="audit : ${audits}"]*/
+
+            auditList.push(/*[[${audit}]]*/)
+
+            /*[/]*/
+
+            /*]]>*/
+
+
+            console.log(auditList);
+
             // Create a request variable and assign a new XMLHttpRequest object to it.
             var request = new XMLHttpRequest()
 
@@ -147,8 +182,14 @@
                 // Begin accessing JSON data here
                 var json = request.responseText;
                 var files = JSON.parse(json);
+                var fileInsights = [];
                 for (let j = 0; j < files.length; j++) {
-                    addRowTable(files[j], route);
+                    for (let k = 0; k< auditList.length; k++){
+                        if(files[j]['fileId'] == auditList[k]['fileId']){
+                            fileInsights.push(auditList[k]);
+                        }
+                    }
+                    addRowTable(files[j], route,fileInsights);
                 }
             }
 
@@ -188,17 +229,24 @@
 
         }
 
-        const open_modal = document.getElementById("openModal");
-        const close_modal = document.getElementById("closeModal");
-        const modal_container = document.getElementById("modal-container");
+        function showModal(fileId){
 
-        open_modal.addEventListener("click",()=>{
-            modal_container.classList.add('showModal');
-        })
+            const modal_container = document.getElementById("modal_container");
+            const modal_text = document.getElementById(fileId);
 
-        close_modal.addEventListener("click",()=>{
-            modal_container.classList.remove('showModal');
-        })
+            modal_container.classList.add("show");
+            modal_text.classList.add("show");
+
+        }
+
+        function closeModal(fileId){
+
+            const modal_container = document.getElementById("modal_container");
+            const modal_text = document.getElementById(fileId);
+
+            modal_container.classList.remove("show");
+            modal_text.classList.remove("show");
+        }
     </script>
 </head>
 
@@ -219,12 +267,12 @@
         <div class="--graphium-window">
             <div>
                 <div>
-                    <button onclick="loadTable(event, 'myFiles')">My Files</button>
-                    <button onclick="loadTable(event, 'allFiles')">All Files</button>
-                    <button onclick="loadTable(event, 'myOrgFiles')">Organisation Files</button>
-                    <button onclick="loadTable(event, 'myPartnerFiles')">Partners Files</button>
-                    <button onclick="loadTable(event, 'publicFiles')" >Public Files</button>
-                    <button id="openModal" >OPEN MODAL</button>
+                    <button class="tab-btn" onclick="loadTable(event, 'myFiles')">My Files</button>
+                    <button class="tab-btn" onclick="loadTable(event, 'allFiles')">All Files</button>
+                    <button class="tab-btn" onclick="loadTable(event, 'myOrgFiles')">Organisation Files</button>
+                    <button class="tab-btn" onclick="loadTable(event, 'myPartnerFiles')">Partners Files</button>
+                    <button class="tab-btn" onclick="loadTable(event, 'publicFiles')" >Public Files</button>
+                    <button class="tab-btn" onclick="showModal()" id="openModal" >OPEN MODAL</button>
                 </div>
 
                 <div>
@@ -253,10 +301,9 @@
                 </div>
 
                 <div class="modal-container" id="modal_container">
-                    <div class="modal">
+                    <div class="modal" id="modal_body">
                         <h1>THIS IS THE INSIGHTS</h1>
-                        <p>THIS IS WHERE THE INSIGHTS GO</p>
-                        <button id="closeModal">CLOSE</button>
+                        <button onclick="closeModal()">CLOSE</button>
                     </div>
                 </div>
             </div>

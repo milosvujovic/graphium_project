@@ -96,7 +96,7 @@ public class FileUploadController {
         }
 
         for(int i=0;i<usersAudits.size();i++){
-            System.out.println(usersAudits.get(i).getFileId() +" Viewed at "+ usersAudits.get(i).getDate() + " by " + usersAudits.get(i).getUsername());
+            System.out.println(usersAudits.get(i).getFileId() + " ACTION: " + usersAudits.get(i).getAction()+ " @ " + usersAudits.get(i).getDate() + " by " + usersAudits.get(i).getUsername());
         }
 
         model.addAttribute("audits", usersAudits);
@@ -104,9 +104,6 @@ public class FileUploadController {
         // find all files uploaded by current user DONE
         // find all insights from that list of files DONE
         // add to model DONE
-
-
-
 
         return "files.html";
     }
