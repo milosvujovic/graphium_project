@@ -65,6 +65,11 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                     .successHandler(myAuthenticationSuccessHandler())
                 .and()
                 .logout().permitAll();
+        http.logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+        );
     }
 
     // ignore register URL for non-authenticated users

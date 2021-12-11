@@ -66,7 +66,11 @@
 
             var modalText = document.createElement("p");
             modalText.className="modal";
-            modalText.id = insights[0]['fileId'];
+            try{
+                modalText.id = insights[0]['fileId'];
+            }catch(err) {
+                console.log(err.message);
+            }
 
             var fullInsights = ""
 
@@ -82,6 +86,7 @@
             // assume that all insights for this file are in this row right now DONE
             // a single modal body DONE
             // on row creation we can make a p element with all the required information DONE
+            // ADDING ON CLICK TO INSIGHTSBUTTON DOESNT WORK!
             // but assign that p class that makes it not display
             // on modal press button, we ask for a file id param in function
             // this will allow us to remove invisible class style from element with id of fileid given
@@ -120,6 +125,7 @@
                 modifyLink.append(modifyButton);
                 div4.append(modifyLink);
                 div.append(div4);
+
 
 
             }
@@ -255,7 +261,7 @@
     <div layout:fragment="content">
         <div style="display: inline-flex;width: 87.5%;padding-bottom: 10px">
             <div style="width: 50%;display: flex;justify-content: left;align-items: start;">
-                <h1 th:text = "${organisationName}"></h1>
+                <h1 style="color: white" th:text = "${organisationName}"></h1>
             </div>
             <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
                 <a/>
@@ -266,7 +272,7 @@
         </div>
         <div class="--graphium-window">
             <div>
-                <div>
+                <div style="background-color: #f1f1f1">
                     <button class="tab-btn" onclick="loadTable(event, 'myFiles')">My Files</button>
                     <button class="tab-btn" onclick="loadTable(event, 'allFiles')">All Files</button>
                     <button class="tab-btn" onclick="loadTable(event, 'myOrgFiles')">Organisation Files</button>
