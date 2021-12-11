@@ -99,6 +99,7 @@ public class FileUploadController {
             System.out.println(usersAudits.get(i).getFileId() +" Viewed at "+ usersAudits.get(i).getDate() + " by " + usersAudits.get(i).getUsername());
         }
 
+        model.addAttribute("audits", usersAudits);
         // find current user DONE
         // find all files uploaded by current user DONE
         // find all insights from that list of files DONE

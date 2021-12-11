@@ -16,6 +16,10 @@
     />
     <script>
         function addRowTable(value, route) {
+
+            // COMPARE API FILEID RESPONSE WITH MODEL FILEID ATTRIBUTE, WHERE THEY ARE THE SAME
+            // ADD THAT MODEL ATTRIBUTE TO LOCAL JS LIST WHICH CAN BE DISPLAYED ON MODAL BODY
+
             var tableRow = document.createElement("tr");
             tableRow.className ="table-content dataRow";
             var username = document.createElement("td");
@@ -89,10 +93,10 @@
                 div4.append(modifyLink);
                 div.append(div4);
                 var insightsLink = document.createElement("a");
-                insightsLink.href='/file/modify/' + value['fileId'];
                 var insightsButton = document.createElement("button");
                 insightsButton.type="button";
                 insightsButton.className = "insights-btn";
+                //insightsButton.id="openModal"
                 insightsButton.innerText="i";
                 insightsLink.append(insightsButton);
                 div5.append(insightsLink);
@@ -183,6 +187,18 @@
             return false;
 
         }
+
+        const open_modal = document.getElementById("openModal");
+        const close_modal = document.getElementById("closeModal");
+        const modal_container = document.getElementById("modal-container");
+
+        open_modal.addEventListener("click",()=>{
+            modal_container.classList.add('showModal');
+        })
+
+        close_modal.addEventListener("click",()=>{
+            modal_container.classList.remove('showModal');
+        })
     </script>
 </head>
 
@@ -208,6 +224,7 @@
                     <button onclick="loadTable(event, 'myOrgFiles')">Organisation Files</button>
                     <button onclick="loadTable(event, 'myPartnerFiles')">Partners Files</button>
                     <button onclick="loadTable(event, 'publicFiles')" >Public Files</button>
+                    <button id="openModal" >OPEN MODAL</button>
                 </div>
 
                 <div>
@@ -232,6 +249,14 @@
                             </tr>
                             </thead>
                         </table>
+                    </div>
+                </div>
+
+                <div class="modal-container" id="modal_container">
+                    <div class="modal">
+                        <h1>THIS IS THE INSIGHTS</h1>
+                        <p>THIS IS WHERE THE INSIGHTS GO</p>
+                        <button id="closeModal">CLOSE</button>
                     </div>
                 </div>
             </div>
