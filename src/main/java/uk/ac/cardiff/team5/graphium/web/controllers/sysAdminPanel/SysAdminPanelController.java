@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class SysAdminPanelController {
-    @GetMapping("/sys-admin-panel")
+    @GetMapping("/sys-admin")
     public String sysAdminPanel(Model model) {
         return "sys-admin-panel";
     }

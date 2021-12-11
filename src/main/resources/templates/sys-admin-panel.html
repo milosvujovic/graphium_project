@@ -4,9 +4,122 @@
 
 <title>System Admin Panel</title>
 
+<head>
+    <style>
+        .--graphium--tab-container {
+            position: relative;
+
+            height: calc(100% - 80px);
+            width: calc(100% - 80px);
+            margin: 40px;
+            border-radius: 10px;
+
+            background-color: white;
+        }
+
+        .--graphium--tab-container .tab-bar {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            width: calc(100% - 80px);
+            height: 30px;
+        }
+
+        .--graphium--tab-container .tab-bar .tab {
+            padding: 0 10px;
+            background-color: white;
+            height: 30px;
+        }
+
+        .--graphium--tab-view {
+            display: none;
+        }
+
+        .--graphium--tab-view.active {
+            display: block;
+        }
+    </style>
+    <script>
+        window.onload = () => {
+            fetch(`//${window.location.host}/api/organisation`)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(organisation => {
+                        document.getElementById("organisations-table").innerHTML += `
+                        <tr>
+                            <td>${organisation['organisationId']}</td>
+                            <td>${organisation['organisationName']}</td>
+                            <td>a</td>
+                            <td>a</td>
+                            <td>a</td>
+                        </tr>
+                        `
+                    })
+                });
+
+            fetch(`//${window.location.host}/api/user`)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(user => {
+                        document.getElementById("users-table").innerHTML += `
+                        <tr>
+                            <td>${user['firstName']}</td>
+                            <td>${user['lastName']}</td>
+                            <td>${user['username']}</td>
+                            <td>${user['email']}</td>
+                            <td>${user['organisationId']}</td>
+                            <td>a</td>
+                        </tr>
+                        `
+                    })
+                });
+        }
+
+        function show_view(namespace, view_id) {
+            if (namespace) {
+                Array.from(document.getElementsByClassName(namespace)).forEach((element) => {
+                    element.classList.remove("active");
+                })
+            }
+            document.getElementById(view_id).classList.add("active");
+        }
+    </script>
+</head>
+
 <body>
 <div layout:fragment="content">
-    <p>System Admin Panel</p>
+    <div class="--graphium--tab-container">
+        <div class="tab-bar">
+            <span class="tab" onclick="show_view('sys-admin', 'organisations')">Organisations</span>
+            <span class="tab" onclick="show_view('sys-admin', 'users')">Users</span>
+        </div>
+
+        <div class="views">
+            <div class="--graphium--tab-view sys-admin active" id="organisations">
+                <table id="organisations-table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Created</th>
+                        <th>Members</th>
+                        <th>admin profile</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="--graphium--tab-view sys-admin" id="users">
+                <table id="users-table">
+                    <tr>
+                        <th>First Name</th>
+                        <th>Surname</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Organisation</th>
+                        <th>Reset Password</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
