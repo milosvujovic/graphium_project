@@ -1,5 +1,5 @@
-drop database if exists `testgraphium`;
-create database if not exists `testgraphium`;
+drop schema if exists `testgraphium`;
+create schema if not exists `testgraphium`;
 use `testgraphium`;
 
 drop table if exists `organisation`;

@@ -96,20 +96,4 @@ public class FileAPIControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(7)));
     }
-    @Test
-    @WithMockUser("adavies")
-    public void testSearchFiles() throws Exception{
-        mvc.perform(get("/api/user/searchFiles/sport").contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)));
-    }
-    @Test
-    @WithMockUser("adavies")
-    public void testSearchFilesCovid() throws Exception{
-        mvc.perform(get("/api/user/searchFiles/covid").contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)));
-    }
 }
