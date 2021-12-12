@@ -1,20 +1,16 @@
 package uk.ac.cardiff.team5.graphium.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.UserEntity;
-import uk.ac.cardiff.team5.graphium.data.jpa.repository.UserRepository;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
-public class MyUserDetails implements org.springframework.security.core.userdetails.UserDetails {
+public class MyUserDetails implements UserDetails {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    private UserEntity user;
+    private final UserEntity user;
 
     public MyUserDetails(UserEntity user) {
         this.user = user;
@@ -23,12 +19,8 @@ public class MyUserDetails implements org.springframework.security.core.userdeta
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole());
-        System.out.println("Approved "+user.getOrganisation_approved());
-        if (user.getOrganisation_approved()){
-            return Arrays.asList(authority);
-        }else{
-            return Arrays.asList();
-        }
+        System.out.println("Approved " + user.getOrganisation_approved());
+        return user.getOrganisation_approved() ? List.of(authority) : List.of();
     }
 
     @Override
