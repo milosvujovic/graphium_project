@@ -54,9 +54,9 @@ create table if not exists `partnerships`(
 create table if not exists `insights` (
 						`insight_id` integer auto_increment primary key,
 						`date` varchar(50) not null,
-                        `username` varchar(30) references `users`(`username`),
-                        `file_id` varchar(100) references `files`(`file_id`),
-                        `organisation_id` integer references `organisation`(`organisation_id`),
+                        `username` varchar(30),
+                        `file_id` varchar(100),
+                        `organisation_id` integer,
                         `action` varchar(30),
                         `owner` varchar(30)
 );

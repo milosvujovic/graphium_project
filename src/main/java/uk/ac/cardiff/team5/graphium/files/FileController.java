@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.AuditEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.DBFile;
 import uk.ac.cardiff.team5.graphium.exception.FileForbiddenAccess;
+import uk.ac.cardiff.team5.graphium.service.AuditService;
 import uk.ac.cardiff.team5.graphium.service.UserService;
 import uk.ac.cardiff.team5.graphium.service.dto.FileDTO;
 import uk.ac.cardiff.team5.graphium.service.UserService;
@@ -38,6 +39,10 @@ public class FileController {
 
     private DBFileStore dbFileStore;
     private UserService userService;
+    @Autowired
+    private AuditService auditService;
+
+
 
     @Autowired
     public FileController(DBFileStore aDbFileStore, UserService aUserService) {

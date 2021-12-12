@@ -114,6 +114,14 @@ public class FileUploadController {
     public String viewFile(@PathVariable(value = "fileId", required = true) String name, Model model, Principal principal) {
         if (userService.hasAccessToFile(principal.getName(), name)) {
             model.addAttribute("id", name);
+
+            // Makes Log
+            UserDTO currentUser = userService.getUser(principal.getName());
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            AuditEntity auditEntity = new AuditEntity(dtf.format(now), principal.getName(), name, currentUser.getOrganisationId(),"VIEWED","NULL");
+            auditService.addAudit(auditEntity);
+
             return "/file-viewer.html";
         } else {
             return "error/403.html";
