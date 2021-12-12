@@ -33,7 +33,7 @@ public class AdminController {
 
     @GetMapping("/verify")
     public String verify(Model model, Principal principal) {
-        List<UserDTO> unverified =adminService.verify(userService.getUser(principal.getName()).getOrganisationId());
+        List<UserDTO> unverified = adminService.verify(userService.getUser(principal.getName()).getOrganisationId());
         model.addAttribute("userList", unverified);
         return "admin-verify";
     }
