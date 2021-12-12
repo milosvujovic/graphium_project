@@ -14,15 +14,13 @@ import javax.validation.constraints.Size;
 @ValidFile
 public class FileForm {
     private String fileId;
-    @Size(min = 1, max = 20, message = "The file name must contain at least 1 characters and be less than 20 characters")
+    @Size(min = 1, max = 20, message = "The file name must contain between 1 and 20 characters")
     private String fileName;
     private MultipartFile file;
-    @Size(min = 1, max = 20, message = "The tag must contain at least 1 characters and be less than 20 characters")
     private String tag;
-    @Size(min = 1, max = 20, message = "The access level must contain at least 1 characters and be less than 20 characters")
     private String accessLevel;
-    @Size(min = 0, max = 50, message = "The comment must be less than 50 characters")
+    @Size(max = 50, message = "The comment must be less than 50 characters")
     private String comment;
-    @Size(min = 1, max = 20, message = "The subject must contain at least 1 characters and be less than 50 characters")
+    @Size(min = 1, max = 20, message = "The subject must contain between 1 and 20 characters")
     private String subject;
 }

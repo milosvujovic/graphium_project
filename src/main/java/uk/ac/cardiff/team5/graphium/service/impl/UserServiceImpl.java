@@ -1,8 +1,11 @@
 package uk.ac.cardiff.team5.graphium.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.codec.Hex;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.encrypt.Encryptors;
 import uk.ac.cardiff.team5.graphium.GraphiumApplication;
 import uk.ac.cardiff.team5.graphium.data.jdbc.repository.FileRepository;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.OrganisationEntity;
@@ -17,6 +20,8 @@ import uk.ac.cardiff.team5.graphium.exception.UsernameInUseException;
 import uk.ac.cardiff.team5.graphium.service.UserService;
 import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -44,12 +49,14 @@ public class UserServiceImpl implements UserService {
             throw new UsernameInUseException("Username " + userDTO.getUsername() + " is already in use.");
         }
         RoleEntity role = roleRepository.findByRoleId("1");
+        TextEncryptor encryptor =
+                Encryptors.delux("password", new String(Hex.encode("salt".getBytes(StandardCharsets.UTF_8))));
         UserEntity userEntity = new UserEntity(
                 userDTO.getFirstName(),
                 userDTO.getLastName(),
                 organisationRepository.findById(userDTO.getOrganisationId()).get(),// need to add verification that organisation id exists
                 userDTO.getUsername(),
-                userDTO.getEmail(),
+                encryptor.encrypt(userDTO.getEmail()),
                 passwordEncoder.encode(userDTO.getPassword()),
                 role
         );
