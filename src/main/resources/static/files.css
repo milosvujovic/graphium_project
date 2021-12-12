@@ -147,17 +147,19 @@ h1{
 
 .insights-btn {
     font-size: 12px;
-    background-color: #b2b2b2;
+    background-color: #dedede;
     color: white;
     border-radius: 50%;
     border: none;
     cursor: pointer;
     height: 26px;
     width: 26px;
+    line-height: 26px;
     transition: ease all 0.15s;
     display: flex;
     align-content: center;
     justify-content: center;
+    margin: 10px;
 }
 
 .hideModal{
@@ -236,8 +238,20 @@ h1{
     border-radius: 10px;
     text-align: center;
 
+
+
 }
-.modal-container.show{
-    pointer-events: auto;
+
+.modalText{
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.show{
     opacity: 1;
+    pointer-events: auto;
+
 }
+
+

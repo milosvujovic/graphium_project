@@ -61,31 +61,35 @@
             div3.id = "c2";
             var div4 = document.createElement("div");
             div4.id = "c3";
-            try {
-                var div5 = document.createElement("div");
-                div5.id = value['fileId'];
-            } catch(e){
-                console.log(e.message);
-            }
+            var div5 = document.createElement("div");
 
             var modalText = document.createElement("p");
-            modalText.className="modal";
+            modalText.className="modalText";
             try{
-                modalText.id = insights[0]['fileId'];
+                modalText.id = value['fileId'];
             }catch(err) {
                 console.log(err.message);
             }
 
             var fullInsights = ""
 
-            for(let i = 0; i<insights.length;i++){
-                var currentUsername = insights[i]['username'];
-                var currentDate = insights[i]['date']
-                var currentAction = insights[i]['action'];
-                var currentInsight = "USER: " + currentUsername + " ACTION: " + currentAction + " @ " + currentDate + "\n";
-                fullInsights += currentInsight;
+            for(let j=0; j<insights.length;j++){
+                if(insights[j]['fileId'] === value['fileId']){
+                    var currentUsername = insights[j]['username'];
+                    var currentDate = insights[j]['date']
+                    var currentAction = insights[j]['action'];
+                    var currentInsight = "User: " + currentUsername + " Action: " + currentAction + " @ " + currentDate + "\n";
+                    fullInsights += currentInsight;
+                }
             }
+            console.log("---------------------------");
+            console.log(insights);
+            console.log(value['fileId']);
+            console.log("---------------------------");
+
             modalText.innerText = fullInsights;
+
+
 
             // assume that all insights for this file are in this row right now DONE
             // a single modal body DONE
@@ -94,8 +98,6 @@
             // but assign that p class that makes it not display
             // on modal press button, we ask for a file id param in function
             // this will allow us to remove invisible class style from element with id of fileid given
-
-
 
             var modalContainer = document.getElementById('modal_body');
             modalContainer.append(modalText);
@@ -119,6 +121,17 @@
             div3.append(viewLink);
             div.append(div3);
 
+            // MAKE INSIGHTS BUTTON
+
+
+            var button = document.createElement("a");
+            button.className = "insights-btn"
+            button.innerText="i";
+            var currentFile = value['fileId'];
+            button.setAttribute("onclick",'showModal( "'+currentFile+'")');
+            div5.append(button);
+
+
             if (route == "myFiles"){
                 var modifyLink = document.createElement("a");
                 modifyLink.href='/file/modify/' + value['fileId'];
@@ -130,8 +143,6 @@
                 div4.append(modifyLink);
                 div.append(div4);
                 div.append(div5);
-
-
 
 
             }
@@ -185,8 +196,6 @@
             /*]]>*/
 
 
-            console.log(auditList);
-
             // Create a request variable and assign a new XMLHttpRequest object to it.
             var request = new XMLHttpRequest()
 
@@ -200,7 +209,7 @@
 
                 for (let j = 0; j < files.length; j++) {
                     for (let k = 0; k< auditList.length; k++){
-                        if(files[j]['fileId'] == auditList[k]['fileId']){
+                        if(files[j]['fileId'] === auditList[k]['fileId']){
                             fileInsights.push(auditList[k]);
                         }
 
@@ -211,7 +220,6 @@
                     addRowTable(files[j], route,fileInsights);
                 }
 
-                console.log(fileIds);
             }
 
             // Send request
@@ -251,75 +259,25 @@
         }
 
         function showModal(fileId){
-
             const modal_container = document.getElementById("modal_container");
+            const insights_p = document.getElementById(fileId);
 
-            const currentTextDiv = document.createElement("div");
-            const currentText = document.createElement("p");
-            currentTextDiv.id = fileId;
-            currentTextDiv.className = "hideModal";
-
-
-            //modal_container.classList.add("show");
-           // modal_text.classList.add("show");
-
-            //console.log("THIS IS THE FILES ID RIGHT NOW\n" + fileId )
-            fileId = fileId.substring(1);
-            fileId = fileId.substring(0, fileId.length - 1);
-            var modalText = "";
-            //console.log(typeof fileId);
-            //console.log("------------------------------------------")
-
-            for(let i = 0; i<fileInsights.length;i++){
-                //console.log("THIS IS THE CURRENT LOOPING FILE ID " + fileInsights[i]['fileId']);
-                //console.log(typeof fileInsights[i]['fileId']);
-                console.log("----------------------")
-                console.log(fileId);
-                console.log(fileInsights[i]['fileId'])
-                console.log("----------------------")
-                console.log(fileInsights[i]['fileId'] === fileId);
-                if(fileInsights[i]['fileId'] === fileId){
-                    var newInsight =  "Username: " + fileInsights[i]['username'] + " " + fileInsights[i]['action'] + " @ " + fileInsights[i]['date'] + "\n";
-                    modalText = modalText.concat(newInsight);
-                }
-            }
-
-            console.log(modalText)
-
-            currentText.innerText = modalText;
-
-            currentTextDiv.append(currentText);
-            modal_container.append(currentTextDiv);
+            insights_p.classList.add("show");
 
             modal_container.classList.add("show");
 
 
         }
 
-        function closeModal(fileId){
-
+        function closeModal(){
             const modal_container = document.getElementById("modal_container");
-            const modal_text = document.getElementById(fileId);
-
+            const insightPs = document.getElementsByClassName('modalText');
+            Array.from(insightPs).forEach((element)=>{element.classList.remove('show')});
             modal_container.classList.remove("show");
-            modal_text.classList.remove("show");
-        }
-
-        function testButton(){
-            for(var i = 0; i < fileIds.length;i++){
-                var currentDiv = document.getElementById(fileIds[i]);
-                console.log("THIS FILE ID IS " + fileIds[i])
-                var button = document.createElement("a");
-                button.className = "insights-btn"
-                button.innerText="i";
-                var currentFile = fileIds[i];
-                button.setAttribute("onclick",'showModal( " '+currentFile+' ")');
-                currentDiv.append(button);
-
-            }
-
 
         }
+
+
     </script>
 </head>
 
@@ -345,7 +303,6 @@
                     <button class="tab-btn" onclick="loadTable(event, 'myOrgFiles')">Organisation Files</button>
                     <button class="tab-btn" onclick="loadTable(event, 'myPartnerFiles')">Partners Files</button>
                     <button class="tab-btn" onclick="loadTable(event, 'publicFiles')" >Public Files</button>
-                    <button class="tab-btn" onclick="testButton()">OPEN MODAL</button>
                 </div>
 
                 <div>
@@ -375,7 +332,10 @@
 
                 <div class="modal-container" id="modal_container">
                     <div class="modal" id="modal_body">
-                        <button onclick="closeModal()">CLOSE</button>
+                        <div style="width: 100%; padding: 10px;">
+                        <button style="background-color:white;border: none; cursor: pointer;float: right;" onclick="closeModal()">X</button>
+                        </div>
+                        <h1 style="color:black">Document Insights</h1>
                     </div>
                 </div>
             </div>
