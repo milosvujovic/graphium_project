@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import uk.ac.cardiff.team5.graphium.service.UserDetailsService;
 
 @Configuration
@@ -62,12 +64,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                     .permitAll()
                     .successHandler(myAuthenticationSuccessHandler())
                 .and()
-                .logout().permitAll();
-        http.logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
-                .invalidateHttpSession(true)
-        );
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login");
     }
 
     // ignore register URL for non-authenticated users
