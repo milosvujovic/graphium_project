@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
@@ -20,6 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @RunWith(SpringRunner.class)
 @SqlGroup({
         @Sql("/schema-test.sql"),
@@ -38,9 +40,10 @@ public class FileAPIControllerTest {
 
     @Autowired
     private FileSearchAPIController fileSearchAPIController;
+
     @Test
     @WithMockUser("adavies")
-    public void getAllPublicFiles() throws Exception{
+    public void getAllPublicFiles() throws Exception {
         mvc.perform(get("/api/user/publicFiles").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -49,34 +52,62 @@ public class FileAPIControllerTest {
 
     @Test
     @WithMockUser("adavies")
-    public void getAllUsersFiles() throws Exception{
+    public void getAllUsersFiles() throws Exception {
         mvc.perform(get("/api/user/myFiles").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)));
     }
+
     @Test
     @WithMockUser("adavies")
-    public void getMyOrganisationFiles() throws Exception{
+    public void getMyOrganisationFiles() throws Exception {
         mvc.perform(get("/api/user/myOrgFiles").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(4)));
     }
+
     @Test
     @WithMockUser("adavies")
-    public void getPartnersFiles() throws Exception{
+    public void getPartnersFiles() throws Exception {
         mvc.perform(get("/api/user/myPartnerFiles").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)));
     }
+
     @Test
     @WithMockUser("adavies")
-    public void getAllFiles() throws Exception{
+    public void getAllFiles() throws Exception {
         mvc.perform(get("/api/user/allFiles").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(7)));
+    }
+
+    @Test
+    @WithMockUser("sbayrami")
+    public void unapprovedUserCannotViewFiles() throws Exception {
+        mvc.perform(get("/api/user/publicFiles").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser("adavies")
+    public void testSearchFiles() throws Exception{
+        mvc.perform(get("/api/user/searchFiles/sport").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+    }
+    @Test
+    @WithMockUser("adavies")
+    public void testSearchFilesCovid() throws Exception{
+        mvc.perform(get("/api/user/searchFiles/covid").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
     }
 }
