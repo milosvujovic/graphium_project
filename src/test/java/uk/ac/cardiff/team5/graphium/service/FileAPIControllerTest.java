@@ -48,12 +48,29 @@ public class FileAPIControllerTest {
     }
 
     @Test
+    @WithMockUser("csmith")
+    public void getAllPublicFilesDiffernetUser() throws Exception{
+        mvc.perform(get("/api/user/publicFiles").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
     @WithMockUser("adavies")
     public void getAllUsersFiles() throws Exception{
         mvc.perform(get("/api/user/myFiles").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)));
+    }
+    @Test
+    @WithMockUser("csmith")
+    public void getAllUsersFilesDiffernetUser() throws Exception{
+        mvc.perform(get("/api/user/myFiles").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
     }
     @Test
     @WithMockUser("adavies")
@@ -78,5 +95,21 @@ public class FileAPIControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(7)));
+    }
+    @Test
+    @WithMockUser("adavies")
+    public void testSearchFiles() throws Exception{
+        mvc.perform(get("/api/user/searchFiles/sport").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+    }
+    @Test
+    @WithMockUser("adavies")
+    public void testSearchFilesCovid() throws Exception{
+        mvc.perform(get("/api/user/searchFiles/covid").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
     }
 }
