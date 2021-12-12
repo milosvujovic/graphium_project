@@ -116,7 +116,7 @@ public class FileUploadController {
         UserDTO currentUser = userService.getUser(principal.getName());
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
-        AuditEntity auditEntity = new AuditEntity(dtf.format(now), principal.getName(), name, currentUser.getOrganisationId(),"VIEW","me");
+        AuditEntity auditEntity = new AuditEntity(dtf.format(now), principal.getName(), name, currentUser.getOrganisationId(),"VIEWED","NULL");
         auditService.addAudit(auditEntity);
 
 

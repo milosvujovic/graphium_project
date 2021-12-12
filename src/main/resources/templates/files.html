@@ -61,8 +61,12 @@
             div3.id = "c2";
             var div4 = document.createElement("div");
             div4.id = "c3";
-            var div5 = document.createElement("div");
-            div5.id = "c4";
+            try {
+                var div5 = document.createElement("div");
+                div5.id = value['fileId'];
+            } catch(e){
+                console.log(e.message);
+            }
 
             var modalText = document.createElement("p");
             modalText.className="modal";
@@ -125,6 +129,8 @@
                 modifyLink.append(modifyButton);
                 div4.append(modifyLink);
                 div.append(div4);
+                div.append(div5);
+
 
 
 
@@ -147,6 +153,9 @@
         function loadTable(evt,route){
             openFiles(evt,route);
         }
+
+        let fileIds = [];
+        let fileInsights = [];
 
         function openFiles(evt, route) {
 
@@ -188,15 +197,21 @@
                 // Begin accessing JSON data here
                 var json = request.responseText;
                 var files = JSON.parse(json);
-                var fileInsights = [];
+
                 for (let j = 0; j < files.length; j++) {
                     for (let k = 0; k< auditList.length; k++){
                         if(files[j]['fileId'] == auditList[k]['fileId']){
                             fileInsights.push(auditList[k]);
                         }
+
+                        if(!fileIds.includes(auditList[k]['fileId'])){
+                            fileIds.push(auditList[k]['fileId']);
+                        }
                     }
                     addRowTable(files[j], route,fileInsights);
                 }
+
+                console.log(fileIds);
             }
 
             // Send request
@@ -238,10 +253,46 @@
         function showModal(fileId){
 
             const modal_container = document.getElementById("modal_container");
-            const modal_text = document.getElementById(fileId);
+
+            const currentTextDiv = document.createElement("div");
+            const currentText = document.createElement("p");
+            currentTextDiv.id = fileId;
+            currentTextDiv.className = "hideModal";
+
+
+            //modal_container.classList.add("show");
+           // modal_text.classList.add("show");
+
+            //console.log("THIS IS THE FILES ID RIGHT NOW\n" + fileId )
+            fileId = fileId.substring(1);
+            fileId = fileId.substring(0, fileId.length - 1);
+            var modalText = "";
+            //console.log(typeof fileId);
+            //console.log("------------------------------------------")
+
+            for(let i = 0; i<fileInsights.length;i++){
+                //console.log("THIS IS THE CURRENT LOOPING FILE ID " + fileInsights[i]['fileId']);
+                //console.log(typeof fileInsights[i]['fileId']);
+                console.log("----------------------")
+                console.log(fileId);
+                console.log(fileInsights[i]['fileId'])
+                console.log("----------------------")
+                console.log(fileInsights[i]['fileId'] === fileId);
+                if(fileInsights[i]['fileId'] === fileId){
+                    var newInsight =  "Username: " + fileInsights[i]['username'] + " " + fileInsights[i]['action'] + " @ " + fileInsights[i]['date'] + "\n";
+                    modalText = modalText.concat(newInsight);
+                }
+            }
+
+            console.log(modalText)
+
+            currentText.innerText = modalText;
+
+            currentTextDiv.append(currentText);
+            modal_container.append(currentTextDiv);
 
             modal_container.classList.add("show");
-            modal_text.classList.add("show");
+
 
         }
 
@@ -252,6 +303,22 @@
 
             modal_container.classList.remove("show");
             modal_text.classList.remove("show");
+        }
+
+        function testButton(){
+            for(var i = 0; i < fileIds.length;i++){
+                var currentDiv = document.getElementById(fileIds[i]);
+                console.log("THIS FILE ID IS " + fileIds[i])
+                var button = document.createElement("a");
+                button.className = "insights-btn"
+                button.innerText="i";
+                var currentFile = fileIds[i];
+                button.setAttribute("onclick",'showModal( " '+currentFile+' ")');
+                currentDiv.append(button);
+
+            }
+
+
         }
     </script>
 </head>
@@ -278,7 +345,7 @@
                     <button class="tab-btn" onclick="loadTable(event, 'myOrgFiles')">Organisation Files</button>
                     <button class="tab-btn" onclick="loadTable(event, 'myPartnerFiles')">Partners Files</button>
                     <button class="tab-btn" onclick="loadTable(event, 'publicFiles')" >Public Files</button>
-                    <button class="tab-btn" onclick="showModal()" id="openModal" >OPEN MODAL</button>
+                    <button class="tab-btn" onclick="testButton()">OPEN MODAL</button>
                 </div>
 
                 <div>
@@ -308,7 +375,6 @@
 
                 <div class="modal-container" id="modal_container">
                     <div class="modal" id="modal_body">
-                        <h1>THIS IS THE INSIGHTS</h1>
                         <button onclick="closeModal()">CLOSE</button>
                     </div>
                 </div>
