@@ -1,5 +1,5 @@
 
-insert into organisation (organisation_name) values ('Welsh Goverment');
+insert into organisation (organisation_name) values ('Welsh Government');
 insert into organisation (organisation_name) values ('Cardiff University');
 insert into organisation (organisation_name) values ('Swansea University');
 insert into organisation (organisation_name) values ('Office For National Stats');
