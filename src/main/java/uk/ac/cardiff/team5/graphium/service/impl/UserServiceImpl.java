@@ -124,4 +124,12 @@ public class UserServiceImpl implements UserService {
     @Override    public List<FileDisplayer> findBySearchTerm(String search, String username) {
         return fileRepository.findAllFiles(username).stream().filter(c -> c.matches(search)).collect(Collectors.toList());
     }
+    @Override
+    public boolean hasAccessToFile(String username, String fileID){
+        return userRepository.hasAccessToFiles(username,fileID);
+    }
+    @Override
+    public boolean canModifyFile(String name, String fileID){
+        return userRepository.hasAccessToModify(name, fileID);
+    }
 }
