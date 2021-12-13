@@ -54,7 +54,13 @@ public class FileUploadController {
 
     //      Displays form to upload files to the webpage.
     @GetMapping({"upload", "file"})
-    public String file(Model model) {
+    public String file(Model model, Principal principal) {
+
+        UserEntity currentUser = userRepository.findByUsername(principal.getName());
+        OrganisationEntity currentOrganisation = currentUser.getOrganisation();
+        String myString = currentOrganisation.getOrganisationName();
+        model.addAttribute("organisationName",myString);
+
         FileForm form = new FileForm();
         model.addAttribute("fileForm", form);
         return "file-upload.html";
