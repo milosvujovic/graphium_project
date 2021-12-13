@@ -53,10 +53,12 @@ create table if not exists `partnerships`(
 );
 create table if not exists `insights` (
 						`insight_id` integer auto_increment primary key,
-						`date` DATE not null,
-                        `user_id` bigint references `users`(`user_id`),
-                        `file_id` varchar(100) references `files`(`file_id`),
-                        `organisation_id` integer references `organisation`(`organisation_id`)
+						`date` varchar(50) not null,
+                        `username` varchar(30),
+                        `file_id` varchar(100),
+                        `organisation_id` integer,
+                        `action` varchar(30),
+                        `owner` varchar(30)
 );
 
 DELIMITER //
@@ -168,7 +170,7 @@ END //
 
 DELIMITER //
 CREATE FUNCTION `hasAccessToFiles`(usernameP varchar(45),
-fileID long) RETURNS boolean
+fileID long) RETURNS boolean DETERMINISTIC
 BEGIN
 set @OrganisationID = (Select organisation_id from users where username = usernameP);
 return (select distinct count(*)
@@ -191,7 +193,7 @@ END //
 
 DELIMITER //
 CREATE FUNCTION `hasAccessToModfiyFile`(usernameP varchar(45),
-fileID long) RETURNS boolean
+fileID long) RETURNS boolean DETERMINISTIC
 BEGIN
 set @creatorID = (select users.username from files join users on users.user_id = files.user_id where file_id = fileID);
 IF @creatorID = usernameP THEN
@@ -202,7 +204,7 @@ END IF;
 END //
 
 DELIMITER //
-CREATE FUNCTION partnershipExists(orgID varchar(45),usernameP varchar(45)) RETURNS boolean
+CREATE FUNCTION partnershipExists(orgID varchar(45),usernameP varchar(45)) RETURNS boolean DETERMINISTIC
 BEGIN
 set @OrganisationID = (Select organisation_id from users where username = usernameP);
 set @numberOfInstances = (select count(*) from partnerships where sharing_organisation_id = @OrganisationID and viewing_organisation_id = orgID);
@@ -214,7 +216,7 @@ END IF;
 END //
 
 DELIMITER //
-CREATE FUNCTION canVerifyUser(usernameP varchar(45), orgAdmin varchar(45)) RETURNS boolean
+CREATE FUNCTION canVerifyUser(usernameP varchar(45), orgAdmin varchar(45)) RETURNS boolean DETERMINISTIC
 BEGIN
 set @OrgIDAdmin = (Select organisation_id from users where username = orgAdmin);
 set @OrgIDUser = (Select organisation_id from users where username = usernameP);

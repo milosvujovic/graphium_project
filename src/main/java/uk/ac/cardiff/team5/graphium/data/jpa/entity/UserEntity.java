@@ -43,6 +43,10 @@ public class UserEntity {
         return role.getRoleId();
     }
 
+    public Long getUserId(){
+        return userId;
+    }
+
     public void setRole(RoleEntity newRole) {this.role = newRole;}
 
     public OrganisationEntity getOrganisation() {

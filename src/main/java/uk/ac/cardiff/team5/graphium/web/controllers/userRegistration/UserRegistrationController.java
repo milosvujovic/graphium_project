@@ -91,6 +91,7 @@ public class UserRegistrationController {
             List<UserDTO> admins = userService.getOrgAdmin(userRegistrationForm.getOrganisationId());
 
             senderService.sendEmail(admins.get(0).getEmail(), "Your organisation has a new user: " + userRegistrationForm.getEmail(), "Check your admin panel on the website to approve or reject this new user.\n\nUser Details:\n" + "Full Name: " + userRegistrationForm.getFirstName() + " " + userRegistrationForm.getLastName() + "\n" + "Email Address: " + userRegistrationForm.getEmail());
+            senderService.sendEmail(userRegistrationForm.getEmail(), "Account Successfully Created - Graphium", "Dear " + userRegistrationForm.getFirstName() +" " + userRegistrationForm.getLastName() + "," +"\nYour account has been created successfully.\nYou will be unable to access the platform until your organisation admin has approved your account.\n\nRegards,"+"\nGraphium File Share");
         } catch (Exception e){
             System.out.println("Organisation admin not found - user cannot be verified");
         }
