@@ -11,6 +11,11 @@ public class OrganisationDTO {
     private Long organisation_id;
     private String organisationName;
 
+    public OrganisationDTO(String organisationName) {
+        this.organisation_id = 0L;
+        this.organisationName = organisationName;
+    }
+
 
     public OrganisationDTO(OrganisationEntity organisation) {
         this.organisation_id = organisation.getOrganisationId();

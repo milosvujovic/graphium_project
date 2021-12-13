@@ -69,9 +69,9 @@ public class OrganisationAPIController {
         return "Success";
     }
 
-    @PostMapping("{organisation_id}/set-admin/{user_id}")
-    String set_admin(@PathVariable Long organisation_id, @PathVariable Long user_id) {
-        UserEntity userEntity = userRepository.getById(user_id);
+    @PostMapping("{organisation_id}/set-admin/{username}")
+    String set_admin(@PathVariable Long organisation_id, @PathVariable String username) {
+        UserEntity userEntity = userRepository.getByUsername(username);
         userEntity.setRole(roleRepository.getById("2"));
         userRepository.save(userEntity);
         return "Success";

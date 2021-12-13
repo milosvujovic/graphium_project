@@ -33,4 +33,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query(value = "SELECT canVerifyUser(:username,:adminName);", nativeQuery = true)
     boolean canVerifyUser(@Param("username") String username, @Param("adminName") String adminName);
 
+    UserEntity getByUsername(String username);
 }

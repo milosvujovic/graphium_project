@@ -90,7 +90,41 @@
         }
 
         function make_admin_popup(organisation_id) {
-            document.getElementById("--graphium--make-admin-popup").classList.add("active");
+            document.getElementById("--graphium--make-admin-popup-select").innerHTML = '';
+
+            fetch(`//${window.location.host}/api/organisation/${organisation_id}/users`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    data.forEach(user => {
+                        document.getElementById("--graphium--make-admin-popup-select").innerHTML += `
+                        <option value="${user['username']}">${user['username']}</option>
+                        `
+                    })
+                    document.getElementById("--graphium--make-admin-popup").classList.add("active");
+                });
+        }
+
+        function make_admin() {
+            let user_id = document.getElementById("--graphium--make-admin-popup-select").value;
+
+            fetch(`//${window.location.host}/api/csrf`, {
+                credentials: 'include'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    let csrf = data['token'];
+
+                    fetch(`//${window.location.host}/api/organisation/1/set-admin/${user_id}?_csrf=${csrf}`, {
+                        method: "POST",
+                        credentials: 'include',
+                        headers: {"Content-Type": "application/json"},
+                    }).then(res => {
+                        console.log("Make org admin post request response:", res);
+                        fetch_organisations();
+                        document.getElementById("--graphium--make-admin-popup").classList.remove("active");
+                    });
+                });
         }
 
         function fetch_organisations() {
@@ -184,10 +218,9 @@
         <div class="content">
             <span class="close-btn" id="--graphium--make-admin-popup-close">X</span>
             <h1>Make admin of organisation</h1>
-            <select>
-                <option>option1</option>
+            <select id="--graphium--make-admin-popup-select">
             </select>
-            <button>Submit</button>
+            <button onclick="make_admin()">Submit</button>
         </div>
     </div>
 
