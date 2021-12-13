@@ -50,6 +50,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/admin/**").access("hasRole('2')")
+                .antMatchers("/sys-admin/**").access("hasRole('3')")
                 .antMatchers("/api/admin/**").access("hasRole('2')")
                 .antMatchers("/api/user/**").access("hasAnyRole('1','2')")
                 .antMatchers("/upload").access("hasAnyRole('1','2')")
