@@ -38,11 +38,59 @@
         .--graphium--tab-view.active {
             display: block;
         }
+
+        .--graphium--make-admin-popup-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            background-color: rgba(0,0,0,0.3);
+
+            display: none;
+            justify-content: center;
+            align-items: center;
+
+            z-index: 99;
+        }
+
+        .--graphium--make-admin-popup-container.active {
+            display: flex;
+        }
+
+        .--graphium--make-admin-popup-container .content {
+            position: relative;
+            width: 400px;
+            height: 300px;
+            background-color: white;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .--graphium--make-admin-popup-container .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: block;
+        }
+
+
     </style>
     <script>
         window.onload = () => {
             fetch_organisations();
             fetch_users();
+
+            document.getElementById("--graphium--make-admin-popup-close").onclick = () => {
+                document.getElementById("--graphium--make-admin-popup").classList.remove("active");
+            }
+        }
+
+        function make_admin_popup(organisation_id) {
+            document.getElementById("--graphium--make-admin-popup").classList.add("active");
         }
 
         function fetch_organisations() {
@@ -53,9 +101,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Created</th>
-                        <th>Members</th>
-                        <th>admin profile</th>
+                        <th>Admin Account</th>
                     </tr>
                     `
                     data.forEach(organisation => {
@@ -63,9 +109,7 @@
                         <tr>
                             <td>${organisation['organisationId']}</td>
                             <td>${organisation['organisationName']}</td>
-                            <td>a</td>
-                            <td>a</td>
-                            <td>a</td>
+                            <td><a onclick="make_admin_popup(${organisation['organisationId']})" style="cursor: pointer; color: blue; text-decoration: underline">Make admin</a></td>
                         </tr>
                         `
                     })
@@ -136,6 +180,17 @@
 
 <body>
 <div layout:fragment="content">
+    <div class="--graphium--make-admin-popup-container" id="--graphium--make-admin-popup">
+        <div class="content">
+            <span class="close-btn" id="--graphium--make-admin-popup-close">X</span>
+            <h1>Make admin of organisation</h1>
+            <select>
+                <option>option1</option>
+            </select>
+            <button>Submit</button>
+        </div>
+    </div>
+
     <div class="--graphium--tab-container">
         <div class="tab-bar">
             <span class="tab" onclick="show_view('sys-admin', 'organisations')">Organisations</span>

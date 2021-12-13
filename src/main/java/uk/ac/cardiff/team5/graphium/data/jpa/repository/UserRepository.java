@@ -17,6 +17,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     List<UserEntity> findAll();
 
     List<UserEntity> findUserEntitiesByOrganisation(OrganisationEntity organisation);
+
     @Modifying
     @Query("update UserEntity set organisation_approved = true where username = ?1")
     @Transactional
