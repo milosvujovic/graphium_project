@@ -10,7 +10,8 @@ import javax.persistence.*;
 public class OrganisationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long organisation_id;
+    private Long organisationId;
+
     private String organisationName;
 
     public OrganisationEntity(String organisationName) {
@@ -18,11 +19,11 @@ public class OrganisationEntity {
     }
 
     public Long getOrganisationId() {
-        return organisation_id;
+        return organisationId;
     }
 
     public void setOrganisationId(Long organisationId) {
-        this.organisation_id = organisationId;
+        this.organisationId = organisationId;
     }
 
     public String getOrganisationName() {

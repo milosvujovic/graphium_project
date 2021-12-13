@@ -12,7 +12,13 @@ public class FileDisplayer {
     private String tag;
     private String accessLevel;
     private String comment;
-    private byte[] data;
     private String date;
     private String username;
+    private String subject;
+    private String organisationName;
+
+    public boolean matches(String search) {
+        String searchLower = search.toLowerCase();
+        return fileName.toLowerCase().contains(searchLower) || username.toLowerCase().contains(searchLower) || comment.toLowerCase().contains(searchLower) || subject.toLowerCase().contains(searchLower);
+    }
 }

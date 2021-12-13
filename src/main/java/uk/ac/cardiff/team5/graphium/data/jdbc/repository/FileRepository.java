@@ -26,9 +26,10 @@ public class FileRepository {
                 rs.getString("tag"),
                 rs.getString("access_level"),
                 rs.getString("comment"),
-                rs.getBytes("data"),
                 rs.getString("date"),
-                rs.getString("username"));
+                rs.getString("username"),
+                rs.getString("subject"),
+                rs.getString("organisation_name"));
     }
 
 
@@ -43,8 +44,22 @@ public class FileRepository {
 
     public List<FileDisplayer> findAllPublic() {
         return jdbc.query(
-                "SELECT files.file_id, files.file_name, files.file_type,files.tag,files.access_level, files.comment,files.data, files.date,users.username FROM graphium.files JOIN users on files.user_id = users.user_id where files.access_level = 'public' ORDER BY files.date;",
+                "call getPublicFiles();",
                 new Object[]{},
+                fileMapper);
+    }
+
+    public List<FileDisplayer> findAllPartners(String username) {
+        return jdbc.query(
+                "call getPartnersFiles(?);",
+                new Object[]{username},
+                fileMapper);
+    }
+
+    public List<FileDisplayer> findAllFiles(String username) {
+        return jdbc.query(
+                "call getAllFiles(?);",
+                new Object[]{username},
                 fileMapper);
     }
 }

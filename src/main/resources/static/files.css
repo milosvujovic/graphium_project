@@ -1,0 +1,195 @@
+.--graphium-window{
+    height: 75%;
+    width: 90%;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 80px 2px rgba(0,0,0,0.3);
+}
+
+--graphium-window-tab{
+    display: inline-flex;
+    width: 90%;
+}
+
+#file-table{
+    border-collapse: collapse;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#file-table tr{
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 10px;
+}
+
+
+--graphium-window-title{
+    width: 50%;
+    display: flex;
+    justify-content: left;
+    align-items: start;
+}
+
+--graphium-window-options{
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.table-row{
+    padding: 8px;
+}
+h1{
+    font-size: 24px;
+    margin: 0;
+    color: white;
+    font-weight: lighter;
+}
+
+a{
+    color: white;
+    text-decoration: none;
+}
+
+
+
+.form-submit {
+    font-size: 12px;
+    background-color: #B0B0B0;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    height: 26px;
+    transition: ease all 0.15s;
+    margin: 10px;
+    width: 100%;
+}
+
+.form-submit:hover {
+    background-color: #d0cfcf;
+}
+
+.download-btn {
+    font-size: 12px;
+    background-color: #266C91;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    height: 26px;
+    transition: ease all 0.15s;
+    margin: 10px;
+    width: 100%;
+}
+
+.download-btn:hover {
+    background-color: #2e87af;
+}
+
+.view-btn {
+    font-size: 12px;
+    background-color: #b2b2b2;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    height: 26px;
+    transition: ease all 0.15s;
+    margin: 10px;
+    width:100%;
+}
+
+.view-btn:hover {
+    background-color: #bdbdbd;
+}
+.form-input {
+    position: relative;
+    width: 98%;
+    height: 20px;
+    margin: 10px;
+
+}
+
+.table-heading{
+    font-size: 12px;
+    opacity: 50%;
+    text-align: left;
+    padding: 15px;
+}
+
+.table-content{
+    text-align: left;
+    padding: 15px;
+}
+
+.search-input{
+    height: 10px;
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+#wrapper {
+    width: 80%;
+    display: flex;
+}
+
+td
+{
+    text-align: center;
+    vertical-align: middle;
+}
+body {font-family: Arial;}
+
+/* Style the tab */
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 10px;
+    padding: 10px;
+#wrapper > div {
+    flex-grow: 1;
+}

@@ -1,25 +1,24 @@
 package uk.ac.cardiff.team5.graphium.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uk.ac.cardiff.team5.graphium.GraphiumApplication;
 import uk.ac.cardiff.team5.graphium.data.jdbc.repository.FileRepository;
+import uk.ac.cardiff.team5.graphium.data.jpa.entity.OrganisationEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.RoleEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.UserEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.OrganisationRepository;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.RoleRepository;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.UserRepository;
 import uk.ac.cardiff.team5.graphium.domain.FileDisplayer;
-import uk.ac.cardiff.team5.graphium.domain.User;
 import uk.ac.cardiff.team5.graphium.exception.EmailInUseException;
 import uk.ac.cardiff.team5.graphium.exception.UsernameInUseException;
 import uk.ac.cardiff.team5.graphium.service.UserService;
-import uk.ac.cardiff.team5.graphium.service.dto.FileDTO;
 import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service("userService")
@@ -79,15 +78,25 @@ public class UserServiceImpl implements UserService {
         UserEntity user = userRepository.findByUsername(username);
         UserDTO userDTO = new UserDTO(user);
         return userDTO;
-
-
     }
+
+    @Override
+    public List<UserDTO> getOrgAdmin(String organisationID) {
+        Long orgIDLong = Long.parseLong(organisationID);
+        OrganisationEntity organisation = organisationRepository.findById(orgIDLong).get();
+        return userRepository.findUserEntitiesByOrganisation(organisation)
+                .stream()
+                .filter(c -> Objects.equals(c.getRole(), "2"))
+                .map(c -> new UserDTO(c))
+                .collect(Collectors.toList());
+    }
+
     public List<FileDisplayer> getsUsersFiles(String username){
         UserEntity user = userRepository.findByUsername(username);
         UserDTO userDTO = new UserDTO(user);
         return userDTO.getFiles()
                 .stream()
-                .map(c -> new FileDisplayer(c.getFileID(),c.getFileName(),c.getType(),c.getTag(),c.getAccessLevel(),c.getComment(),c.getData(),c.getDate(),userDTO.getUsername()))
+                .map(c -> new FileDisplayer(c.getFileID(),c.getFileName(),c.getType(),c.getTag(),c.getAccessLevel(),c.getComment(),c.getDate(),userDTO.getUsername(),c.getSubject(),user.getOrganisation().getOrganisationName()))
                 .collect(Collectors.toList());
     }
 
@@ -99,5 +108,28 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<FileDisplayer> getPublicFiles() {
         return fileRepository.findAllPublic();
+    }
+
+    @Override
+    public List<FileDisplayer> getPartnersFiles(String username) {
+        return fileRepository.findAllPartners(username);
+    }
+
+    @Override
+    public List<FileDisplayer> getAllFiles(String username) {
+        System.out.println(fileRepository.findAllFiles(username));
+        return fileRepository.findAllFiles(username);
+    }
+
+    @Override    public List<FileDisplayer> findBySearchTerm(String search, String username) {
+        return fileRepository.findAllFiles(username).stream().filter(c -> c.matches(search)).collect(Collectors.toList());
+    }
+    @Override
+    public boolean hasAccessToFile(String username, String fileID){
+        return userRepository.hasAccessToFiles(username,fileID);
+    }
+    @Override
+    public boolean canModifyFile(String name, String fileID){
+        return userRepository.hasAccessToModify(name, fileID);
     }
 }

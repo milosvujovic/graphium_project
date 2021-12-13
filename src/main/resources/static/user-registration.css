@@ -121,6 +121,14 @@
     text-align: center;
 }
 
+.success-msg {
+    color: #00aa4a;
+    font-size: 10px;
+    padding: 0;
+    margin-top: 5px;
+    text-align: center;
+}
+
 .seperator {
     width: calc(100% - 40px);
     height: 1px;

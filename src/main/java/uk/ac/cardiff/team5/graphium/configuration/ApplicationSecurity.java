@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import uk.ac.cardiff.team5.graphium.service.UserDetailsService;
 
 @Configuration
@@ -46,24 +47,34 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/register").permitAll()
-                .antMatchers("/").authenticated()
-                .antMatchers("/myFiles").authenticated()
-                .antMatchers("/file").authenticated()
-                .antMatchers("/myOrgFiles").authenticated()
-                .antMatchers("/sys-admin").authenticated()
-                .antMatchers("/verify").hasRole("ORG_ADMIN")
+                .antMatchers("/admin/**").access("hasRole('2')")
+                .antMatchers("/api/admin/**").access("hasRole('2')")
+                .antMatchers("/upload").access("hasAnyRole('1','2')")
+                .antMatchers("/file").access("hasAnyRole('1','2')")
+                .antMatchers("/files").access("hasAnyRole('1','2')")
+                .antMatchers("/myFiles").access("hasAnyRole('1','2')")
+                .antMatchers("/file/view/**").access("hasAnyRole('1','2')")
+                .antMatchers("/file/modify/**").access("hasAnyRole('1','2')")
+                .antMatchers("/file/reupload").access("hasAnyRole('1','2')")
+
                 .and()
-                .formLogin().permitAll()
+                .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
+                    .successHandler(myAuthenticationSuccessHandler())
                 .and()
                 .logout().permitAll();
-                //.and()
-                //.antMatcher("/resources/**");
     }
 
     // ignore register URL for non-authenticated users
     @Override
     public void configure(WebSecurity web) throws Exception {
         //web.ignoring().antMatchers("/register/**");
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
+        return new MySimpleUrlAuthenticationSuccessHandler();
     }
 
 }

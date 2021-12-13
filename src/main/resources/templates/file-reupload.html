@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/main-layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Modify File</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/files.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        function niceInputs() {
+            [].forEach.call(document.getElementsByClassName("form-input"), (form_input) => {
+                form_input.getElementsByTagName("input")[0].addEventListener("focus", () => {
+                    form_input.classList.add("active");
+                });
+
+                form_input.getElementsByTagName("input")[0].addEventListener("focusout", () => {
+                    if (form_input.getElementsByTagName("input")[0].value === "") {
+                        form_input.classList.remove("active");
+                    }
+                });
+
+                if (form_input.getElementsByTagName("input")[0].value !== "") {
+                    form_input.classList.add("active");
+                }
+
+            });
+
+        }
+
+        window.onload = () => {
+            niceInputs();
+        }
+    </script>
+</head>
+
+
+<body>
+<div layout:fragment="content">
+    <div style="display: inline-flex;width: 87.5%;padding-bottom: 10px">
+        <div style="width: 50%;display: flex;justify-content: left;align-items: start;">
+            <h1>My Organisation Name</h1>
+        </div>
+        <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
+            <a href="/myFiles">VIEW MY FILES</a>
+        </div>
+        <div style="width: 25%;display: flex;justify-content: right;align-items: end;">
+            <a href="/file">UPLOAD A FILE</a>
+        </div>
+    </div>
+    <div class="--graphium-window">
+        <div>
+            <form th:action="@{/file/reupload}" enctype="multipart/form-data" th:method="post" th:object="${fileForm}">
+                <input th:field="*{fileId}" type="hidden"/>
+
+
+                    <div class="row">
+                        <div class = "col-md">
+                            <div class="mb-3">
+                                <label class="text-secondary" for="file">File: </label><br>
+                                <input th:field="*{file}" type="file" required/>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "row">
+                        <div class="alert alert-danger" th:if="${errorMessage != null}" th:text="${errorMessage}">File Error</div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm">
+                                <div class = "d-flex justify-content-end">
+                                    <button class="btn btn-danger btn-lg">Cancel</button>
+                                </div>
+
+                            </div>
+                            <div class="col-sm">
+                                <button class="btn btn-dark btn-lg">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+             </div>
+
+        </div>
+    </div>
+
+</div>
+</div>
+</body>
+
+</html>
