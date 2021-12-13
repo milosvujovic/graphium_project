@@ -41,9 +41,23 @@
     </style>
     <script>
         window.onload = () => {
+            fetch_organisations();
+            fetch_users();
+        }
+
+        function fetch_organisations() {
             fetch(`//${window.location.host}/api/organisation`)
                 .then(response => response.json())
                 .then(data => {
+                    document.getElementById("organisations-table").innerHTML = `
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Created</th>
+                        <th>Members</th>
+                        <th>admin profile</th>
+                    </tr>
+                    `
                     data.forEach(organisation => {
                         document.getElementById("organisations-table").innerHTML += `
                         <tr>
@@ -57,9 +71,22 @@
                     })
                 });
 
+        }
+
+        function fetch_users() {
             fetch(`//${window.location.host}/api/user`)
                 .then(response => response.json())
                 .then(data => {
+                    document.getElementById("users-table").innerHTML= `
+                    <tr>
+                        <th>First Name</th>
+                        <th>Surname</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Organisation</th>
+                        <th>Reset Password</th>
+                    </tr>
+                    `
                     data.forEach(user => {
                         document.getElementById("users-table").innerHTML += `
                         <tr>
@@ -72,6 +99,27 @@
                         </tr>
                         `
                     })
+                });
+        }
+
+        function create_organisation() {
+
+            fetch(`//${window.location.host}/api/csrf`, {
+                credentials: 'include'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    let csrf = data['token'];
+
+                    fetch(`//${window.location.host}/api/organisation?_csrf=${csrf}`, {
+                        method: "POST",
+                        credentials: 'include',
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({name: document.getElementById("--create-org-form--name").value})
+                    }).then(res => {
+                        console.log("Organisation post request response:", res);
+                        fetch_organisations();
+                    });
                 });
         }
 
@@ -96,27 +144,21 @@
 
         <div class="views">
             <div class="--graphium--tab-view sys-admin active" id="organisations">
-                <table id="organisations-table">
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Created</th>
-                        <th>Members</th>
-                        <th>admin profile</th>
-                    </tr>
-                </table>
+                <h1>Organisations</h1>
+
+                <table id="organisations-table"></table>
+
+                <h1>Create an organisation</h1>
+
+                <label for="--create-org-form--name">Organisation Name</label>
+                <input type="text" name="organisationName" id="--create-org-form--name">
+
+                <button onclick="create_organisation()">Submit</button>
             </div>
             <div class="--graphium--tab-view sys-admin" id="users">
-                <table id="users-table">
-                    <tr>
-                        <th>First Name</th>
-                        <th>Surname</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Organisation</th>
-                        <th>Reset Password</th>
-                    </tr>
-                </table>
+                <h1>Users</h1>
+
+                <table id="users-table"></table>
             </div>
         </div>
     </div>
