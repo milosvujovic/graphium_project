@@ -1,5 +1,8 @@
 package uk.ac.cardiff.team5.graphium.web.controllers;
 
+import org.springframework.security.crypto.codec.Hex;
+import org.springframework.security.crypto.encrypt.Encryptors;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +16,7 @@ import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 import uk.ac.cardiff.team5.graphium.web.controllers.userRegistration.forms.UserRegistrationForm;
 
 import javax.validation.Valid;
+import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.util.List;
 
@@ -21,6 +25,8 @@ public class LoginController {
 
     @GetMapping("/login")
     public String Login() {
+        TextEncryptor encryptor = Encryptors.delux("password", new String(Hex.encode("salt".getBytes(StandardCharsets.UTF_8))));
+        System.out.println(encryptor.encrypt("mohammed.s.hussain@outlook.com"));
         return "login";
     }
 
