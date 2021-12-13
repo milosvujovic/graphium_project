@@ -27,7 +27,7 @@ create table `users` (
                                        `first_name` varchar(30),
                                        `last_name` varchar(30),
                                        `username` varchar(30),
-                                       `email` varchar(50),
+                                       `email` varchar(150),
                                        `password` varchar(100),
                                        `active` boolean default true,
                                        `organisation_approved` boolean default false,
