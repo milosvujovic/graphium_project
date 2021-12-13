@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import uk.ac.cardiff.team5.graphium.service.UserDetailsService;
 
 @Configuration
@@ -49,6 +51,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register").permitAll()
                 .antMatchers("/admin/**").access("hasRole('2')")
                 .antMatchers("/api/admin/**").access("hasRole('2')")
+                .antMatchers("/api/user/**").access("hasAnyRole('1','2')")
                 .antMatchers("/upload").access("hasAnyRole('1','2')")
                 .antMatchers("/file").access("hasAnyRole('1','2')")
                 .antMatchers("/files").access("hasAnyRole('1','2')")
@@ -63,7 +66,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                     .permitAll()
                     .successHandler(myAuthenticationSuccessHandler())
                 .and()
-                .logout().permitAll();
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login");
     }
 
     // ignore register URL for non-authenticated users
