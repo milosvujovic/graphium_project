@@ -15,8 +15,10 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     UserEntity findByEmail(String email);
     UserEntity findByUsername(String username);
+    List<UserEntity> findAll();
 
     List<UserEntity> findUserEntitiesByOrganisation(OrganisationEntity organisation);
+
     @Modifying
     @Query("update UserEntity set organisation_approved = true where username = ?1")
     @Transactional
@@ -31,4 +33,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query(value = "SELECT canVerifyUser(:username,:adminName);", nativeQuery = true)
     boolean canVerifyUser(@Param("username") String username, @Param("adminName") String adminName);
 
+    UserEntity getByUsername(String username);
 }
