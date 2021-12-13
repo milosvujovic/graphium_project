@@ -51,6 +51,15 @@ public class FileAPIControllerTest {
     }
 
     @Test
+    @WithUserDetails("csmith")
+    public void getAllPublicFilesDiffernetUser() throws Exception{
+        mvc.perform(get("/api/user/publicFiles").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
     @WithUserDetails("adavies")
     public void getAllUsersFiles() throws Exception {
         mvc.perform(get("/api/user/myFiles").contentType(MediaType.APPLICATION_JSON))
@@ -60,8 +69,16 @@ public class FileAPIControllerTest {
     }
 
     @Test
+    @WithUserDetails("csmith")
+    public void getAllUsersFilesDiffernetUser() throws Exception{
+        mvc.perform(get("/api/user/myFiles").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
+    @Test
     @WithUserDetails("adavies")
-    public void getMyOrganisationFiles() throws Exception {
+    public void getMyOrganisationFiles() throws Exception{
         mvc.perform(get("/api/user/myOrgFiles").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
