@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/main-layout}">
+
+<title>System Admin Panel</title>
+
+<head>
+    <style>
+        .--graphium--tab-container {
+            position: relative;
+
+            height: calc(100% - 80px);
+            width: calc(100% - 80px);
+            margin: 40px;
+            border-radius: 10px;
+
+            background-color: white;
+        }
+
+        .--graphium--tab-container .tab-bar {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            width: calc(100% - 80px);
+            height: 30px;
+        }
+
+        .--graphium--tab-container .tab-bar .tab {
+            padding: 0 10px;
+            background-color: white;
+            height: 30px;
+        }
+
+        .--graphium--tab-view {
+            display: none;
+        }
+
+        .--graphium--tab-view.active {
+            display: block;
+        }
+
+        .--graphium--make-admin-popup-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            background-color: rgba(0,0,0,0.3);
+
+            display: none;
+            justify-content: center;
+            align-items: center;
+
+            z-index: 99;
+        }
+
+        .--graphium--make-admin-popup-container.active {
+            display: flex;
+        }
+
+        .--graphium--make-admin-popup-container .content {
+            position: relative;
+            width: 400px;
+            height: 300px;
+            background-color: white;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .--graphium--make-admin-popup-container .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: block;
+        }
+
+
+    </style>
+    <script>
+        window.onload = () => {
+            fetch_organisations();
+            fetch_users();
+
+            document.getElementById("--graphium--make-admin-popup-close").onclick = () => {
+                document.getElementById("--graphium--make-admin-popup").classList.remove("active");
+            }
+        }
+
+        function make_admin_popup(organisation_id) {
+            document.getElementById("--graphium--make-admin-popup-select").innerHTML = '';
+
+            fetch(`//${window.location.host}/api/organisation/${organisation_id}/users`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    data.forEach(user => {
+                        document.getElementById("--graphium--make-admin-popup-select").innerHTML += `
+                        <option value="${user['username']}">${user['username']}</option>
+                        `
+                    })
+                    document.getElementById("--graphium--make-admin-popup").classList.add("active");
+                });
+        }
+
+        function make_admin() {
+            let user_id = document.getElementById("--graphium--make-admin-popup-select").value;
+
+            fetch(`//${window.location.host}/api/csrf`, {
+                credentials: 'include'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    let csrf = data['token'];
+
+                    fetch(`//${window.location.host}/api/organisation/1/set-admin/${user_id}?_csrf=${csrf}`, {
+                        method: "POST",
+                        credentials: 'include',
+                        headers: {"Content-Type": "application/json"},
+                    }).then(res => {
+                        console.log("Make org admin post request response:", res);
+                        fetch_organisations();
+                        document.getElementById("--graphium--make-admin-popup").classList.remove("active");
+                    });
+                });
+        }
+
+        function fetch_organisations() {
+            fetch(`//${window.location.host}/api/organisation`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("organisations-table").innerHTML = `
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Admin Account</th>
+                    </tr>
+                    `
+                    data.forEach(organisation => {
+                        document.getElementById("organisations-table").innerHTML += `
+                        <tr>
+                            <td>${organisation['organisationId']}</td>
+                            <td>${organisation['organisationName']}</td>
+                            <td><a onclick="make_admin_popup(${organisation['organisationId']})" style="cursor: pointer; color: blue; text-decoration: underline">Make admin</a></td>
+                        </tr>
+                        `
+                    })
+                });
+
+        }
+
+        function fetch_users() {
+            fetch(`//${window.location.host}/api/user`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("users-table").innerHTML= `
+                    <tr>
+                        <th>First Name</th>
+                        <th>Surname</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Organisation</th>
+                        <th>Reset Password</th>
+                    </tr>
+                    `
+                    data.forEach(user => {
+                        document.getElementById("users-table").innerHTML += `
+                        <tr>
+                            <td>${user['firstName']}</td>
+                            <td>${user['lastName']}</td>
+                            <td>${user['username']}</td>
+                            <td>${user['email']}</td>
+                            <td>${user['organisationId']}</td>
+                            <td>a</td>
+                        </tr>
+                        `
+                    })
+                });
+        }
+
+        function create_organisation() {
+
+            fetch(`//${window.location.host}/api/csrf`, {
+                credentials: 'include'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    let csrf = data['token'];
+
+                    fetch(`//${window.location.host}/api/organisation?_csrf=${csrf}`, {
+                        method: "POST",
+                        credentials: 'include',
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({name: document.getElementById("--create-org-form--name").value})
+                    }).then(res => {
+                        console.log("Organisation post request response:", res);
+                        fetch_organisations();
+                    });
+                });
+        }
+
+        function show_view(namespace, view_id) {
+            if (namespace) {
+                Array.from(document.getElementsByClassName(namespace)).forEach((element) => {
+                    element.classList.remove("active");
+                })
+            }
+            document.getElementById(view_id).classList.add("active");
+        }
+    </script>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="--graphium--make-admin-popup-container" id="--graphium--make-admin-popup">
+        <div class="content">
+            <span class="close-btn" id="--graphium--make-admin-popup-close">X</span>
+            <h1>Make admin of organisation</h1>
+            <select id="--graphium--make-admin-popup-select">
+            </select>
+            <button onclick="make_admin()">Submit</button>
+        </div>
+    </div>
+
+    <div class="--graphium--tab-container">
+        <div class="tab-bar">
+            <span class="tab" onclick="show_view('sys-admin', 'organisations')">Organisations</span>
+            <span class="tab" onclick="show_view('sys-admin', 'users')">Users</span>
+        </div>
+
+        <div class="views">
+            <div class="--graphium--tab-view sys-admin active" id="organisations">
+                <h1>Organisations</h1>
+
+                <table id="organisations-table"></table>
+
+                <h1>Create an organisation</h1>
+
+                <label for="--create-org-form--name">Organisation Name</label>
+                <input type="text" name="organisationName" id="--create-org-form--name">
+
+                <button onclick="create_organisation()">Submit</button>
+            </div>
+            <div class="--graphium--tab-view sys-admin" id="users">
+                <h1>Users</h1>
+
+                <table id="users-table"></table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

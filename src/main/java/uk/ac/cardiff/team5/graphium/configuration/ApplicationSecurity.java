@@ -59,6 +59,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/file/view/**").access("hasAnyRole('1','2')")
                 .antMatchers("/file/modify/**").access("hasAnyRole('1','2')")
                 .antMatchers("/file/reupload").access("hasAnyRole('1','2')")
+
                 .and()
                 .formLogin()
                     .loginPage("/login")
