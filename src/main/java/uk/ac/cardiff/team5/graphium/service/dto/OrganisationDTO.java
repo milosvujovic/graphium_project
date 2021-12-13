@@ -2,10 +2,8 @@ package uk.ac.cardiff.team5.graphium.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Value;
-<<<<<<< HEAD
-=======
+
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.OrganisationEntity;
->>>>>>> main
 
 @Value
 @AllArgsConstructor
