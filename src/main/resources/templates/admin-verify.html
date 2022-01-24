@@ -76,7 +76,13 @@
                         <tr th:each="user : ${userList}">
                             <th scope="row" th:text="${user.username}">Username</th>
                             <td th:text ="${user.email}">Email</td>
-                            <td><a th:attr="href=@{'/admin/verified/'+${user.username}}" verify><button type="button" class="btn btn-primary">Verify</button></a></td>
+
+                            <td>
+                                <form th:attr="action=@{'/admin/verified/'+${user.username}}" method="POST">
+                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                    <input type="submit" class="btn btn-primary" placeholder="Verify">
+                                </form>
+                            </td>
                         </tr>
                         </tbody>
                     </table>

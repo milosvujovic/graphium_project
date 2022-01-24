@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import uk.ac.cardiff.team5.graphium.service.AdminService;
 import uk.ac.cardiff.team5.graphium.service.UserService;
@@ -35,7 +36,7 @@ public class AdminController {
         return "admin-verify";
     }
 
-    @GetMapping("/verified/{userName}")
+    @PostMapping("/verified/{userName}")
     public String verifyUser(@PathVariable(value = "userName", required = true) String userName, Principal principal) {
         if (adminService.canVerifyUser(userName, principal.getName())) {
             adminService.verifyUser(userName);
@@ -48,7 +49,7 @@ public class AdminController {
         return "admin-partner";
     }
 
-    @GetMapping("/partner/{orgID}")
+    @PostMapping("/partner/{orgID}")
     public String recordPartner(@PathVariable(value = "orgID", required = true) String orgId, Model model, Principal principal) {
         if (!adminService.partnershipAlreadyExists(orgId, principal.getName())) {
             adminService.recordPartnership(orgId, principal.getName());

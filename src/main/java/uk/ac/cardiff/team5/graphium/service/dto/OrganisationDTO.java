@@ -2,6 +2,7 @@ package uk.ac.cardiff.team5.graphium.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Value;
+
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.OrganisationEntity;
 
 @Value
@@ -9,6 +10,11 @@ import uk.ac.cardiff.team5.graphium.data.jpa.entity.OrganisationEntity;
 public class OrganisationDTO {
     private Long organisation_id;
     private String organisationName;
+
+    public OrganisationDTO(String organisationName) {
+        this.organisation_id = 0L;
+        this.organisationName = organisationName;
+    }
 
 
     public OrganisationDTO(OrganisationEntity organisation) {

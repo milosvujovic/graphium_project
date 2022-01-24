@@ -172,7 +172,7 @@
 
             let div;
             var i, tablinks;
-            var fullRoute = "http://localhost:8080/api/user/" + route;
+            var fullRoute = `//${window.location.host}/api/user/` + route;
             tablinks = document.getElementsByClassName("tablinks");
             for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].className = tablinks[i].className.replace(" active", "");

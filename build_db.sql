@@ -1,4 +1,4 @@
-drop database if exists `graphium`;
+	drop database if exists `graphium`;
 create database if not exists `graphium`;
 use `graphium`;
 
@@ -250,8 +250,8 @@ insert into users (organisation_id, role_id, first_name, last_name, username, em
 insert into users (organisation_id, role_id, first_name, last_name, username, email, password, active, organisation_approved, email_verified) values (4, 1, 'Lewis', 'Cook', 'lcook', '434a11b1abde92c74ed353b0e4a5d43b427f5bdf9f228274e32c29f9560036916dba66108f448deeb9d269f9adb91bc5f2', '$2a$10$jy7T4nLKfalHAp/3Dv2qae0Le9.xsSUWnWq9WA2XXiyX2orgIEh9C', true, true, true);
 
 insert into users (organisation_id, role_id, first_name, last_name, username, email, password, active, organisation_approved, email_verified) values (1, 2, 'Carl', 'Smith', 'csmith', '1fba6e932635386112597b7e5c995f99e2fd9f4615e9b0b52d06907ac22ba7627d1a1ccbe47de0919733d89759e820cee6b5', '$2a$10$jy7T4nLKfalHAp/3Dv2qae0Le9.xsSUWnWq9WA2XXiyX2orgIEh9C', true, true, true);
-insert into users (organisation_id, role_id, first_name, last_name, username, email, password, active, organisation_approved, email_verified) values (2, 2, 'Aaron', 'Ramsdale', 'aramsdale', 'e0b2cdf3b2a184df6592e03d3e738c226d08252091fb0c0671f7ea305e234a0a54a5645f9bbc089e60d2e82cdfb24c349c566891c7', '$2a$10$jy7T4nLKfalHAp/3Dv2qae0Le9.xsSUWnWq9WA2XXiyX2orgIEh9C', true, true, true);
-insert into users (organisation_id, role_id, first_name, last_name, username, email, password, active, organisation_approved, email_verified) values (3, 2, 'Sarah', 'Smith', 'ssmith', 'd98c72e6b214dc3fc42c70b0b4eb3dfaab23c553157dab0279eb7c65f11a9d5a1b01d26fbdc5303c989ff7fd6dbb9e081c52', '$2a$10$jy7T4nLKfalHAp/3Dv2qae0Le9.xsSUWnWq9WA2XXiyX2orgIEh9C', true, true, true);
+insert into users (organisation_id, role_id, first_name, last_name, username, email, password, active, organisation_approved, email_verified) values (3, 2, 'Aaron', 'Ramsdale', 'aramsdale', 'e0b2cdf3b2a184df6592e03d3e738c226d08252091fb0c0671f7ea305e234a0a54a5645f9bbc089e60d2e82cdfb24c349c566891c7', '$2a$10$jy7T4nLKfalHAp/3Dv2qae0Le9.xsSUWnWq9WA2XXiyX2orgIEh9C', true, true, true);
+insert into users (organisation_id, role_id, first_name, last_name, username, email, password, active, organisation_approved, email_verified) values (2, 2, 'Mohammed', 'Hussain', 'mhussain', '62e0dc6fdeddd2a516a7b27867136ad9410c5b589c86e3b88bfb6be68e7d7dc99273d0cfc7015a785cb3229ab4fbd086a61f9a4228ef9f509f389c512b42', '$2a$10$jy7T4nLKfalHAp/3Dv2qae0Le9.xsSUWnWq9WA2XXiyX2orgIEh9C', true, true, true);
 insert into users (organisation_id, role_id, first_name, last_name, username, email, password, active, organisation_approved, email_verified) values (4, 2, 'Roberto', 'Martinez', 'rmartinez', '8eb4b756915b44668e8c4614a5f013c44c37f26696d3c82a278d008827d5aef59ff3f1801ddee3d69b7b2280589e8cbb5e895ab30f', '$2a$10$jy7T4nLKfalHAp/3Dv2qae0Le9.xsSUWnWq9WA2XXiyX2orgIEh9C', true, true, true);
 
 insert into users (role_id, first_name, last_name, username, email, password, active, organisation_approved, email_verified) values (3, 'SystemAdmin', 'Example', 'sysadmin', '7def18a22ed2bdb17ab471841e0a0a867fadf28378c015de00feaf2aeb3ea3e1b2fca0b94fbc60435390786a798890cd8dbe416c', '$2a$10$/vOrWfM8MJ.Dzpj3t5oGyeuNoERADR5LlEGrV6pwSr0Did8JikTTq', true, true, true);
