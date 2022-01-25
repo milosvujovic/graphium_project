@@ -2,10 +2,10 @@ package uk.ac.cardiff.team5.graphium.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.codec.Hex;
+import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.encrypt.Encryptors;
 import uk.ac.cardiff.team5.graphium.GraphiumApplication;
 import uk.ac.cardiff.team5.graphium.data.jdbc.repository.FileRepository;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.OrganisationEntity;
@@ -20,7 +20,6 @@ import uk.ac.cardiff.team5.graphium.exception.UsernameInUseException;
 import uk.ac.cardiff.team5.graphium.service.UserService;
 import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
@@ -39,6 +38,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     PasswordEncoder passwordEncoder = GraphiumApplication.encoder();
 
+    TextEncryptor encryptor =
+            Encryptors.delux("password", new String(Hex.encode("salt".getBytes(StandardCharsets.UTF_8))));
+
     @Override
     public void register(UserDTO userDTO) throws EmailInUseException, UsernameInUseException {
         if (checkEmailInUse(userDTO.getEmail())) {
@@ -49,8 +51,6 @@ public class UserServiceImpl implements UserService {
             throw new UsernameInUseException("Username " + userDTO.getUsername() + " is already in use.");
         }
         RoleEntity role = roleRepository.findByRoleId("1");
-        TextEncryptor encryptor =
-                Encryptors.delux("password", new String(Hex.encode("salt".getBytes(StandardCharsets.UTF_8))));
         UserEntity userEntity = new UserEntity(
                 userDTO.getFirstName(),
                 userDTO.getLastName(),
@@ -66,12 +66,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean checkEmailInUse(String email) {
-        return userRepository.findByEmail(email) !=null ? true : false;
+        return userRepository.findAll()
+                .stream()
+                .filter(
+                        u -> encryptor.decrypt(u.getEmail()).equals(email)
+                ).count() != 0;
     }
 
     @Override
     public boolean checkUsernameInUse(String username) {
-        return userRepository.findByUsername(username) != null ? true : false;
+        return userRepository.findByUsername(username) != null;
     }
 
     @Override
