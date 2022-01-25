@@ -142,7 +142,7 @@
                         document.getElementById("organisations-table").innerHTML += `
                         <tr>
                             <td>${organisation['organisationId']}</td>
-                            <td>${organisation['organisationName']}</td>
+                            <td class="organisationName">${organisation['organisationName']}</td>
                             <td><a onclick="make_admin_popup(${organisation['organisationId']})" style="cursor: pointer; color: blue; text-decoration: underline">Make admin</a></td>
                         </tr>
                         `
@@ -181,6 +181,24 @@
         }
 
         function create_organisation() {
+            let userInput = document.getElementById("--create-org-form--name").value;
+
+            if (userInput === ""){
+                alert("enter organisation name")
+                return
+            }
+
+            if (userInput.length < 3 || userInput.length > 20){
+                alert("organisation name must be between 3 and 20 characters")
+                return
+            }
+
+            for (element of document.getElementsByClassName("organisationName")){
+                if (element.innerText === userInput){
+                    alert("organisation must have a unique name")
+                    return
+                }
+            }
 
             fetch(`//${window.location.host}/api/csrf`, {
                 credentials: 'include'
@@ -193,7 +211,7 @@
                         method: "POST",
                         credentials: 'include',
                         headers: {"Content-Type": "application/json"},
-                        body: JSON.stringify({name: document.getElementById("--create-org-form--name").value})
+                        body: JSON.stringify({name: userInput})
                     }).then(res => {
                         console.log("Organisation post request response:", res);
                         fetch_organisations();
