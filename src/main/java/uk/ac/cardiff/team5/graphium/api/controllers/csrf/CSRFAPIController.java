@@ -1,6 +1,5 @@
 package uk.ac.cardiff.team5.graphium.api.controllers.csrf;
 
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

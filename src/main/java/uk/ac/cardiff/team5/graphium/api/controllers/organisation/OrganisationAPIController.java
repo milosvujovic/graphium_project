@@ -1,9 +1,7 @@
 package uk.ac.cardiff.team5.graphium.api.controllers.organisation;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.OrganisationEntity;
-import uk.ac.cardiff.team5.graphium.data.jpa.entity.RoleEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.UserEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.OrganisationRepository;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.RoleRepository;
@@ -13,7 +11,6 @@ import uk.ac.cardiff.team5.graphium.service.OrganisationService;
 import uk.ac.cardiff.team5.graphium.service.dto.OrganisationDTO;
 import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 
-import javax.management.relation.Role;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

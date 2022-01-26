@@ -1,12 +1,10 @@
 package uk.ac.cardiff.team5.graphium.service.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.Value;
 import org.springframework.security.crypto.codec.Hex;
 import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
-import uk.ac.cardiff.team5.graphium.data.jpa.entity.DBFile;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.UserEntity;
 
 import java.nio.charset.StandardCharsets;
@@ -64,7 +62,7 @@ public class UserDTO {
         this.emailVerified = user.getEmail_verified();
         this.files =  user.getFiles()
                 .stream()
-                .map(c -> new FileDTO(c))
+                .map(FileDTO::new)
                 .collect(Collectors.toList());
     }
 }

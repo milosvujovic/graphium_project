@@ -23,7 +23,7 @@ public class FileServerDBImpl implements FileServer{
 
     @Override
     public String saveFiles(FileDTO aFile, String username) {
-        String fileId = null;
+        String fileId;
 //        Converts FileDTO to a DBFile
         DBFile dbFile = new DBFile(null,aFile.getFileName(),aFile.getType() ,aFile.getTag(),aFile.getAccessLevel() ,aFile.getComment(),aFile.getData(), aFile.getDate(), aFile.getSubject());
 

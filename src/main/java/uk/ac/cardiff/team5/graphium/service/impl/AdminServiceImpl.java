@@ -1,9 +1,12 @@
 package uk.ac.cardiff.team5.graphium.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.OrganisationEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.entity.PartnershipEntity;
+import uk.ac.cardiff.team5.graphium.data.jpa.entity.UserEntity;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.OrganisationRepository;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.PartnershipRepository;
 import uk.ac.cardiff.team5.graphium.data.jpa.repository.UserRepository;
@@ -12,6 +15,7 @@ import uk.ac.cardiff.team5.graphium.service.dto.OrganisationDTO;
 import uk.ac.cardiff.team5.graphium.service.dto.UserDTO;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service("adminService")
@@ -27,12 +31,17 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<UserDTO> verify(Long organisationId) {
-        OrganisationEntity organisation = organisationRepository.findById(organisationId).get();
-        return userRepository.findUserEntitiesByOrganisation(organisation)
-                .stream()
-                .filter(c -> c.getOrganisation_approved() == false)
-                .map(c -> new UserDTO(c))
-                .collect(Collectors.toList());
+        Optional<OrganisationEntity> organisation = organisationRepository.findById(organisationId);
+        if (organisation.isPresent()){
+            return userRepository.findUserEntitiesByOrganisation(organisation.get())
+                    .stream()
+                    .filter(c -> !c.getOrganisation_approved())
+                    .map(UserDTO::new)
+                    .collect(Collectors.toList());
+
+        }else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find organisation");
+        }
     }
 
     @Override
@@ -45,7 +54,7 @@ public class AdminServiceImpl implements AdminService {
         Long organisationId = userRepository.findByUsername(name).getOrganisation().getOrganisationId();
         return organisationRepository.findPossiblePartners(organisationId)
                 .stream()
-                .map(c -> new OrganisationDTO(c))
+                .map(OrganisationDTO::new)
                 .collect(Collectors.toList());
     }
 
@@ -59,12 +68,16 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<UserDTO> getOrganisationMembers(String username) {
-        OrganisationEntity organisation = organisationRepository.findById(userRepository.findByUsername(username).getOrganisation().getOrganisationId()).get();
-        return userRepository.findUserEntitiesByOrganisation(organisation)
-                .stream()
-                .filter(c -> c.getOrganisation_approved() == true)
-                .map(c -> new UserDTO(c))
-                .collect(Collectors.toList());
+        Optional<OrganisationEntity> organisation = organisationRepository.findById(userRepository.findByUsername(username).getOrganisation().getOrganisationId());
+        if (organisation.isPresent()){
+            return userRepository.findUserEntitiesByOrganisation(organisation.get())
+                    .stream()
+                    .filter(UserEntity::getOrganisation_approved)
+                    .map(UserDTO::new)
+                    .collect(Collectors.toList());
+        }else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find organisation");
+        }
     }
 
     @Override
@@ -72,7 +85,7 @@ public class AdminServiceImpl implements AdminService {
         Long organisationId = userRepository.findByUsername(name).getOrganisation().getOrganisationId();
         return organisationRepository.findPartnersThatYouShareWith(organisationId)
                 .stream()
-                .map(c -> new OrganisationDTO(c))
+                .map(OrganisationDTO::new)
                 .collect(Collectors.toList());
     }
     @Override
@@ -80,7 +93,7 @@ public class AdminServiceImpl implements AdminService {
         Long organisationId = userRepository.findByUsername(name).getOrganisation().getOrganisationId();
         return organisationRepository.findPartnersThatYouCanView(organisationId)
                 .stream()
-                .map(c -> new OrganisationDTO(c))
+                .map(OrganisationDTO::new)
                 .collect(Collectors.toList());
     }
     @Override

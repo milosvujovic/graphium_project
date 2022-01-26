@@ -6,12 +6,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.ac.cardiff.team5.graphium.domain.FileDisplayer;
-import uk.ac.cardiff.team5.graphium.domain.User;
 import uk.ac.cardiff.team5.graphium.service.UserService;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/user")
