@@ -250,9 +250,12 @@
 
         window.onload = () => {
             niceInputs();
+            document.getElementById("searchTermInput").onkeydown = () => {
+                searchTerm(`//${window.location.host}`);
+            }
         }
         function searchTerm(evt){
-            var term = document.forms["searchForm"]["search"].value;
+            var term = document.getElementById("searchTermInput").value;
             loadTable(evt,"searchFiles/" + term);
             return false;
 
@@ -324,7 +327,7 @@
 <!--                                <th class="table-heading" scope="col">File Type</th>-->
                                 <th class="table-heading" scope="col">
                                     <form action="/searchFiles" th:method="get">
-                                        <input class="search-input" aria-describedby="Enter a term to search for files." id="search" name="search" placeholder="Search for file" type="text" value=""/>
+                                        <input onkeydown="searchTerm(event, `//${window.location.host}`)" class="search-input" aria-describedby="Enter a term to search for files." id="searchTermInput" name="search" placeholder="Search for file" type="text" value=""/>
                                     </form>
                                 </th>
                             </tr>

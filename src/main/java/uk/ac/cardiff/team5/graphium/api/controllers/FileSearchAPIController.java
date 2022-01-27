@@ -10,6 +10,7 @@ import uk.ac.cardiff.team5.graphium.service.UserService;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/user")
@@ -43,7 +44,11 @@ public class FileSearchAPIController {
 
     }
     @GetMapping("/searchFiles/{term}")
-    public ResponseEntity<List<FileDisplayer>> findMyFiles(@PathVariable String term,Principal principal){
-        return ResponseEntity.ok(userService.findBySearchTerm(term, principal.getName()));
+    public ResponseEntity<List<FileDisplayer>> findMyFiles(@PathVariable Optional<String> term, Principal principal){
+        if (term.isPresent()){
+            return ResponseEntity.ok(userService.findBySearchTerm(term.get(), principal.getName()));
+        }else{
+            return ResponseEntity.ok(userService.getAllFiles(principal.getName()));
+        }
     }
 }
