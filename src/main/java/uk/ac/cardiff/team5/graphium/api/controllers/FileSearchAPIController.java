@@ -45,10 +45,6 @@ public class FileSearchAPIController {
     }
     @GetMapping("/searchFiles/{term}")
     public ResponseEntity<List<FileDisplayer>> findMyFiles(@PathVariable Optional<String> term, Principal principal){
-        if (term.isPresent()){
-            return ResponseEntity.ok(userService.findBySearchTerm(term.get(), principal.getName()));
-        }else{
-            return ResponseEntity.ok(userService.getAllFiles(principal.getName()));
-        }
+        return term.map(s -> ResponseEntity.ok(userService.findBySearchTerm(s, principal.getName()))).orElseGet(() -> ResponseEntity.ok(userService.getAllFiles(principal.getName())));
     }
 }
