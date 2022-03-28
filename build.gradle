@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.5.6'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'checkstyle'
 }
 
 group = 'uk.ac.cardiff.team5'
@@ -41,4 +42,16 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+checkstyle {
+    toolVersion = 8.25
+    checkstyleMain.enabled = true
+    checkstyleTest.enabled = false
+    ignoreFailures = true
+}
+
+checkstyleMain {
+    configFile = file("checkstyleMain.xml")
+
 }
